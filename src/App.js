@@ -1,12 +1,11 @@
-import logo from './logo.svg';
-import KakaoMap from './kakao/KakaoMap';
-import './App.css';
+import logo from "./logo.svg";
+import Layout from "./Layout";
+import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <KakaoMap />
-      
+      <Layout />
     </div>
   );
 }
