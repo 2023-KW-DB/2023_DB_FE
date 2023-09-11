@@ -10,8 +10,6 @@ const KakaoMap = () => {
   const bikeInformationData = bikeStationData.DATA;
 
   const updateMarkder = (map, leftTop, rightBottom) => {
-    console.log(map);
-    console.log(leftTop, rightBottom);
     const newMarkers = []
     // Clear all markers in map
     markers.forEach((marker) => {
@@ -91,8 +89,8 @@ const KakaoMap = () => {
 
   return (
     <div id="map" style={{
-      width: '100vw',
-      height: '100vh'
+      width: '100%',
+      height: '100%'
     }}></div>
   )
 }

@@ -31,6 +31,9 @@ const navItems = [{
 }, {
   name: "로그인",
   path: "/login",
+}, {
+  name: "회원가입",
+  path: "/register"
 }]
 
 function DrawerAppBar(props) {
@@ -116,9 +119,11 @@ function DrawerAppBar(props) {
           {drawer}
         </Drawer>
       </nav>
-      <Box component="main" sx={{ p: 3 }}>
+      <Box component="main" sx={{ width: "100%" }}>
         <Toolbar />
-        <PageRouter />
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <PageRouter />
+        </Box>
       </Box>
     </Box>
   );
