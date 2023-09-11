@@ -7,7 +7,7 @@ node v20.5.1
 
 ### Installation
 ```
-npm install
+npm install --force
 npm run start
 ```
 
