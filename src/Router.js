@@ -1,16 +1,31 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
 import Main from "./pages/Main";
-import Main2 from "./pages/Main2";
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Main />,
-  },
+// const router = createBrowserRouter([
+//   {
+//     path: "/register",
+//     element: <Register />,
+//   },
+//   {
+//     path: "/login",
+//     element: <Login />,
+//   },
+//   {
+//     path: "/",  
+//     element: <Main />,
+//   }
+// ]);
 
-  {
-    path: "/2",
-    element: <Main2 />,
-  },
-]);
+const router = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Main />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+
+    </Routes>
+  )
+}
 
 export default router;

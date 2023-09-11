@@ -14,13 +14,24 @@ import {
   Toolbar,
   Typography,
   Button,
+  Link
 } from "@mui/material";
-import { Abc } from "@mui/icons-material";
-import router from "./Router";
-import { RouterProvider } from "react-router-dom";
+import ListIcon from '@mui/icons-material/List';
+import PageRouter from "./Router";
+import { RouterProvider, Link as RouterLink, Router } from "react-router-dom";
+
 
 const drawerWidth = 240;
-const navItems = ["Home", "About", "Contact"];
+const navItems = [{
+  name: "지도 확인",
+  path: "/",
+}, {
+  name: "이력 확인",
+  path: "/history",
+}, {
+  name: "로그인",
+  path: "/login",
+}]
 
 function DrawerAppBar(props) {
   const { window } = props;
@@ -33,14 +44,16 @@ function DrawerAppBar(props) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
+        따릉이 시뮬레이터
       </Typography>
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
+          <ListItem key={item.name} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
+              <Link component={RouterLink} to={item.path} underline="none" color="inherit">
+                <ListItemText primary={item.name} />
+              </Link>
             </ListItemButton>
           </ListItem>
         ))}
@@ -63,19 +76,21 @@ function DrawerAppBar(props) {
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: "none" } }}
           >
-            <Abc />
+            <ListIcon />
           </IconButton>
           <Typography
             variant="h6"
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            MUI
+            따릉이 시뮬레이터
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
-              <Button key={item} sx={{ color: "#fff" }}>
-                {item}
+              <Button key={item.name} sx={{ color: "#fff" }}>
+                <Link component={RouterLink} to={item.path} underline="none" color="inherit">
+                  {item.name}
+                </Link>
               </Button>
             ))}
           </Box>
@@ -103,7 +118,7 @@ function DrawerAppBar(props) {
       </nav>
       <Box component="main" sx={{ p: 3 }}>
         <Toolbar />
-        <RouterProvider router={router} />
+        <PageRouter />
       </Box>
     </Box>
   );
