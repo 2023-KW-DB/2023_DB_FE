@@ -14,6 +14,19 @@ import {
 
 
 const History = () => {
+
+  const rows = [
+    {
+      id: 1,
+      username: "testuser1",
+      start: "서울특별시 종로구 효자로13길 45",
+      startedAt: "2023-09-11",
+      end: "서울특별시 중구 덕수궁길 61 서울시립미술관",
+      endAt: "2023-09-10",
+      price: 9000
+    }
+  ]
+
   return (
     <Container component="main" maxWidth="lg">
       <CssBaseline />
@@ -35,7 +48,20 @@ const History = () => {
           </TableHead>
 
           <TableBody>
-            
+            {rows.map((row) => (
+              <TableRow
+                key={row.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+
+                <TableCell align="center">{row.username}</TableCell>
+                <TableCell align="center">{row.start}</TableCell>
+                <TableCell align="center">{row.startedAt}</TableCell>
+                <TableCell align="center">{row.end}</TableCell>
+                <TableCell align="center">{row.endAt}</TableCell>
+                <TableCell align="center">{row.price}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer> 
