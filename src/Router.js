@@ -2,6 +2,7 @@ import { createBrowserRouter, Route, RouterProvider, Routes } from "react-router
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Main from "./pages/Main";
+import History from "./pages/History";
 // const router = createBrowserRouter([
 //   {
 //     path: "/register",
@@ -23,7 +24,7 @@ const router = () => {
       <Route path="/" element={<Main />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
-
+      <Route path="/history" element={<History />} />
     </Routes>
   )
 }
