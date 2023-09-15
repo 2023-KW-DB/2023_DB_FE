@@ -65,7 +65,7 @@ const Login = () => {
           variant="text"
           color="primary"
         >
-          <Link component={RouterLink} to="/register" variant="text">
+          <Link component={RouterLink} to="/register" variant="text" style={{ textDecoration: 'none' }}>
               회원가입
           </Link>
         </Button>

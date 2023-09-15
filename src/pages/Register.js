@@ -71,10 +71,10 @@ const Register = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="allowExtraEmails" color="primary" />}
               label="I want to receive inspiration, marketing promotions and updates via email."
-            />
+            /> */}
           </Grid>
         </Grid>
         <Button
@@ -86,8 +86,8 @@ const Register = () => {
           회원 가입
         </Button>
         <Grid container justify="flex-end">
-          <Grid item>
-            <Link component={RouterLink} to="/login" variant="body2">
+          <Grid item sx={{ py: 1 }}>
+            <Link component={RouterLink} to="/login" variant="body2" style={{ textDecoration: 'none' }}>
               계정이 이미 존재하나요? 로그인
             </Link>
           </Grid>
