@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import bikeStationData from "./bikeStationData.json";
 const { kakao } = window;
 
-const KakaoMap = () => {
+const KakaoMap = ({onClickMarker}) => {
   const [lat, setLat] = useState(37.62019307507592);
   const [long, setLong] = useState(127.0586406171661);
   const [map, setMap] = useState(null);
@@ -22,7 +22,6 @@ const KakaoMap = () => {
       if (bikeStation.statn_lat < leftTop.getLat() || bikeStation.statn_lat > rightBottom.getLat() || bikeStation.statn_lnt < leftTop.getLng() || bikeStation.statn_lnt > rightBottom.getLng()) {
         continue;
       }
-      console.log(bikeStation.statn_lat, bikeStation.statn_lnt)
 
       const marker = new kakao.maps.Marker({
         map: map,
@@ -39,8 +38,7 @@ const KakaoMap = () => {
         infoWindow.open(map, marker);
       });
       kakao.maps.event.addListener(marker, 'click', () => {
-        console.log('click marker');
-
+        onClickMarker(marker, bikeStation);
       });
       newMarkers.push(marker);
     }
