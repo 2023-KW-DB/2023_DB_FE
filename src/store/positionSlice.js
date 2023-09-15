@@ -1,13 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = {
-    startPos: null,
-    endPos: null,
-}
 
 export const positionSlice = createSlice({
     name: 'position',
-    initialState,
+    initialState: {
+        startPos: null,
+        endPos: null
+    },
     reducers: {
         setStartPos: (state, action) => {
             state.startPos = action.payload

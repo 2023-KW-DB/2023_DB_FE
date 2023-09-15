@@ -1,5 +1,5 @@
 import { Box, Container, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import KakaoMap from "./components/KakaoMap";
 import { useSelector, useDispatch } from 'react-redux';
 import { setStartPos, setEndPos } from "../store/positionSlice";
@@ -7,18 +7,31 @@ import { setStartPos, setEndPos } from "../store/positionSlice";
 const Main = () => {
   const screenHeight = window.innerHeight - 80;
   const dispatch = useDispatch();
-  const startPos = useSelector((state) => state.position.startPos, (prev, next) => prev === next);
-  const endPos = useSelector((state) => state.position.endPos, (prev, next) => prev === next);
+  const startPos = useSelector((state) => state.position.startPos)
+  const endPos = useSelector((state) => state.position.endPos)
+    
+  const [_startPos, _setStartPos] = useState(null);
+  const [_endPos, _setEndPos] = useState(null);
 
-  const onClickMarker = (marker, lendSpaceInfo) => {
-    if (!startPos) {
-      dispatch(setStartPos(lendSpaceInfo));
-    }
-    else {
-      dispatch(setEndPos(lendSpaceInfo));
-    }
-    return;
-  }
+  const onClickMarker = useCallback((marker, lendplace) => {
+    _setStartPos(prevStartPos => {
+      if (!prevStartPos) {
+        dispatch(setStartPos(lendplace));
+        return lendplace;
+      } else {
+        dispatch(setEndPos(lendplace));
+        _setEndPos(lendplace);
+        return prevStartPos; // startPos 상태를 변경하지 않는 경우 이전 값 반환
+      }
+    });
+  }, [startPos, endPos]);
+
+  useEffect(() => {
+    console.log(startPos);
+    console.log(endPos);
+  }, [startPos, endPos])
+
+
 
   const onClickLendplaceClear = () => {
     dispatch(setStartPos(""));
@@ -47,7 +60,7 @@ const Main = () => {
           )}
         </Box>
         <Box sx={{ width: "100%", height: "100%"}}>
-          <KakaoMap onClickMarker={onClickMarker} />
+          <KakaoMap onClickMarker={onClickMarker}/>
         </Box>
       </Box>
       

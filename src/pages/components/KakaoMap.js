@@ -8,7 +8,6 @@ const KakaoMap = ({onClickMarker}) => {
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([])
   const bikeInformationData = bikeStationData.DATA;
-
   const updateMarkder = (map, leftTop, rightBottom) => {
     const newMarkers = []
     // Clear all markers in map
@@ -37,6 +36,8 @@ const KakaoMap = ({onClickMarker}) => {
       kakao.maps.event.addListener(marker, 'mouseover', () => {
         infoWindow.open(map, marker);
       });
+
+      // 마커 이벤트 리스너 등록
       kakao.maps.event.addListener(marker, 'click', () => {
         onClickMarker(marker, bikeStation);
       });
