@@ -1,8 +1,9 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container, Typography, Button, Link } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import KakaoMap from "./components/KakaoMap";
 import { useSelector, useDispatch } from 'react-redux';
 import { setStartPos, setEndPos } from "../store/positionSlice";
+import { Link as RouterLink } from "react-router-dom";
 
 const Main = () => {
   const screenHeight = window.innerHeight - 80;
@@ -58,12 +59,23 @@ const Main = () => {
               {endPos.lendplace_id}
             </Typography>  
           )}
+          
+         <Button
+          type="button"
+          variant="text"
+          color="primary"
+          >
+           <Link component={RouterLink} to="/payment" variant="text" style={{ textDecoration: 'none' }}>
+              결제창으로이동
+            </Link>
+          </Button>           
         </Box>
+        
         <Box sx={{ width: "100%", height: "100%"}}>
           <KakaoMap onClickMarker={onClickMarker}/>
         </Box>
-      </Box>
-      
+      </Box>   
+
     </Container>
   )
 };
