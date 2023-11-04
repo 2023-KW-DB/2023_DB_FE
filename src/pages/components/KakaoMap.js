@@ -70,7 +70,7 @@ const KakaoMap = ({onClickMarker}) => {
       const rightBottom = map.getBounds().getNorthEast();
       updateMarkder(map, leftTop, rightBottom);
     })
-
+    map.addOverlayMapTypeId(kakao.maps.MapTypeId.BICYCLE);
     updateMarkder(map, map.getBounds().getSouthWest(), map.getBounds().getNorthEast());
 
     navigator.geolocation.getCurrentPosition(function (position) {
