@@ -23,6 +23,9 @@ import { RouterProvider, Link as RouterLink, Router } from "react-router-dom";
 
 const drawerWidth = 240;
 const navItems = [{
+  name: "공지사항",
+  path: "/board/notice"
+},{
   name: "지도 확인",
   path: "/",
 }, {

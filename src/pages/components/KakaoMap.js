@@ -33,8 +33,16 @@ const KakaoMap = ({onClickMarker}) => {
         content: '<div style="padding:5px;font-size:12px;">[' + bikeStation.lendplace_id + '] &nbsp; ' + bikeStation.statn_addr2 + '</div>',
         removable: true,
       });
+
+      // 마커에 마우스오버 이벤트를 등록합니다
       kakao.maps.event.addListener(marker, 'mouseover', () => {
         infoWindow.open(map, marker);
+      });
+
+      kakao.maps.event.addListener(marker, 'mouseout', () => {
+        setTimeout(() => {
+          infoWindow.close();
+        }, 500);
       });
 
       // 마커 이벤트 리스너 등록

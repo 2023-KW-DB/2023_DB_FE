@@ -1,0 +1,32 @@
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  60% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* 애니메이션을 적용할 클래스 */
+.heart-animate {
+  animation: pulse 0.25s ease-in-out;
+}
+
+.heart {
+    transition: transform 0.5s forwards;
+}
+
+.box {
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+  transition: transform 0.5s ease;
+}
+
+/* 애니메이션을 적용할 클래스 */
+.box-animate {
+  transform: scale(1.5); /* 예를 들어, 크기를 1.5배 증가시키는 애니메이션 */
+}
