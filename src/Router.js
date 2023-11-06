@@ -1,4 +1,9 @@
-import { createBrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Route,
+  RouterProvider,
+  Routes,
+} from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Main from "./pages/Main";
@@ -8,6 +13,7 @@ import Payment from "./pages/Payment";
 import NoticeBoardList from "./pages/NoticeBoardList";
 import NoticeBoardRead from "./pages/NoticeBoardRead";
 import NoticeBoardWrite from "./pages/NoticeBoardWrite";
+import Admin from "./pages/Admin";
 const router = () => {
   return (
     <Routes>
@@ -20,8 +26,9 @@ const router = () => {
       <Route path="/board/notice" element={<NoticeBoardList />} />
       <Route path="/board/notice/read" element={<NoticeBoardRead />} />
       <Route path="/board/notice/write" element={<NoticeBoardWrite />} />
+      <Route path="/admin" element={<Admin />} />
     </Routes>
-  )
-}
+  );
+};
 
 export default router;
