@@ -14,6 +14,7 @@ import NoticeBoardList from "./pages/NoticeBoardList";
 import NoticeBoardRead from "./pages/NoticeBoardRead";
 import NoticeBoardWrite from "./pages/NoticeBoardWrite";
 import Admin from "./pages/Admin";
+import TravelRating from "./pages/TravelRating";
 const router = () => {
   return (
     <Routes>
@@ -27,6 +28,7 @@ const router = () => {
       <Route path="/board/notice/read" element={<NoticeBoardRead />} />
       <Route path="/board/notice/write" element={<NoticeBoardWrite />} />
       <Route path="/admin" element={<Admin />} />
+      <Route path="/travelrating" element={<TravelRating />} />
     </Routes>
   );
 };

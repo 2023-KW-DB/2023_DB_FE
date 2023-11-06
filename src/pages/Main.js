@@ -57,6 +57,7 @@ const Main = () => {
 
   const onClickMarker = useCallback(
     (marker, lendplace) => {
+      console.log(lendplace)
       _setStartPos((prevStartPos) => {
         if (!prevStartPos) {
           dispatch(setStartPos(lendplace));
@@ -117,10 +118,12 @@ const Main = () => {
           <TextField
             variant="standard"
             sx={{ py: 1 }}
-            value={startPos ? startPos.lendplace_id : ""}
+            value={startPos 
+              ? startPos.statn_addr2 ? startPos.statn_addr2 : startPos.statn_addr1
+              : ""}
             placeholder={
               startPos
-                ? startPos.lendplace_id
+                ? startPos.statn_addr2 ? startPos.statn_addr2 : startPos.statn_addr1
                 : "지도에서 도착지점을 선택해주세요"
             }
             InputProps={{ readOnly: true }}
@@ -131,9 +134,13 @@ const Main = () => {
           <TextField
             variant="standard"
             sx={{ py: 1 }}
-            value={endPos ? endPos.lendplace_id : ""}
+            value={endPos 
+              ? endPos.statn_addr2 ? endPos.statn_addr2 : endPos.statn_addr1
+              : ""}
             placeholder={
-              endPos ? endPos.lendplace_id : "지도에서 도착지점을 선택해주세요"
+              endPos 
+              ? endPos.statn_addr2 ? endPos.statn_addr2 : endPos.statn_addr1
+              : "지도에서 도착지점을 선택해주세요"
             }
             InputProps={{ readOnly: true }}
           />
@@ -147,7 +154,14 @@ const Main = () => {
               mt: 2,
             }}
           >
-            <Box></Box>
+            <Button
+              type="button"
+              variant="contained"
+              color="warning"
+              onClick={onClickLendplaceClear}
+            >
+              초기화
+            </Button>
             <Button
               type="button"
               variant="contained"

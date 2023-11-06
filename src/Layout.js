@@ -86,8 +86,9 @@ function DrawerAppBar(props) {
           </IconButton>
           <Typography
             variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" }, underline: "none", color: "#fff"}}
+            component={RouterLink}
+            to="/"
           >
             따릉이 시뮬레이터
           </Typography>
