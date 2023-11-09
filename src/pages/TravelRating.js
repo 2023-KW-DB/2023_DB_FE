@@ -1,6 +1,7 @@
 import { Container, Typography, Rating, Divider, TextField, Button, Box } from "@mui/material"
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link as RouterLink } from "react-router-dom";
 
 const startMock = {"statn_lat":37.534390,"statn_addr1":"서울특별시 양천구 목동중앙로 49","lendplace_id":"ST-997","statn_addr2":"목동3단지 시내버스정류장","statn_lnt":126.869598}
 const endMock = {"statn_lat":37.549061,"statn_addr1":"서울특별시 마포구 마포대로 163","lendplace_id":"ST-992","statn_addr2":"서울신용보증재단","statn_lnt":126.954178}
@@ -31,6 +32,9 @@ const RatingInfo = ({type, isSubmitted, posInfo, submitHandler}) => {
           <Typography component="h5" variant="h6" sx={{py: 3, alignItems: "center", justifyContent: "center"}}>
             리뷰 작성이 완료되었습니다. 😄
           </Typography>
+          <Button variant="text" color="primary" component={RouterLink} to="/ratingreview">
+            리뷰확인하기
+          </Button>  
         </Box>
           
       )
