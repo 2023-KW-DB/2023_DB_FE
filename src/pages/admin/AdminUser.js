@@ -15,6 +15,8 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useSearchParams } from "react-router-dom";
+import "./style.css";
+import moment from "moment";
 
 const mock = [
   {
@@ -119,7 +121,7 @@ const AdminUser = () => {
                 <Typography variant="span">{row.age}</Typography>
               </TableCell>
               <TableCell className="tablecell">
-                <Typography variant="span">{row.last_accessed_at}</Typography>
+                <Typography variant="span">{moment(row.last_accessed_at).format("YYYY-MM-DD HH:mm:ss")}</Typography>
               </TableCell>
               <TableCell className="tablecell">
                 <Typography variant="span">{row.total_money}</Typography>
