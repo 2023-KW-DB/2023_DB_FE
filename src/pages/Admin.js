@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { Link as RouterLink, useSearchParams } from "react-router-dom";
 import AdminUser from "./admin/AdminUser";
+import AdminRentHistoryfrom from "./admin/AdminRentHistory";
 const Admin = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("type");
@@ -54,6 +55,7 @@ const Admin = () => {
         </ButtonGroup>
       </Box>
       {query === "user" && <AdminUser />}
+      {query === "rent" && <AdminRentHistoryfrom />}
     </Container>
   );
 };
