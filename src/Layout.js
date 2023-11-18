@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   AppBar,
@@ -19,6 +20,7 @@ import {
 import ListIcon from '@mui/icons-material/List';
 import PageRouter from "./Router";
 import { RouterProvider, Link as RouterLink, Router } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 
 const drawerWidth = 240;
@@ -42,6 +44,11 @@ const navItems = [{
 function DrawerAppBar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(['username']);
+
+  useEffect(() => {
+    console.log(cookies.id)
+  }, [])
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -100,6 +107,14 @@ function DrawerAppBar(props) {
                 </Link>
               </Button>
             ))}
+            <Button sx={{ color: "#fff" }}>
+              <Link component={RouterLink} to="/user" underline="none" color="inherit">
+                <Typography variant="span">
+                  {cookies.username ? cookies.username + "님" : "손님 "}
+                  반갑습니다.
+                </Typography>
+              </Link>
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>
