@@ -17,6 +17,8 @@ import Admin from "./pages/Admin";
 import TravelRating from "./pages/TravelRating";
 import RatingReview from "./pages/RatingReview";
 import UserPage from "./pages/UserPage";
+import Favorite from "./pages/Favorite";
+
 
 
 const router = () => {
@@ -35,7 +37,7 @@ const router = () => {
       <Route path="/travelrating" element={<TravelRating />} />
       <Route path="/ratingreview" element={<RatingReview/>}/>
       <Route path="/userpage" element={<UserPage/>}/>
-
+      <Route path="/favorite" element={<Favorite/>}/>
     </Routes>
   );
 };
