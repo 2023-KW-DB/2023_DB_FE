@@ -15,7 +15,7 @@ const UserPage = () => {
   const [editMode, setEditMode] = useState(false);
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [checkNewPassword, setCheckNewPassword] = useState("");
   const [isPasswordSame, setIsPasswordSame] = useState(true);
 
   useEffect(() => {
@@ -30,14 +30,14 @@ const UserPage = () => {
     setEditMode(false);
     setPassword("");
     setNewPassword("");
-    setConfirmNewPassword("");
+    setCheckNewPassword("");
     setIsPasswordSame(true);
   };
 
   const handleSaveChanges = () => {
     if (password === mock.password) {
 
-      if (newPassword === confirmNewPassword) {
+      if (newPassword === checkNewPassword) {
         setUserData((prevUserData) => ({
           ...prevUserData,
           password: newPassword || prevUserData.password, 
@@ -47,7 +47,7 @@ const UserPage = () => {
         
         setPassword("");
         setNewPassword("");
-        setConfirmNewPassword("");
+        setCheckNewPassword("");
         setIsPasswordSame(true);
        
       } else {
@@ -110,6 +110,7 @@ const UserPage = () => {
                   fullWidth
                   variant="outlined"
                   label="변경 비밀번호"
+                  type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                 />
@@ -120,10 +121,10 @@ const UserPage = () => {
                   variant="outlined"
                   label="변경비밀번호 확인"
                   type="password"
-                  value={confirmNewPassword}
-                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                  value={checkNewPassword}
+                  onChange={(e) => setCheckNewPassword(e.target.value)}
                   error={!isPasswordSame}
-                  helperText={!isPasswordSame && "비밀번호가 일치하지 않습니다."}
+                  helperText={!isPasswordSame && "기존 혹은 변경 비밀번호가 일치하지 않습니다"}
                 />
               </Grid>
             </>
