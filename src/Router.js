@@ -16,6 +16,9 @@ import NoticeBoardWrite from "./pages/NoticeBoardWrite";
 import Admin from "./pages/Admin";
 import TravelRating from "./pages/TravelRating";
 import RatingReview from "./pages/RatingReview";
+import UserPage from "./pages/UserPage";
+
+
 const router = () => {
   return (
     <Routes>
@@ -31,6 +34,8 @@ const router = () => {
       <Route path="/admin" element={<Admin />} />
       <Route path="/travelrating" element={<TravelRating />} />
       <Route path="/ratingreview" element={<RatingReview/>}/>
+      <Route path="/userpage" element={<UserPage/>}/>
+
     </Routes>
   );
 };
