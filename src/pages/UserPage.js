@@ -17,7 +17,8 @@ const UserPage = () => {
   const [newPassword, setNewPassword] = useState("");
   const [checkNewPassword, setCheckNewPassword] = useState("");
   const [isPasswordSame, setIsPasswordSame] = useState(true);
-
+  const [newPhone, setNewPhone] = useState("");
+  const [newWeight, setNewWeight] = useState("");
   useEffect(() => {
     setUserData(mock);
   }, []);
@@ -32,6 +33,8 @@ const UserPage = () => {
     setNewPassword("");
     setCheckNewPassword("");
     setIsPasswordSame(true);
+    setNewPhone("");
+    setNewWeight(""); 
   };
 
   const handleSaveChanges = () => {
@@ -40,7 +43,9 @@ const UserPage = () => {
       if (newPassword === checkNewPassword) {
         setUserData((prevUserData) => ({
           ...prevUserData,
-          password: newPassword || prevUserData.password, 
+          password: newPassword || prevUserData.password,
+          phone: newPhone || prevUserData.phone,
+          weight: newWeight || prevUserData.weight,
         }));
        
         setEditMode(false);
@@ -49,7 +54,7 @@ const UserPage = () => {
         setNewPassword("");
         setCheckNewPassword("");
         setIsPasswordSame(true);
-       
+        
       } else {
         setIsPasswordSame(false);
       }
@@ -58,6 +63,13 @@ const UserPage = () => {
     }
   };
 
+  const getMaskedPassword = (fullPassword) => {
+    const visibleLength = 2; // 앞의 두 자리만 표시하고 나머지는 가림
+    const visiblePart = fullPassword.slice(0, visibleLength);
+    const maskedPart = "*".repeat(fullPassword.length - visibleLength);
+    return visiblePart + maskedPart;
+  };
+  
   return (
     <Container component="main" maxWidth="xs">
       <Typography variant="h4" component="h1" sx={{ py: 2 }}>
@@ -96,8 +108,8 @@ const UserPage = () => {
             <TextField
               fullWidth
               variant="outlined"
-              label="기존 비밀번호"
-              value={editMode ? password : "********"}
+              label="비밀번호"
+              value={editMode ? password :getMaskedPassword(userData.password)}
               onChange={(e) => setPassword(e.target.value)}
               error={!isPasswordSame}
               disabled={!editMode}
@@ -124,7 +136,7 @@ const UserPage = () => {
                   value={checkNewPassword}
                   onChange={(e) => setCheckNewPassword(e.target.value)}
                   error={!isPasswordSame}
-                  helperText={!isPasswordSame && "기존 혹은 변경 비밀번호가 일치하지 않습니다"}
+                  helperText={!isPasswordSame && "비밀번호가 일치하지 않습니다"}
                 />
               </Grid>
             </>
@@ -134,8 +146,9 @@ const UserPage = () => {
               fullWidth
               variant="outlined"
               label="전화번호"
-              value={userData.phone}
-              InputProps={{ readOnly: true }}
+              value={editMode ? newPhone || userData.phone : userData.phone}
+              onChange={(e) => setNewPhone(e.target.value)}
+              disabled={!editMode}
             />
           </Grid>
           <Grid item xs={12}>
@@ -143,8 +156,9 @@ const UserPage = () => {
               fullWidth
               variant="outlined"
               label="몸무게"
-              value={userData.weight}
-              InputProps={{ readOnly: true }}
+              value={editMode ? newWeight || userData.weight : userData.weight}
+              onChange={(e) => setNewWeight(e.target.value)}
+              disabled={!editMode}
             />
           </Grid>
         </Grid>
