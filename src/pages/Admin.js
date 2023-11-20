@@ -7,11 +7,16 @@ import {
   Box,
 } from "@mui/material";
 import { Link as RouterLink, useSearchParams } from "react-router-dom";
+import AdminMain from "./admin/AdminMain";
 import AdminUser from "./admin/AdminUser";
 import AdminRentHistoryfrom from "./admin/AdminRentHistory";
+import { useEffect } from "react";
 const Admin = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("type");
+  useEffect(() => {
+    console.log(query);
+  }, [])
   return (
     <Container component="main" maxWidth="md">
       <CssBaseline />
@@ -31,6 +36,13 @@ const Admin = () => {
           variant="contained"
           aria-label="outlined primary button group"
         >
+          <Button
+            variant="contained"
+            component={RouterLink}
+            to="/admin"
+          >
+            대시보드
+          </Button>
           <Button
             variant="contained"
             component={RouterLink}
@@ -54,8 +66,10 @@ const Admin = () => {
           </Button>
         </ButtonGroup>
       </Box>
+      {!query && <AdminMain />}
       {query === "user" && <AdminUser />}
       {query === "rent" && <AdminRentHistoryfrom />}
+      
     </Container>
   );
 };
