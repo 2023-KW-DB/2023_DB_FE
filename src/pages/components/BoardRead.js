@@ -7,49 +7,54 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import "./read.css";
 const mock = {
-    "category_id": 1,
     "id": 1,
-    "user_id": 1,
-    "views": 13,
-    "title": "테스트",
-    "content": "lorem ipsum<br>test",
-    "is_notice": true,
-    "created_at": "2021-10-01T14:46:00.000Z",
-    "updated_at": "2021-10-01T14:46:00.000Z",
-    "like": 10,
-    "is_like": true,
-    "comments": [{
-      "id": 1,
-      "user_id": 2,
-      "username": "테스트유저1",
-      "content": "테스트 댓글",
-      "created_at": "2021-10-01T14:46:00.000Z",
-      "updated_at": "2021-10-01T14:46:00.000Z",
-      "like": 3,
-      "is_like": true,
-    }, {
-      "id": 2,
-      "user_id": 3,
-      "username": "테스트유저2",
-      "content": "테스트 댓글2",
-      "created_at": "2021-10-01T14:46:00.000Z",
-      "updated_at": "2021-10-01T14:46:00.000Z",
-      "like": 4,
-      "is_like": false
-    }]
+    "category_id": 1,
+    "user_name": "김데베",
+    "views": 2,
+    "title": "세 번째 글",
+    "content": "세 번째 글 내용",
+    "notice": false,
+    "file_name": "temp",
+    "url": "~~",
+    "likeCount": 0,
+    "userLiked": false,
+    "created_at": "2023-11-23T03:25:02",
+    "updated_at": "2023-11-23T03:25:02",
+    "commentDtoList": []
 }
 
 
-const BoardRead = ({data = mock}) => {
+const BoardRead = ({board_id, data = mock}) => {
+  const [boardData, setBoardData] = useState(data);
   const [like, setLike] = useState(false)
   const [likeCount, setLikeCount] = useState(0)
   const [comments, setComments] = useState([])
   const [useAnimate, setUseAnimate] = useState(true)
   const [myComment, setMyComment] = useState("")
+  
   useEffect(() => {
-    setLike(data.is_like)
-    setLikeCount(data.like)
-    setComments(data.comments)
+    // setLike(data.is_like)
+    // setLikeCount(data.like)
+    // setComments(data.comments)
+    (async() => {
+      try {
+        const response = await fetch(process.env.REACT_APP_API_URL + `/board/get-board?id=${board_id}&user_id=1`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response.status !== 200) {
+          throw new Error("데이터를 가져오는데 실패하였습니다.");
+        }
+        const jsonData = await response.json();
+        console.log(jsonData.result)
+        setBoardData(jsonData.result);
+        setLike(jsonData.result.userLiked);
+        setLikeCount(jsonData.result.likeCount);
+        setComments(jsonData.result.commentDtoList);
+      } catch (e) {
+        alert("데이터를 가져오는데 실패하였습니다.")
+      }
+    })()
   }, [])
   const postLikeHandler = () => {
     setLikeCount(like ? likeCount - 1 : likeCount + 1)
@@ -87,7 +92,7 @@ const BoardRead = ({data = mock}) => {
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: "100%", justifyContent: "space-between" }}>
         <Typography>
-          작성자: {data.user_id}
+          작성자: {data.user_name}
         </Typography>
         <Typography>
           작성일: {moment(data.created_at).format("YYYY-MM-DD")}
@@ -120,7 +125,7 @@ const BoardRead = ({data = mock}) => {
         </Box>
       </Box>
       <Box>
-        {comments.map((comment) => (
+        {comments && comments.map((comment) => (
           <Box sx={{ boxShadow: 1, p: 3, m: 1, my: 3}}>
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: "100%", justifyContent: "space-between" }}>
               <Typography>

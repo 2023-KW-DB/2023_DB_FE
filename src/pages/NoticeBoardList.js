@@ -8,7 +8,9 @@ const NoticeBoardList = () => {
         공지사항
       </Typography>
       <BoardList category_id={1} />
-      <Button variant="contained" color="primary" component={RouterLink} to="/board/notice/write">
+      <Button variant="contained" color="primary" component={RouterLink} to="/board/notice/write"
+        sx={{ mt: 3, mb: 2 }}
+      >
         글쓰기
       </Button>
     </Container>
