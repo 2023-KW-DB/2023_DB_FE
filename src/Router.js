@@ -18,6 +18,7 @@ import TravelRating from "./pages/TravelRating";
 import RatingReview from "./pages/RatingReview";
 import UserPage from "./pages/UserPage";
 import Favorite from "./pages/Favorite";
+import News from "./pages/News";
 
 
 
@@ -38,6 +39,7 @@ const router = () => {
       <Route path="/ratingreview" element={<RatingReview/>}/>
       <Route path="/userpage" element={<UserPage/>}/>
       <Route path="/favorite" element={<Favorite/>}/>
+      <Route path="/news" element={<News/>}/>
     </Routes>
   );
 };
