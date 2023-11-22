@@ -35,7 +35,9 @@ const navItems = [{
 }, {
   name: "이력 확인",
   path: "/history",
-}, {
+}]
+
+const guestNavItems = [{
   name: "로그인",
   path: "/login",
 }, {
@@ -122,6 +124,13 @@ function DrawerAppBar(props) {
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
+              <Button key={item.name} sx={{ color: "#fff" }}>
+                <Link component={RouterLink} to={item.path} underline="none" color="inherit">
+                  {item.name}
+                </Link>
+              </Button>
+            ))}
+            {(!user || !user.username) && guestNavItems.map((item) => (
               <Button key={item.name} sx={{ color: "#fff" }}>
                 <Link component={RouterLink} to={item.path} underline="none" color="inherit">
                   {item.name}
