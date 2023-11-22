@@ -88,21 +88,21 @@ const BoardRead = ({board_id, data = mock}) => {
         sx={{ height: "200px"}}
       /> */}
       <Typography component="h3" variant="h5" sx={{py: 1}}>
-        {data.title}
+        {boardData.title}
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: "100%", justifyContent: "space-between" }}>
         <Typography>
-          작성자: {data.user_name}
+          작성자: {boardData.user_name}
         </Typography>
         <Typography>
-          작성일: {moment(data.created_at).format("YYYY-MM-DD")}
+          작성일: {moment(boardData.created_at).format("YYYY-MM-DD")}
         </Typography>
       </Box>
       <Divider sx={{my: 3}} />
       <Box sx={{ minHeight: "300px", height: "300px"}}>
         <Typography component="span">
           {/* html insert */}
-          <div dangerouslySetInnerHTML={{__html: data.content}} />
+          <div dangerouslySetInnerHTML={{__html: boardData.content}} />
         </Typography>
       </Box>
       {/* 버튼 목록 */}

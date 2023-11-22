@@ -1,16 +1,19 @@
 import { Box, Container, TextField, Typography, Divider, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ConfirmationNumber, Redeem } from "@mui/icons-material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import moment from "moment";
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import "./ckboard.css";
-const BoardWrite = ({category_id = 1, beforeLink}) => {
+import { useSelector } from "react-redux";
+const BoardWrite = ({ category_id = 1, beforeLink }) => {
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     
@@ -18,11 +21,36 @@ const BoardWrite = ({category_id = 1, beforeLink}) => {
 
 
   const onSubmit = () => {
-    console.log("submit")
-    console.log(title)
-    console.log(content)
+
     // TODO: Fetch data into submit
     // TODO: Update image upload
+
+    (async() => {
+      try {
+        const response = await fetch(process.env.REACT_APP_API_URL + `/board/create-post`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            category_id: category_id,
+            user_id: user.id,
+            title: title,
+            content: content,
+            notice: false,
+            file_name: "",
+            url: ""
+          })
+        })
+        if (response.status !== 200) {
+          throw new Error("글 작성에 실패했습니다.");
+        }
+        const jsonData = await response.json();
+        console.log(jsonData)
+        alert("글 작성에 성공했습니다.")
+        navigate(beforeLink);
+      } catch (e) {
+        alert("글 작성에 실패했습니다.")
+      }
+    })();
   }
   return (
     <Container>
