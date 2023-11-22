@@ -41,6 +41,29 @@ const mock = [{
 
 
 const BoardList = ({category_id, datas = mock}) => {
+
+  const [boardData, setBoardData] = useState(datas); 
+
+  useEffect(() => {
+    (async() => {
+      // TODO: get data from server
+      console.log(process.env.REACT_APP_API_URL + `/board/get-category-titles?category_id=${category_id}`)
+      try {
+        const response = await fetch(process.env.REACT_APP_API_URL + `/board/get-category-titles?category_id=${category_id}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response.status !== 200) {
+          throw new Error("데이터를 가져오는데 실패하였습니다.");
+        }
+        const jsonData = await response.json();
+        console.log(jsonData.result)
+        setBoardData(jsonData.result);
+      } catch (error) {
+        alert("데이터를 가져오는데 실패하였습니다.");
+      }
+    })()
+  }, [])
   return (
     <TableContainer>
       <Table aria-label="simple table">
@@ -66,7 +89,7 @@ const BoardList = ({category_id, datas = mock}) => {
           </TableRow>
         </TableHead>
         <TableBody>
-            {(datas.map((data) =>
+            {boardData && boardData.length > 0 && boardData.map((data) =>
              (data.category_id === category_id &&
                 <TableRow
                   key={data.id}
@@ -78,12 +101,22 @@ const BoardList = ({category_id, datas = mock}) => {
                       {data.title}
                     </Link>
                   </TableCell>
-                  <TableCell align="center">{data.user_id}</TableCell>
+                  <TableCell align="center">{data.user_name}</TableCell>
                   <TableCell align="center">{data.views}</TableCell>
                   <TableCell align="center">{moment(data.created_at).format("YYYY-MM-DD HH:mm")}</TableCell>
                 </TableRow>
              )
-            ))}
+            )}
+            {!boardData && (
+              <TableRow>
+                <TableCell colSpan={5} align="center">데이터가 없습니다.</TableCell>
+              </TableRow>
+            )}
+            {boardData && boardData.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={5} align="center">데이터가 없습니다.</TableCell>
+              </TableRow>
+            )}
         </TableBody>
       </Table>
     </TableContainer>

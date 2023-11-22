@@ -10,7 +10,7 @@ const NoticeBoardRead = () => {
       <Typography component="h1" variant="h5" sx={{py: 3}}>
         공지사항
       </Typography>
-      <BoardRead category_id={1} />
+      <BoardRead category_id={1} board_id={query} />
     </Container>
     
   )
