@@ -21,6 +21,8 @@ import ListIcon from '@mui/icons-material/List';
 import PageRouter from "./Router";
 import { RouterProvider, Link as RouterLink, Router } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "./store/userSlice";
 
 
 const drawerWidth = 240;
@@ -44,10 +46,29 @@ const navItems = [{
 function DrawerAppBar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies(['username']);
+  const [cookies, setCookie, removeCookie] = useCookies(['id']);
+  const user = useSelector((state) => state.user);
 
+  const dispatch = useDispatch();
+  
   useEffect(() => {
-    console.log(cookies.id)
+    (async() => {
+      try {
+        const response = await fetch(process.env.REACT_APP_API_URL + `/users/get-userinfo?user_id=${cookies.id}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response.status !== 200) {
+          throw new Error("로그인에 실패하였습니다.");
+        }
+        const jsonData = await response.json();
+        console.log(jsonData);
+        dispatch(setUser(jsonData.result));
+      } catch (error) {
+        console.log(error);
+      }
+      
+    })();
   }, [])
 
   const handleDrawerToggle = () => {
@@ -108,9 +129,9 @@ function DrawerAppBar(props) {
               </Button>
             ))}
             <Button sx={{ color: "#fff" }}>
-              <Link component={RouterLink} to="/user" underline="none" color="inherit">
+              <Link component={RouterLink} to="/userpage" underline="none" color="inherit">
                 <Typography variant="span">
-                  {cookies.username ? cookies.username + "님" : "손님 "}
+                  {user && user.username ? user.username + "님 " : "손님 "}
                   반갑습니다.
                 </Typography>
               </Link>
