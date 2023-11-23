@@ -1,4 +1,4 @@
-import { Box, Card, CardActionArea, Container, CssBaseline, Grid, Typography } from "@mui/material"
+import { Box, Card, CardActionArea, CircularProgress, Container, CssBaseline, Grid, Typography } from "@mui/material"
 import moment from "moment"
 import { useEffect, useState } from "react"
 
@@ -50,7 +50,14 @@ const News = () => {
         출처 : 헬스조선
       </Typography>
       <Grid container >
+        {!leftData.length && !rightData.length && (
+          <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", width: "100%", pt: 10 }} >
+            <Typography>로딩중...</Typography>
+            <CircularProgress />
+          </Box>
+        )}
         <Grid item xs={12} md={6}>
+          
           {leftData.map((item, index) => (
           <Card 
             sx={{ m: 2, my: 4, }}
