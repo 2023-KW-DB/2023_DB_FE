@@ -36,23 +36,19 @@ const History = () => {
         <Table aria-label="Usage History">
           <TableHead>
             <TableRow>
-              <TableCell sx={{ minWidth: 50 }} align="center">
-                {" "}
-                username{" "}
-              </TableCell>
-              <TableCell sx={{ minWidth: 350 }} align="center">
+              <TableCell align="center">
                 출발지
               </TableCell>
-              <TableCell sx={{ minWidth: 90 }} align="center">
+              <TableCell align="center">
                 출발시간
               </TableCell>
-              <TableCell sx={{ minWidth: 350 }} align="center">
+              <TableCell align="center">
                 도착지
               </TableCell>
-              <TableCell sx={{ minWidth: 90 }} align="center">
+              <TableCell align="center">
                 도착시간{" "}
               </TableCell>
-              <TableCell sx={{ minWidth: 90 }} align="center">
+              <TableCell sx={{minWidth: 100}} align="center">
                 가격&nbsp;(원)
               </TableCell>
             </TableRow>
@@ -64,7 +60,6 @@ const History = () => {
                 key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell align="center">{row.username}</TableCell>
                 <TableCell align="center">{row.start}</TableCell>
                 <TableCell align="center">{row.startedAt}</TableCell>
                 <TableCell align="center">{row.end}</TableCell>
