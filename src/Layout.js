@@ -35,6 +35,9 @@ const navItems = [{
 }, {
   name: "이력 확인",
   path: "/history",
+}, {
+  name: "뉴스",
+  path: "/news",
 }]
 
 const guestNavItems = [{
@@ -52,7 +55,7 @@ function DrawerAppBar(props) {
   const user = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     (async() => {
       try {
@@ -64,7 +67,6 @@ function DrawerAppBar(props) {
           throw new Error("로그인에 실패하였습니다.");
         }
         const jsonData = await response.json();
-        console.log(jsonData);
         dispatch(setUser(jsonData.result));
       } catch (error) {
         console.log(error);
@@ -76,6 +78,26 @@ function DrawerAppBar(props) {
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+
+  const handleLogout = () => {
+    (async() => {
+      try {
+        const response = await fetch(process.env.REACT_APP_API_URL + "/users/signout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      // Remove all cookie
+      document.cookie = "";
+      dispatch(setUser({}));
+      document.location.href = "/";
+      
+
+    })();
+  }
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
@@ -123,6 +145,7 @@ function DrawerAppBar(props) {
             따릉이 시뮬레이터
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
+            
             {navItems.map((item) => (
               <Button key={item.name} sx={{ color: "#fff" }}>
                 <Link component={RouterLink} to={item.path} underline="none" color="inherit">
@@ -130,13 +153,22 @@ function DrawerAppBar(props) {
                 </Link>
               </Button>
             ))}
-            {(!user || !user.username) && guestNavItems.map((item) => (
-              <Button key={item.name} sx={{ color: "#fff" }}>
-                <Link component={RouterLink} to={item.path} underline="none" color="inherit">
-                  {item.name}
-                </Link>
+            {(cookies && cookies.id) && (
+              <Button sx={{ color: "#fff" }} onClick={handleLogout}>
+                로그아웃
               </Button>
-            ))}
+            )}
+            {(!user || !user.username) && 
+              <>
+                {guestNavItems.map((item) => (
+                  <Button key={item.name} sx={{ color: "#fff" }}>
+                    <Link component={RouterLink} to={item.path} underline="none" color="inherit">
+                      {item.name}
+                    </Link>
+                  </Button>
+                ))}
+                </>
+            }
             <Button sx={{ color: "#fff" }}>
               <Link component={RouterLink} to="/userpage" underline="none" color="inherit">
                 <Typography variant="span">

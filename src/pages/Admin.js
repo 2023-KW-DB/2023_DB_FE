@@ -44,13 +44,7 @@ const Admin = () => {
           >
             대시보드
           </Button>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to="/admin?type=user"
-          >
-            회원 관리
-          </Button>
+          
           <Button
             variant="contained"
             component={RouterLink}
@@ -64,6 +58,13 @@ const Admin = () => {
             to="/admin?type=tickethistory"
           >
             이용권 이력
+          </Button>
+          <Button
+            variant="contained"
+            component={RouterLink}
+            to="/admin?type=user"
+          >
+            회원 관리
           </Button>
           <Button
             variant="contained"

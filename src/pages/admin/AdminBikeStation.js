@@ -59,7 +59,29 @@ const AdminBikeStation = () => {
 
   useEffect(() => {
     setShowData(bikeStationData.slice((page - 1) * 10, page * 10));
-  }, [page])
+  }, [page]);
+
+  const handleRemoveBikeStation = (lendplace_id) => {
+    (async() => {
+      try {
+        const response = await fetch(process.env.REACT_APP_API_URL + "/station/delete-lendplace", {
+          method: "DELETE",
+          body: JSON.stringify({
+            lendplace_id: lendplace_id
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response.status !== 200) {
+          throw new Error("데이터를 삭제하는데 실패하였습니다.");
+        }
+        const jsonData = await response.json();
+        alert("데이터를 삭제하는데 성공하였습니다.");
+        window.location.reload();
+      } catch (error) {
+        alert("데이터를 삭제하는데 실패하였습니다.");
+      }
+    })();
+  }
   return (
     <>
     <TableContainer component={Paper}>
@@ -91,6 +113,9 @@ const AdminBikeStation = () => {
           </TableCell>
           <TableCell className="user-bike-station-cell">
             <Typography variant="span">수정</Typography>
+          </TableCell>
+          <TableCell className="user-bike-station-cell">
+            <Typography variant="span">삭제</Typography>
           </TableCell>
         </TableRow>
       </TableHead>
@@ -126,6 +151,15 @@ const AdminBikeStation = () => {
                 <TableCell className="user-bike-station-cell">
                   <Button variant="contained" component={RouterLink} to={`/admin/bike/edit?id=${row.id}`}>
                     수정
+                  </Button>
+                </TableCell>
+                <TableCell className="user-bike-station-cell">
+                  <Button variant="contained" onClick={() => {
+                    if (window.confirm("정말로 삭제하시겠습니까?")) {
+                      handleRemoveBikeStation(row.lendplace_id);
+                    }
+                  }}>
+                    삭제
                   </Button>
                 </TableCell>
               </TableRow>

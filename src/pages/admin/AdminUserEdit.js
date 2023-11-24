@@ -53,7 +53,6 @@ const AdminUserEdit = () => {
           throw new Error("데이터를 가져오는데 실패하였습니다.");
         }
         const jsonData = await response.json();
-        console.log(jsonData.result)
         setUserData(jsonData.result)
         setUserId(jsonData.result.id)
         setUsername(jsonData.result.username)
@@ -90,9 +89,14 @@ const AdminUserEdit = () => {
           throw new Error("데이터를 가져오는데 실패하였습니다.");
         }
         const jsonData = await response.json();
-        alert("수정에 성공하였습니다.");
-        navigate("/admin?type=user");
+        if (jsonData.success) {
+          alert("수정에 성공하였습니다.");
+          navigate("/admin?type=user");
+        } else {
+          throw new Error("수정에 실패했습니다.");
+        }
       } catch (error) {
+        console.log(error);
         alert("수정에 실패했습니다.");
       }
     })();
