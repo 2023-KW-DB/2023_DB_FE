@@ -5,3 +5,8 @@
 .user-table-cell {
     /* padding: 10px !important; */
 }
+
+.user-bike-station-cell {
+    padding: 8px !important;
+    font-size: 14px !important;
+}

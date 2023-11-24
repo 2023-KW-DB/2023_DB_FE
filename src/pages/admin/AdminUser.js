@@ -47,7 +47,6 @@ const AdminUser = () => {
           throw new Error("데이터를 가져오는데 실패하였습니다.");
         }
         const jsonData = await response.json();
-        console.log(jsonData.result)
         setUserData(jsonData.result)
       } catch (error) {
         alert("데이터를 가져오는데 실패하였습니다.");

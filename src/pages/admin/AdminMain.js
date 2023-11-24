@@ -25,7 +25,7 @@ const AdminMain = () => {
   return (
     <ECharts
 			option={options}
-      opts={{ renderer: 'svg', width: 'auto', height: '100%' }}
+      opts={{ renderer: 'svg', width: 'auto', height: '400px' }}
     />
   )
 }

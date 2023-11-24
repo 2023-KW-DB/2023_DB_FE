@@ -10,6 +10,7 @@ import { Link as RouterLink, useSearchParams } from "react-router-dom";
 import AdminMain from "./admin/AdminMain";
 import AdminUser from "./admin/AdminUser";
 import AdminRentHistoryfrom from "./admin/AdminRentHistory";
+import AdminBikeStation from "./admin/AdminBikeStation";
 import { useEffect } from "react";
 const Admin = () => {
   const [searchParams] = useSearchParams();
@@ -64,11 +65,19 @@ const Admin = () => {
           >
             이용권 이력
           </Button>
+          <Button
+            variant="contained"
+            component={RouterLink}
+            to="/admin?type=bikestation"
+          >
+            따릉이 보관소 관리
+          </Button>
         </ButtonGroup>
       </Box>
       {!query && <AdminMain />}
       {query === "user" && <AdminUser />}
       {query === "rent" && <AdminRentHistoryfrom />}
+      {query === "bikestation" && <AdminBikeStation />}
       
     </Container>
   );
