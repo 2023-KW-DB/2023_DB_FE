@@ -19,6 +19,7 @@ import RatingReview from "./pages/RatingReview";
 import UserPage from "./pages/UserPage";
 import Favorite from "./pages/Favorite";
 import News from "./pages/News";
+import AdminUserEdit from "./pages/admin/AdminUserEdit";
 
 
 
@@ -34,7 +35,11 @@ const router = () => {
       <Route path="/board/notice" element={<NoticeBoardList />} />
       <Route path="/board/notice/read" element={<NoticeBoardRead />} />
       <Route path="/board/notice/write" element={<NoticeBoardWrite />} />
+      
+      
       <Route path="/admin" element={<Admin />} />
+      <Route path="/admin/user/edit" element={<AdminUserEdit />} />
+
       <Route path="/travelrating" element={<TravelRating />} />
       <Route path="/ratingreview" element={<RatingReview/>}/>
       <Route path="/userpage" element={<UserPage/>}/>

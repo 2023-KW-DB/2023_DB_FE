@@ -29,12 +29,15 @@ const Login = () => {
         body: JSON.stringify({
           email, password
         }),
-        credentials: "include"
+        credentials: "include",
       });
       if (response.status !== 200) {
         throw new Error("로그인에 실패하였습니다.");
       }
-      // Get set-cookie header and set cookie
+      const jsonData = await response.json();
+      if (jsonData.status !== 2002) {
+        throw new Error("로그인에 실패하였습니다.");
+      }
       alert("로그인에 성공하였습니다.");
       document.location.href = "/";
     } catch (error) {
