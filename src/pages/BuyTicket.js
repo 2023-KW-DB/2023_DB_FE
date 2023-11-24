@@ -1,41 +1,110 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Button, Container, CssBaseline, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ConfirmationNumber, Redeem } from "@mui/icons-material";
+import { useSelector } from "react-redux";
+
+const mock = [{
+  "id": 1,
+  "ticket_price": 5500
+}, {
+  "id": 2,
+  "ticket_price": 11000
+}]
 
 const BuyTicket = () => {
+  const [ticketList, setTicketList] = useState(mock);
+  const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    (async() => {
+      try {
+        const response = await fetch(process.env.REACT_APP_API_URL + "/get-all-ticket", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response.status !== 200) {
+          throw new Error("데이터를 가져오는데 실패하였습니다.");
+        }
+        const jsonData = await response.json();
+        setTicketList(jsonData.result);
+      } catch (e) {
+        alert("데이터를 가져오는데 실패하였습니다.");
+      }
+    })();
+  }, []);
+
+  const buyTicketHandler = (id) => {
+    (async() => {
+      try {
+        const response = await fetch(process.env.REACT_APP_API_URL + `/users/purchase-ticket?userId=${user.id}&ticketId=${id}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response.status !== 200) {
+          throw new Error("티켓 구매에 실패했습니다.");
+        }
+        const jsonData = await response.json();
+        alert("티켓 구매에 성공했습니다.");
+        
+      } catch (e) {
+        alert("티켓 구매에 실패했습니다.");
+      }
+    })();
+  };
 
   return (
-    <Container>
-      <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: "100%", py: 3 }}>
-        <Typography variant="h3">이용권 구매</Typography>
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: "100%" }}>
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: "100%", justifyContent: "center" }}>
-          <Box sx={{ display: 'flex', width: "40%", height: "200px", m: 3, backgroundColor: "#4cab6a", alignItems: 'center', justifyContent: "center" }}>
-            <Typography variant="span" sx={{ fontSize: "30px", fontWeight: "bold", color: "white" }}>
-              정기권 <ConfirmationNumber />
-            </Typography>
-            
-          </Box>
-          <Box sx={{ display: 'flex', width: "40%", height: "200px", m: 3, backgroundColor: "#4cab6a", alignItems: 'center', justifyContent: "center" }}>
-            <Typography variant="span" sx={{ fontSize: "30px", fontWeight: "bold", color: "white" }}>
-              일일권 <ConfirmationNumber />
-            </Typography>
-          </Box>
-        </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: "100%", justifyContent: "center" }}>
-          <Box sx={{ display: 'flex', width: "40%", height: "200px", m: 3, backgroundColor: "#8ac0ff", alignItems: 'center', justifyContent: "center" }}>
-            <Typography variant="span" sx={{ fontSize: "30px", fontWeight: "bold", color: "white" }}>
-              정기권 선물하기 <Redeem />
-            </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', width: "40%", height: "200px", m: 3, backgroundColor: "#8ac0ff", alignItems: 'center', justifyContent: "center" }}>
-            <Typography variant="span" sx={{ fontSize: "30px", fontWeight: "bold", color: "white" }}>
-              일일권 선물하기 <Redeem />
-            </Typography>
-          </Box>
-        </Box>
-      </Box> 
+    <Container component="main" maxWidth="md">
+      <CssBaseline />
+      <Typography component="h1" variant="h5" sx={{py: 3}}>이용권 구매</Typography>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ maxWidth: "25px"}} >
+                <Typography variant="span">번호</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="span">가격</Typography>
+              </TableCell>
+              <TableCell sx={{ maxWidth: "200px" }}>
+                <Typography variant="span">구매</Typography>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {ticketList && ticketList.length > 0 ? (
+              <>
+                {ticketList.map((row, index) => (
+                  <TableRow>
+                    <TableCell>
+                      <Typography variant="span">{row.id}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="span">{row.ticket_price}</Typography>
+                    </TableCell>
+                    <TableCell sx={{ width: "200px" }}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => buyTicketHandler(row.id)}
+                      >
+                        <Redeem /> 구매하기
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+
+              </>   
+            ) : (
+              <TableRow>
+                <TableCell colSpan={3}>
+                  <Typography variant="span">데이터가 없습니다.</Typography>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Container>
   )
 }
