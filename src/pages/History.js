@@ -3,16 +3,17 @@ import {
   Container,
   CssBaseline,
   Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
+  ButtonGroup,
+  Button
 } from "@mui/material";
-
+import { Link as RouterLink, useNavigate, useSearchParams } from "react-router-dom";
+import TicketHistory from "./history/TicketHistory";
+import TravelHistory from "./history/TravelHistory";
 const History = () => {
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("type");
+  const navigate = useNavigate();
+
   const rows = [
     {
       id: 1,
@@ -25,51 +26,40 @@ const History = () => {
     },
   ];
 
+  useEffect(() => {
+    if (!query) {
+      navigate("/history?type=travel");
+    }
+  }, [])
+
   return (
     <Container component="main" maxWidth="md">
       <CssBaseline />
       <Typography component="h1" variant="h5" sx={{ py: 3 }}>
         이력 확인
       </Typography>
-
-      <TableContainer component={Paper}>
-        <Table aria-label="Usage History">
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">
-                출발지
-              </TableCell>
-              <TableCell align="center">
-                출발시간
-              </TableCell>
-              <TableCell align="center">
-                도착지
-              </TableCell>
-              <TableCell align="center">
-                도착시간{" "}
-              </TableCell>
-              <TableCell sx={{minWidth: 100}} align="center">
-                가격&nbsp;(원)
-              </TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell align="center">{row.start}</TableCell>
-                <TableCell align="center">{row.startedAt}</TableCell>
-                <TableCell align="center">{row.end}</TableCell>
-                <TableCell align="center">{row.endAt}</TableCell>
-                <TableCell align="center">{row.price}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <ButtonGroup
+        variant="contained"
+        aria-label="outlined primary button group"
+        sx={{ mb: 3 }}
+      >
+        <Button
+          variant="contained"
+          component={RouterLink}
+          to="/history?type=travel"
+        >
+          대여 이력
+        </Button>
+        <Button
+          variant="contained"
+          component={RouterLink}
+          to="/history?type=ticket"
+        >
+          이용권 이력
+        </Button>
+      </ButtonGroup>
+      {query === "travel" && <TravelHistory />}
+      {query === "ticket" && <TicketHistory />}
     </Container>
   );
 };
