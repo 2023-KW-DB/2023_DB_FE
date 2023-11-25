@@ -11,6 +11,7 @@ import AdminMain from "./admin/AdminMain";
 import AdminUser from "./admin/AdminUser";
 import AdminRentHistoryfrom from "./admin/AdminRentHistory";
 import AdminBikeStation from "./admin/AdminBikeStation";
+import AdminTicket from "./admin/AdminTicket";
 import { useEffect } from "react";
 const Admin = () => {
   const [searchParams] = useSearchParams();
@@ -55,7 +56,7 @@ const Admin = () => {
           <Button
             variant="contained"
             component={RouterLink}
-            to="/admin?type=tickethistory"
+            to="/admin?type=ticket"
           >
             이용권 이력
           </Button>
@@ -78,6 +79,7 @@ const Admin = () => {
       {!query && <AdminMain />}
       {query === "user" && <AdminUser />}
       {query === "rent" && <AdminRentHistoryfrom />}
+      {query === "ticket" && <AdminTicket/>}
       {query === "bikestation" && <AdminBikeStation />}
       
     </Container>
