@@ -19,10 +19,10 @@ import "./style.css";
 
 const mock = [
   {
-    "ticket_id": "TK-1001",
-    "price": 5000
+    "id": "TK-1001",
+    "ticket_price": 5000
   }
-  // 여기에 더 많은 티켓 데이터를 추가할 수 있습니다.
+
 ];
 
 const AdminTicket = () => {
@@ -109,14 +109,14 @@ const AdminTicket = () => {
                   <Typography variant="span">{row.ticket_price}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Button variant="contained" component={RouterLink} to={`/admin/ticket/edit?id=${row.ticket_id}`}>
+                  <Button variant="contained" component={RouterLink} to={`/admin/ticket/edit?id=${row.id}`}>
                     수정
                   </Button>
                 </TableCell>
                 <TableCell>
                   <Button variant="contained" onClick={() => {
                     if (window.confirm("정말로 삭제하시겠습니까?")) {
-                      handleRemoveTicket(row.ticket_id);
+                      handleRemoveTicket(row.id);
                     }
                   }}>
                     삭제
