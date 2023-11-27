@@ -12,6 +12,8 @@ import {
 import { useEffect } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
+
+
 const Login = () => {
   const navigate = useNavigate();
 
@@ -21,13 +23,16 @@ const Login = () => {
     const data = new FormData(e.target);
     const email = data.get("email");
     const password = data.get("password");
+    // Get localstorage token
+    const token = localStorage.getItem("fcm_token");
+
     // Do login
     try {
       const response = await fetch(process.env.REACT_APP_API_URL + "/users/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json", },
         body: JSON.stringify({
-          email, password
+          email, password, "fcm_token": token
         }),
         credentials: "include",
       });

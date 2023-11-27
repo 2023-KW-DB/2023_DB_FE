@@ -7,6 +7,7 @@ import { store } from './store';
 import { Provider } from 'react-redux';
 import theme from "./theme"
 import { ThemeProvider } from '@mui/material';
+import { token } from "./firebase-messaging-sw.js";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -34,3 +35,4 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
+

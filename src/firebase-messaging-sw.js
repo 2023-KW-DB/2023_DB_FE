@@ -36,6 +36,15 @@ async function requestPermission() {
     console.log("메시지가 도착했습니다.", payload);
     // ...
   });
+
+  // Set localstorage token
+  localStorage.setItem("fcm_token", token);
+  
+  return token
 }
 
-requestPermission();
+const token = requestPermission();
+
+export {
+  token
+}
