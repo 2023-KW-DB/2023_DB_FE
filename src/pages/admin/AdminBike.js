@@ -91,25 +91,13 @@ const AdminBikeStation = () => {
             <Typography variant="span">ID</Typography>
           </TableCell>
           <TableCell className="user-bike-station-cell">
-            <Typography variant="span">전체 주소</Typography>
-          </TableCell>
-          <TableCell className="user-bike-station-cell">
-            <Typography variant="span">이름</Typography>
-          </TableCell>
-          <TableCell className="user-bike-station-cell">
-            <Typography variant="span">위도</Typography>
-          </TableCell>
-          <TableCell className="user-bike-station-cell">
-            <Typography variant="span">경도</Typography>
-          </TableCell>
-          <TableCell className="user-bike-station-cell">
-            <Typography variant="span">최대 자전거 개수</Typography>
-          </TableCell>
-          <TableCell className="user-bike-station-cell">
-            <Typography variant="span">현재 자전거 개수</Typography>
+            <Typography variant="span">대여소 위치</Typography>
           </TableCell>
           <TableCell className="user-bike-station-cell">
             <Typography variant="span">사용 여부</Typography>
+          </TableCell>
+          <TableCell className="user-bike-station-cell">
+            <Typography variant="span">자전거 상탸</Typography>
           </TableCell>
           <TableCell className="user-bike-station-cell">
             <Typography variant="span">수정</Typography>
@@ -125,16 +113,16 @@ const AdminBikeStation = () => {
             {showData.map((row, index) => (
               <TableRow>
                 <TableCell className="user-bike-station-cell">
+                  <Typography variant="span">{row.id}</Typography>
+                </TableCell>
+                <TableCell className="user-bike-station-cell">
                   <Typography variant="span">{row.lendplace_id}</Typography>
                 </TableCell>
                 <TableCell className="user-bike-station-cell">
-                  <Typography variant="span">{row.statn_addr1}</Typography>
+                  <Typography variant="span">{row.use_status ? "사용중" : "미사용중"}</Typography>
                 </TableCell>
                 <TableCell className="user-bike-station-cell">
-                  <Typography variant="span">{row.statn_addr2}</Typography>
-                </TableCell>
-                <TableCell className="user-bike-station-cell">
-                  <Typography variant="span">{row.startn_lat}</Typography>
+                  <Typography variant="span">{row.bike_status ? "사용 가능" : "사용 불가능"}</Typography>
                 </TableCell>
                 <TableCell className="user-bike-station-cell">
                   <Typography variant="span">{row.startn_lnt}</Typography>
@@ -149,7 +137,7 @@ const AdminBikeStation = () => {
                   <Typography variant="span">{row.station_status}</Typography>
                 </TableCell>
                 <TableCell className="user-bike-station-cell">
-                  <Button variant="contained" component={RouterLink} to={`/admin/bikestation/edit?id=${row.id}`}>
+                  <Button variant="contained" component={RouterLink} to={`/admin/bike/edit?id=${row.id}`}>
                     수정
                   </Button>
                 </TableCell>
@@ -169,7 +157,7 @@ const AdminBikeStation = () => {
         )
          : (
           <TableRow>
-            <TableCell colSpan={9} align="center">
+            <TableCell colSpan={6} align="center">
               <Typography variant="span">데이터가 없습니다.</Typography>
             </TableCell>
           </TableRow>
@@ -183,8 +171,18 @@ const AdminBikeStation = () => {
         <Button onClick={() => setPages(page + 1 < totalPage ? page + 1 : totalPage)}>다음</Button>
       </ButtonGroup>
     </Box>
+    <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", py: 3}}>
+      <Button
+        variant="contained"
+        color="primary"
+        component={RouterLink}
+        to={`/admin/bike/write`}
+      >
+        추가
+      </Button>
+    </Box>
     </>
   );
 };
 
-export default AdminBikeStation;
+export default AdminBike;

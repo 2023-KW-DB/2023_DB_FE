@@ -1,9 +1,29 @@
 import { TableContainer, Table, TableHead, TableCell, TableBody, TableRow, Paper } from "@mui/material";
-import { useState } from "react";
+import moment from "moment";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 
 const TravelHistory = () => {
-  const [rows, setRows] = useState([]);
+  const [travelHistory, setTravelHistory] = useState([]);
+  const user = useSelector((state) => state.user);
+  useEffect(() => {
+    (async() => {
+      try {
+        const response = await fetch(process.env.REACT_APP_API_URL + `/get-userlog?userId=${user.id}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response.status !== 200) {
+          throw new Error("데이터를 가져오는데 실패하였습니다.");
+        }
+        const jsonData = await response.json();
+        setTravelHistory(jsonData.result);
+      } catch (e) {
+        alert("데이터를 가져오는데 실패하였습니다.");
+      }
+    })();
+  }, [])
 
   return (
     <TableContainer component={Paper}>
@@ -23,22 +43,22 @@ const TravelHistory = () => {
               도착시간
             </TableCell>
             <TableCell sx={{minWidth: 100}} align="center">
-              가격&nbsp;(원)
+              이동 거리
             </TableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
-          {rows.map((row) => (
+          {travelHistory.map((row) => (
             <TableRow
               key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell align="center">{row.start}</TableCell>
-              <TableCell align="center">{row.startedAt}</TableCell>
-              <TableCell align="center">{row.end}</TableCell>
-              <TableCell align="center">{row.endAt}</TableCell>
-              <TableCell align="center">{row.price}</TableCell>
+              <TableCell align="center">{row.departure_station}</TableCell>
+              <TableCell align="center">{moment(row.departure_time).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
+              <TableCell align="center">{row.arrival_station}</TableCell>
+              <TableCell align="center">{moment(row.arrival_time).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
+              <TableCell align="center">{row.use_distance}m</TableCell>
             </TableRow>
           ))}
         </TableBody>

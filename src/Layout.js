@@ -36,8 +36,14 @@ const navItems = [{
   name: "이력 확인",
   path: "/history",
 }, {
+  name: "티켓 구매",
+  path: "/ticket",
+}, {
   name: "뉴스",
   path: "/news",
+}, {
+  name: "즐겨찾기",
+  path: "/favorite",
 }]
 
 const guestNavItems = [{

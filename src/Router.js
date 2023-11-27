@@ -39,7 +39,7 @@ const router = () => {
       
       <Route path="/admin" element={<Admin />} />
       <Route path="/admin/user/edit" element={<AdminUserEdit />} />
-
+      
       <Route path="/travelrating" element={<TravelRating />} />
       <Route path="/ratingreview" element={<RatingReview/>}/>
       <Route path="/userpage" element={<UserPage/>}/>
