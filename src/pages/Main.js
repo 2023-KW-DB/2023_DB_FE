@@ -73,8 +73,6 @@ const Main = () => {
   );
 
   useEffect(() => {
-    console.log(startPos);
-    console.log(endPos);
   }, [startPos, endPos]);
 
   const onClickLendplaceClear = () => {
