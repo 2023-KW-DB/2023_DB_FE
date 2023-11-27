@@ -118,6 +118,7 @@ const Main = () => {
   );
 
 
+
   const onClickLendplaceClear = () => {
     dispatch(setStartPos(null));
     dispatch(setEndPos(null));
