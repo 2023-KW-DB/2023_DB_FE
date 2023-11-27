@@ -1,13 +1,40 @@
 import { useEffect, useState } from "react";
 import bikeStationData from "./bikeStationData.json";
+import { Box, CircularProgress } from "@mui/material";
+import ReactDOMServer from 'react-dom/server'
+import StarIcon from '@mui/icons-material/Star';
+import StarOutlineIcon from '@mui/icons-material/StarOutline';
 const { kakao } = window;
 
-const KakaoMap = ({onClickMarker}) => {
+const KakaoMap = ({onClickMarker, isOnRent}) => {
   const [lat, setLat] = useState(37.62019307507592);
   const [long, setLong] = useState(127.0586406171661);
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([])
-  const bikeInformationData = bikeStationData.DATA;
+  const [bikeInformationData, setBikeInformationData] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await fetch(process.env.REACT_APP_API_URL + "/station/get-all-lendplace?user_id=1", {
+          method: "GET",
+          headers: { "Content-Type": "application/json", },
+          credentials: "include",
+        });
+        if (response.status !== 200) {
+          throw new Error("자전거 대여소 정보를 가져오는데 실패하였습니다.");
+        }
+        const jsonData = await response.json();
+        setBikeInformationData(jsonData.result);
+        setIsLoaded(true);
+
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [])
+  // const bikeInformationData = bikeStationData.DATA;
   const updateMarkder = (map, leftTop, rightBottom) => {
     const newMarkers = []
     // Clear all markers in map
@@ -17,20 +44,35 @@ const KakaoMap = ({onClickMarker}) => {
 
     for (let i = 0; i < bikeInformationData.length; i++) {
       const bikeStation = bikeInformationData[i];
+
       // if lat and lnt is not in the range, remove marker
-      if (bikeStation.statn_lat < leftTop.getLat() || bikeStation.statn_lat > rightBottom.getLat() || bikeStation.statn_lnt < leftTop.getLng() || bikeStation.statn_lnt > rightBottom.getLng()) {
+      if (bikeStation.startn_lat < leftTop.getLat() || bikeStation.startn_lat > rightBottom.getLat() || bikeStation.startn_lnt < leftTop.getLng() || bikeStation.startn_lnt > rightBottom.getLng()) {
         continue;
       }
 
       const marker = new kakao.maps.Marker({
         map: map,
-        position: new kakao.maps.LatLng(bikeStation.statn_lat, bikeStation.statn_lnt),
+        position: new kakao.maps.LatLng(bikeStation.startn_lat, bikeStation.startn_lnt),
         text: `[${bikeStation.lendplace_id}]`,
         clickable: true,
         id: bikeStation.lendplace_id,
       })
       const infoWindow = new kakao.maps.InfoWindow({
-        content: '<div style="padding:5px;font-size:12px;">[' + bikeStation.lendplace_id + '] &nbsp; ' + bikeStation.statn_addr2 + '</div>',
+        content: ReactDOMServer.renderToString(
+          <Box
+            style={{padding:5, fontSize:12, minHeight: 100, minWidth: 175}}
+          >
+            [{bikeStation.lendplace_id}]
+            <br />
+            {bikeStation.statn_addr2 ? bikeStation.statn_addr2 : bikeStation.statn_addr1}
+            <br />
+            {bikeStation.favorite ? (
+              <StarIcon sx={{ p: 3}} />
+            ) : (
+              <StarOutlineIcon />
+            )}
+          </Box>
+        ),
         removable: true,
       });
 
@@ -54,6 +96,7 @@ const KakaoMap = ({onClickMarker}) => {
 
     setMarkers(newMarkers);
   }
+
   useEffect(() => {
     const container = document.getElementById('map');
     const options = {
@@ -85,7 +128,7 @@ const KakaoMap = ({onClickMarker}) => {
       setLat(position.coords.latitude);
       setLong(position.coords.longitude);
     }); 
-  }, [])
+  }, [isLoaded])
 
   useEffect(() => {
     if (map) {
@@ -95,10 +138,36 @@ const KakaoMap = ({onClickMarker}) => {
   }, [lat, long])
 
   return (
-    <div id="map" style={{
+    <>
+      
+      <div id="map" style={{
       width: '100%',
       height: '100%'
-    }}></div>
+      }}></div>
+
+      {(bikeInformationData.length === 0) && (
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          textAlign: 'center',
+          alignItems: 'center',
+          zIndex: 9900,
+          backgroundColor: "black",
+          opacity: 0.7,
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}>
+          <h1 style={{color: "white"}}>자전거 대여소 정보를 가져오는 중입니다.</h1>
+          <CircularProgress />
+        </div>
+      )}
+    </>
+    
   )
 }
 
