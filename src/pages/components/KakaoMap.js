@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import bikeStationData from "./bikeStationData.json";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
 import ReactDOMServer from 'react-dom/server'
 import StarIcon from '@mui/icons-material/Star';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
@@ -13,6 +13,7 @@ const KakaoMap = ({onClickMarker, isOnRent}) => {
   const [markers, setMarkers] = useState([])
   const [bikeInformationData, setBikeInformationData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  
 
   useEffect(() => {
     (async () => {
@@ -34,6 +35,8 @@ const KakaoMap = ({onClickMarker, isOnRent}) => {
       }
     })();
   }, [])
+
+
   // const bikeInformationData = bikeStationData.DATA;
   const updateMarkder = (map, leftTop, rightBottom) => {
     const newMarkers = []
@@ -67,7 +70,7 @@ const KakaoMap = ({onClickMarker, isOnRent}) => {
             {bikeStation.statn_addr2 ? bikeStation.statn_addr2 : bikeStation.statn_addr1}
             <br />
             {bikeStation.favorite ? (
-              <StarIcon sx={{ p: 3}} />
+              <StarIcon />
             ) : (
               <StarOutlineIcon />
             )}
@@ -76,15 +79,18 @@ const KakaoMap = ({onClickMarker, isOnRent}) => {
         removable: true,
       });
 
+      
+      
+
       // 마커에 마우스오버 이벤트를 등록합니다
       kakao.maps.event.addListener(marker, 'mouseover', () => {
         infoWindow.open(map, marker);
       });
 
       kakao.maps.event.addListener(marker, 'mouseout', () => {
-        setTimeout(() => {
-          infoWindow.close();
-        }, 500);
+        // setTimeout(() => {
+        //   infoWindow.close();
+        // }, 3000);
       });
 
       // 마커 이벤트 리스너 등록
@@ -96,6 +102,7 @@ const KakaoMap = ({onClickMarker, isOnRent}) => {
 
     setMarkers(newMarkers);
   }
+
 
   useEffect(() => {
     const container = document.getElementById('map');

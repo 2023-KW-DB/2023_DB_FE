@@ -17,7 +17,10 @@ import KakaoMap from "./components/KakaoMap";
 import { useSelector, useDispatch } from "react-redux";
 import { setStartPos, setEndPos } from "../store/positionSlice";
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
+import StarIcon from '@mui/icons-material/Star';
+import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { Link as RouterLink } from "react-router-dom";
+
 const mock = {
   recent: [
     {
@@ -59,8 +62,41 @@ const Main = () => {
 
   const [isOnRent, setIsOnRent] = useState(false);
 
-  useEffect(() => {
+  // 현재 선택한 대여소가 즐겨찾기에 있는지 확인
+  const [isFavorite, setIsFavorite] = useState(false);
 
+  useEffect(() => {
+    (async() => {
+      try {
+        const popularResponse = await fetch(process.env.REACT_APP_API_URL + "/station/get-popular-lendplace", {
+          method: "GET",
+          headers: { "Content-Type": "application/json", },
+          credentials: "include",
+        });
+        if (popularResponse.status !== 200) {
+          throw new Error("인기 대여소 정보를 가져오는데 실패하였습니다.");
+        }
+        const popularJsonData = await popularResponse.json();
+        _setPopular(popularJsonData.result);
+        if (user && user.id) {
+          const recentResponse = await fetch(process.env.REACT_APP_API_URL + `/station/get-recent-lendplace?user_id=${user.id}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json", },
+            credentials: "include",
+          });
+          if (recentResponse.status !== 200) {
+            throw new Error("최근 대여소 정보를 가져오는데 실패하였습니다.");
+          }
+          const recentJsonData = await recentResponse.json();
+          _setRecent(recentJsonData.result);
+        }
+        else {
+          _setRecent([]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    })();
   }, [])
 
   const onClickMarker = useCallback(
@@ -69,9 +105,11 @@ const Main = () => {
         if (prevIsOnRent) {
           dispatch(setEndPos(lendplace));
           _setEndPos(lendplace);
+          setIsFavorite(lendplace.favorite);
         } else {
           dispatch(setStartPos(lendplace));
           _setStartPos(lendplace);
+          setIsFavorite(lendplace.favorite);
         }
         return prevIsOnRent;
       });
@@ -86,6 +124,36 @@ const Main = () => {
     _setStartPos(null);
     _setEndPos(null);
   };
+
+  const onClickFavorite = () => {
+    (async() => {
+      try {
+        const response = await fetch(process.env.REACT_APP_API_URL + "/favorite/favorite-lendplace", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", },
+          body: JSON.stringify({
+            "lendplace_id": isOnRent ? endPos.lendplace_id : startPos.lendplace_id,
+            "user_id": user.id
+          }),
+          credentials: "include",
+        });
+        if (response.status !== 200) {
+          throw new Error("즐겨찾기 설정에 실패하였습니다.");
+        }
+        const jsonData = await response.json();
+        if (jsonData.status !== 2025) {
+          alert("즐겨찾기 설정에 성공하였습니다.");
+          setIsFavorite(!isFavorite);
+          return
+        } else {
+          alert("즐겨찾기 설정에 실패하였습니다.");
+        }
+      } catch (error) {
+        console.log(error)
+        alert("즐겨찾기 설정에 실패하였습니다.");
+      }
+    })()
+  }
 
   const onRentBike = (lendplace) => {
     (async() => {
@@ -253,14 +321,32 @@ const Main = () => {
               mt: 2,
             }}
           >
-            <Button
-              type="button"
-              variant="contained"
-              color="warning"
-              onClick={onClickLendplaceClear}
-            >
-              초기화
-            </Button>
+            {
+              isFavorite ? (
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="warning"
+                  onClick={() => {
+                    onClickFavorite();
+                  }}
+                >
+                  <StarIcon />
+                </Button>
+                
+              ) : (
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="warning"
+                  onClick={() => {
+                    onClickFavorite();
+                  }}
+                >
+                  <StarOutlineIcon />
+                </Button>
+              )
+            }
             <Button
               type="button"
               variant="contained"
