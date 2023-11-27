@@ -171,14 +171,16 @@ const Main = () => {
           throw new Error("자전거 대여에 실패하였습니다.");
         }
         const jsonData = await response.json();
-        if (jsonData.status !== 2026) {
+        if (jsonData.status === 2026) {
           alert("자전거 대여에 성공하였습니다.");
           dispatch(setStartPos(lendplace));
           _setStartPos(lendplace);
           setIsOnRent(true);
           return
         } else {
-          alert("자전거 대여에 실패하였습니다.");
+          const errorMessage = jsonData.message
+          alert("자전거 대여 실패: " + errorMessage);
+          // alert("자전거 대여에 실패하였습니다.");
         }
       } catch (error) {
         console.log(error)
@@ -214,7 +216,7 @@ const Main = () => {
           throw new Error("자전거 반납에 실패하였습니다.");
         }
         const jsonData = await response.json();
-        if (jsonData.status !== 2027) {
+        if (jsonData.status === 2027) {
           alert("자전거 반납에 성공하였습니다.")
           setIsOnRent(false);
           setStartPos(null);
