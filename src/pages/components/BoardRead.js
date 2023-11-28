@@ -188,7 +188,7 @@ const BoardRead = ({board_id, data = mock}) => {
         </Typography>
       </Box>
       <Divider sx={{my: 3}} />
-      <Box sx={{ minHeight: "300px", height: "300px"}}>
+      <Box sx={{ minHeight: "300px", height: "300px", boxShadow: 1, p: 3}}>
         <Typography component="span">
           {/* html insert */}
           <div dangerouslySetInnerHTML={{__html: boardData.content}} />
