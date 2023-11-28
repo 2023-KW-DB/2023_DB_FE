@@ -44,6 +44,9 @@ const navItems = [{
 }, {
   name: "즐겨찾기",
   path: "/favorite",
+}, {
+  name: "랭킹",
+  path: "/ranking",
 }]
 
 const guestNavItems = [{

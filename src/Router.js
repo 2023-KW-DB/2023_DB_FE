@@ -20,6 +20,7 @@ import UserPage from "./pages/UserPage";
 import Favorite from "./pages/Favorite";
 import News from "./pages/News";
 import AdminUserEdit from "./pages/admin/AdminUserEdit";
+import Ranking from "./pages/Ranking";
 
 
 
@@ -45,6 +46,7 @@ const router = () => {
       <Route path="/userpage" element={<UserPage/>}/>
       <Route path="/favorite" element={<Favorite/>}/>
       <Route path="/news" element={<News/>}/>
+      <Route path="/ranking" element={<Ranking/>}/>
     </Routes>
   );
 };
