@@ -121,13 +121,14 @@ const Main = () => {
         return prevIsOnRent;
       });
       (async() => {
+        
         const API_KEY = "6f96069f9b5896f4eadf1a221d0333ab";
         const lat = lendplace.startn_lat;
         const lon = lendplace.startn_lnt;
         const date = new Date().getTime();
         const datestr = moment(date).format("YYYY-MM-DD");
         try {
-          const response = await fetch(`https://cors-anywhere.herokuapp.com/https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&lang=kr`,
+          const response = await fetch(`https://cors-anywhere.herokuapp.com/https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&lang=kr&units=metric`,
           {
             method: "GET",
             headers: { "Content-Type": "application/json", },
@@ -146,6 +147,7 @@ const Main = () => {
     },
     [startPos, endPos, isOnRent]
   );
+
 
 
 

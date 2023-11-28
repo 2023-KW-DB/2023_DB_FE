@@ -48,9 +48,17 @@ const Weather = ({data}) => {
   console.log(data)
   return (
     <Box sx={{ p: 0}}>
-      {(!data) ? <></> : (
-        <>
-          <Typography variant="h5" sx={{ fontWeight: "bold", my: 1 }} >날씨</Typography>
+      <Typography variant="h5" sx={{ fontWeight: "bold", my: 1 }} >날씨</Typography>
+        
+        
+      {(!data) ?
+        <Box sx={{ height: "250px"}}>
+          <Typography variant="span" sx={{ fontSize: "10px", color: "gray"}}>
+            마커를 클릭해 해당 지역의 날씨를 확인하세요.
+          </Typography>
+          <Divider sx={{my: 1}} />
+        </Box> : (
+        <Box sx={{ height: "250px"}}>
           <Typography variant="span" sx={{ fontSize: "10px", color: "gray"}}>
             {data.lendplace.statn_addr2 ? data.lendplace.statn_addr2 : data.lendplace.statn_addr1}의 날씨
           </Typography>
@@ -77,7 +85,7 @@ const Weather = ({data}) => {
           </Box>
           
 
-        </>
+        </Box>
       )}
       
       
