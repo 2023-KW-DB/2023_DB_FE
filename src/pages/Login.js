@@ -108,9 +108,10 @@ const Login = () => {
           </Link>
         </Button>
         <Button
-          type="submit"
           variant="text"
           color="primary"
+          component={RouterLink}
+          to="/find-password"
         >
           비밀번호 찾기
         </Button>

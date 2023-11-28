@@ -21,6 +21,7 @@ import Favorite from "./pages/Favorite";
 import News from "./pages/News";
 import AdminUserEdit from "./pages/admin/AdminUserEdit";
 import Ranking from "./pages/Ranking";
+import PasswordFind from "./pages/PasswordFind";
 
 
 
@@ -47,6 +48,7 @@ const router = () => {
       <Route path="/favorite" element={<Favorite/>}/>
       <Route path="/news" element={<News/>}/>
       <Route path="/ranking" element={<Ranking/>}/>
+      <Route path="find-password" element={<PasswordFind />} />
     </Routes>
   );
 };
