@@ -19,7 +19,7 @@ import { setStartPos, setEndPos } from "../store/positionSlice";
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import StarIcon from '@mui/icons-material/Star';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import moment from "moment";
 import Weather from "./components/Weather";
 
@@ -52,6 +52,7 @@ const mock = {
 const Main = () => {
   const screenHeight = window.innerHeight - 80;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const startPos = useSelector((state) => state.position.startPos);
   const endPos = useSelector((state) => state.position.endPos);
   const user = useSelector((state) => state.user);
@@ -253,6 +254,7 @@ const Main = () => {
           setEndPos(null);
           _setStartPos(null);
           _setEndPos(null);
+          navigate("/travelrating")
           return
         } else {
           alert("자전거 반납에 실패하였습니다.");
