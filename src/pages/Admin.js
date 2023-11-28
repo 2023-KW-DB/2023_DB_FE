@@ -13,6 +13,7 @@ import AdminRentHistoryfrom from "./admin/AdminRentHistory";
 import AdminBikeStation from "./admin/AdminBikeStation";
 import AdminTicket from "./admin/AdminTicket";
 import { useEffect } from "react";
+import AdminBike from "./admin/AdminBike";
 const Admin = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("type");
@@ -74,6 +75,13 @@ const Admin = () => {
           >
             따릉이 보관소 관리
           </Button>
+          <Button
+            variant="contained"
+            component={RouterLink}
+            to="/admin?type=bike"
+          >
+            자전거 관리
+          </Button>
         </ButtonGroup>
       </Box>
       {!query && <AdminMain />}
@@ -81,7 +89,7 @@ const Admin = () => {
       {query === "rent" && <AdminRentHistoryfrom />}
       {query === "ticket" && <AdminTicket/>}
       {query === "bikestation" && <AdminBikeStation />}
-      
+      {query === "bike" && <AdminBike />}
     </Container>
   );
 };

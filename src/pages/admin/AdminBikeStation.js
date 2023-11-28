@@ -40,7 +40,7 @@ const AdminBikeStation = () => {
     // TODO: Fetch data
     (async() => {
       try {
-        const response = await fetch(process.env.REACT_APP_API_URL + "/station/get-all-lendplace", {
+        const response = await fetch(process.env.REACT_APP_API_URL + "/station/get-all-lendplace?user_id=1", {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });

@@ -81,58 +81,60 @@ const AdminTicket = () => {
   return (
     <>
     <TableContainer component={Paper}>
-      <TableHead sx={{width: "100%"}}>
-        <TableRow>
-          <TableCell>
-            <Typography variant="span">번호</Typography>
-          </TableCell>
-          <TableCell>
-            <Typography variant="span">가격</Typography>
-          </TableCell>
-          <TableCell>
-            <Typography variant="span">수정</Typography>
-          </TableCell>
-          <TableCell>
-            <Typography variant="span">삭제</Typography>
-          </TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody sx={{width: "100%"}}>
-        {showData && showData.length > 0 ? (
-          <>
-            {showData.map((row, index) => (
-              <TableRow key={index}>
-                <TableCell>
-                  <Typography variant="span">{row.id}</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="span">{row.ticket_price}</Typography>
-                </TableCell>
-                <TableCell>
-                  <Button variant="contained" component={RouterLink} to={`/admin/ticket/edit?id=${row.id}`}>
-                    수정
-                  </Button>
-                </TableCell>
-                <TableCell>
-                  <Button variant="contained" onClick={() => {
-                    if (window.confirm("정말로 삭제하시겠습니까?")) {
-                      handleRemoveTicket(row.id);
-                    }
-                  }}>
-                    삭제
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </>
-        ) : (
+      <Table>
+        <TableHead sx={{width: "100%"}}>
           <TableRow>
-            <TableCell colSpan={4} align="center">
-              <Typography variant="span">데이터가 없습니다.</Typography>
+            <TableCell>
+              <Typography variant="span">번호</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant="span">가격</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant="span">수정</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant="span">삭제</Typography>
             </TableCell>
           </TableRow>
-        )}
-      </TableBody>
+        </TableHead>
+        <TableBody sx={{width: "100%"}}>
+          {showData && showData.length > 0 ? (
+            <>
+              {showData.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                    <Typography variant="span">{row.id}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="span">{row.ticket_price}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="contained" component={RouterLink} to={`/admin/ticket/edit?id=${row.id}`}>
+                      수정
+                    </Button>
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="contained" onClick={() => {
+                      if (window.confirm("정말로 삭제하시겠습니까?")) {
+                        handleRemoveTicket(row.id);
+                      }
+                    }}>
+                      삭제
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </>
+          ) : (
+            <TableRow>
+              <TableCell colSpan={4} align="center">
+                <Typography variant="span">데이터가 없습니다.</Typography>
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </TableContainer>
     <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", py: 3}}>
       <ButtonGroup>

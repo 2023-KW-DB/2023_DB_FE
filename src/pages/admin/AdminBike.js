@@ -20,19 +20,27 @@ import moment from "moment";
 
 const mock = [
   {
-    "lendplace_id": "ST-1029",
-    "statn_addr1": "서울특별시 녹번동 84",
-    "statn_addr2": "은평구청 보건소",
-    "startn_lat": 37.602402,
-    "startn_lnt": 126.92865,
-    "max_stands": 20.0,
-    "station_status": 1,
-    "total_bikes": 0
-  }
+    "id": 1,
+    "lendplace_id": "ST-10",
+    "use_status": 0,
+    "bike_status": 0
+  },
+  {
+    "id": 2,
+    "lendplace_id": "ST-100",
+    "use_status": 0,
+    "bike_status": 1
+  },
+  {
+    "id": 3,
+    "lendplace_id": "ST-100",
+    "use_status": 0,
+    "bike_status": 1
+  },
 ];
 
-const AdminBikeStation = () => {
-  const [bikeStationData, setBikeStationData] = useState(mock);
+const AdminBike = () => {
+  const [bikeData, setBikeData] = useState(mock);
   const [showData, setShowData] = useState([mock[0]]);
   const [page, setPages] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
@@ -40,7 +48,7 @@ const AdminBikeStation = () => {
     // TODO: Fetch data
     (async() => {
       try {
-        const response = await fetch(process.env.REACT_APP_API_URL + "/station/get-all-lendplace", {
+        const response = await fetch(process.env.REACT_APP_API_URL + "/bike/get-all", {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
@@ -48,7 +56,7 @@ const AdminBikeStation = () => {
           throw new Error("데이터를 가져오는데 실패하였습니다.");
         }
         const jsonData = await response.json();
-        setBikeStationData(jsonData.result)
+        setBikeData(jsonData.result)
         setTotalPage(parseInt(jsonData.result.length / 10) + 1)
         setShowData(jsonData.result.slice(0, 10))
       } catch (error) {
@@ -58,16 +66,16 @@ const AdminBikeStation = () => {
   }, []);
 
   useEffect(() => {
-    setShowData(bikeStationData.slice((page - 1) * 10, page * 10));
+    setShowData(bikeData.slice((page - 1) * 10, page * 10));
   }, [page]);
 
-  const handleRemoveBikeStation = (lendplace_id) => {
+  const handleRemoveBikeStation = (id) => {
     (async() => {
       try {
-        const response = await fetch(process.env.REACT_APP_API_URL + "/station/delete-lendplace", {
+        const response = await fetch(process.env.REACT_APP_API_URL + "/bike/delete", {
           method: "DELETE",
           body: JSON.stringify({
-            lendplace_id: lendplace_id
+            id: id
           }),
           headers: { "Content-Type": "application/json" },
         });
@@ -85,84 +93,74 @@ const AdminBikeStation = () => {
   return (
     <>
     <TableContainer component={Paper}>
-      <TableHead sx={{width: "100%"}}>
-        <TableRow>
-          <TableCell className="user-bike-station-cell">
-            <Typography variant="span">ID</Typography>
-          </TableCell>
-          <TableCell className="user-bike-station-cell">
-            <Typography variant="span">대여소 위치</Typography>
-          </TableCell>
-          <TableCell className="user-bike-station-cell">
-            <Typography variant="span">사용 여부</Typography>
-          </TableCell>
-          <TableCell className="user-bike-station-cell">
-            <Typography variant="span">자전거 상탸</Typography>
-          </TableCell>
-          <TableCell className="user-bike-station-cell">
-            <Typography variant="span">수정</Typography>
-          </TableCell>
-          <TableCell className="user-bike-station-cell">
-            <Typography variant="span">삭제</Typography>
-          </TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody sx={{width: "100%"}}>
-        {showData && showData.length > 0 ? (
-          <>
-            {showData.map((row, index) => (
-              <TableRow>
-                <TableCell className="user-bike-station-cell">
-                  <Typography variant="span">{row.id}</Typography>
-                </TableCell>
-                <TableCell className="user-bike-station-cell">
-                  <Typography variant="span">{row.lendplace_id}</Typography>
-                </TableCell>
-                <TableCell className="user-bike-station-cell">
-                  <Typography variant="span">{row.use_status ? "사용중" : "미사용중"}</Typography>
-                </TableCell>
-                <TableCell className="user-bike-station-cell">
-                  <Typography variant="span">{row.bike_status ? "사용 가능" : "사용 불가능"}</Typography>
-                </TableCell>
-                <TableCell className="user-bike-station-cell">
-                  <Typography variant="span">{row.startn_lnt}</Typography>
-                </TableCell>
-                <TableCell className="user-bike-station-cell">
-                  <Typography variant="span">{row.max_stands}</Typography>
-                </TableCell>
-                <TableCell className="user-bike-station-cell">
-                  <Typography variant="span">{row.total_bikes}</Typography>
-                </TableCell>
-                <TableCell className="user-bike-station-cell">
-                  <Typography variant="span">{row.station_status}</Typography>
-                </TableCell>
-                <TableCell className="user-bike-station-cell">
-                  <Button variant="contained" component={RouterLink} to={`/admin/bike/edit?id=${row.id}`}>
-                    수정
-                  </Button>
-                </TableCell>
-                <TableCell className="user-bike-station-cell">
-                  <Button variant="contained" onClick={() => {
-                    if (window.confirm("정말로 삭제하시겠습니까?")) {
-                      handleRemoveBikeStation(row.lendplace_id);
-                    }
-                  }}>
-                    삭제
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-            
-          </>
-        )
-         : (
+      <Table>
+        <TableHead>
           <TableRow>
-            <TableCell colSpan={6} align="center">
-              <Typography variant="span">데이터가 없습니다.</Typography>
+            <TableCell className="user-bike-cell">
+              <Typography variant="span">ID</Typography>
+            </TableCell>
+            <TableCell className="user-bike-cell">
+              <Typography variant="span">대여소 위치</Typography>
+            </TableCell>
+            <TableCell className="user-bike-cell">
+              <Typography variant="span">사용 여부</Typography>
+            </TableCell>
+            <TableCell className="user-bike-cell">
+              <Typography variant="span">자전거 상태</Typography>
+            </TableCell>
+            <TableCell className="user-bike-cell">
+              <Typography variant="span">수정</Typography>
+            </TableCell>
+            <TableCell className="user-bike-cell">
+              <Typography variant="span">삭제</Typography>
             </TableCell>
           </TableRow>
-        )}
-      </TableBody>
+        </TableHead>
+        <TableBody>
+          {showData && showData.length > 0 ? (
+            <>
+              {showData.map((row, index) => (
+                <TableRow>
+                  <TableCell className="user-bike-cell">
+                    <Typography variant="span">{row.id}</Typography>
+                  </TableCell>
+                  <TableCell className="user-bike-cell">
+                    <Typography variant="span">{row.lendplace_id}</Typography>
+                  </TableCell>
+                  <TableCell className="user-bike-cell">
+                    <Typography variant="span">{row.use_status ? "사용중" : "미사용중"}</Typography>
+                  </TableCell>
+                  <TableCell className="user-bike-cell">
+                    <Typography variant="span">{row.bike_status ? "사용 가능" : "사용 불가능"}</Typography>
+                  </TableCell>
+                  <TableCell className="user-bike-cell">
+                    <Button variant="contained" component={RouterLink} to={`/admin/bike/edit?id=${row.id}`}>
+                      수정
+                    </Button>
+                  </TableCell>
+                  <TableCell className="user-bike-cell">
+                    <Button variant="contained" onClick={() => {
+                      if (window.confirm("정말로 삭제하시겠습니까?")) {
+                        handleRemoveBikeStation(row.id);
+                      }
+                    }}>
+                      삭제
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+              
+            </>
+          )
+          : (
+            <TableRow>
+              <TableCell colSpan={6} align="center">
+                <Typography variant="span">데이터가 없습니다.</Typography>
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </TableContainer>
     <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", py: 3}}>
       <ButtonGroup>
