@@ -20,6 +20,8 @@ import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import StarIcon from '@mui/icons-material/Star';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { Link as RouterLink } from "react-router-dom";
+import moment from "moment";
+import Weather from "./components/Weather";
 
 const mock = {
   recent: [
@@ -65,6 +67,9 @@ const Main = () => {
   // 현재 선택한 대여소가 즐겨찾기에 있는지 확인
   const [isFavorite, setIsFavorite] = useState(false);
 
+  // 날씨 정보
+  const [weatherInfo, setWeatherInfo] = useState(null);
+
   useEffect(() => {
     (async() => {
       try {
@@ -101,6 +106,7 @@ const Main = () => {
 
   const onClickMarker = useCallback(
     (marker, lendplace) => {
+      console.log(lendplace);
       setIsOnRent((prevIsOnRent) => {
         if (prevIsOnRent) {
           dispatch(setEndPos(lendplace));
@@ -113,6 +119,29 @@ const Main = () => {
         }
         return prevIsOnRent;
       });
+      (async() => {
+        const API_KEY = "6f96069f9b5896f4eadf1a221d0333ab";
+        const lat = lendplace.startn_lat;
+        const lon = lendplace.startn_lnt;
+        const date = new Date().getTime();
+        const datestr = moment(date).format("YYYY-MM-DD");
+        try {
+          const response = await fetch('https://fcc-weather-api.glitch.me/api/current?lon=' + lon + '&lat=' + lat,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json", },
+          });
+          if (response.status !== 200) {
+            throw new Error("날씨 정보를 가져오는데 실패하였습니다.");
+          }
+          const jsonData = await response.json();
+          jsonData.lendplace = lendplace;
+          setWeatherInfo(jsonData);
+          console.log(jsonData);
+        } catch (error) {
+          console.log(error);
+        }
+        })()
     },
     [startPos, endPos, isOnRent]
   );
@@ -374,6 +403,7 @@ const Main = () => {
             </Button>
           </Box>
           <Divider sx={{ my: 4 }} />
+          <Weather data={weatherInfo} />
           <Typography variant="h5" sx={{ fontWeight: "bold", my: 2 }}>
             최근 사용 지점
           </Typography>
