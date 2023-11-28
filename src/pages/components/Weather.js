@@ -55,6 +55,12 @@ const Weather = ({data}) => {
             {data.lendplace.statn_addr2 ? data.lendplace.statn_addr2 : data.lendplace.statn_addr1}의 날씨
           </Typography>
           <Divider sx={{my: 1}} />
+          <Box sx={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", pb: 3}}>
+            <img src={"https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png"} style={{ width: "130px"}}/>
+            <Typography variant="span">
+              {data.weather[0].main} : {data.weather[0].description}
+            </Typography>
+          </Box>
           <Box sx={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
             <Box sx={{display: "flex", flexDirection: "column"}}>
               <Typography variant="span">현재 온도</Typography>
@@ -68,12 +74,8 @@ const Weather = ({data}) => {
               <Typography variant="span">최고 온도</Typography>
               <Typography variant="span">{data.main.temp_max}도</Typography>
             </Box>
-            
           </Box>
-          <img src={data.weather[0].icon} />
-          <Typography variant="span">
-            {data.weather[0].main} : {data.weather[0].description}
-          </Typography>
+          
 
         </>
       )}

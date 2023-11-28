@@ -126,7 +126,7 @@ const Main = () => {
         const date = new Date().getTime();
         const datestr = moment(date).format("YYYY-MM-DD");
         try {
-          const response = await fetch('https://fcc-weather-api.glitch.me/api/current?lon=' + lon + '&lat=' + lat,
+          const response = await fetch(`https://cors-anywhere.herokuapp.com/https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&lang=kr`,
           {
             method: "GET",
             headers: { "Content-Type": "application/json", },

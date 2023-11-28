@@ -11,3 +11,8 @@ npm install --force
 npm run start
 ```
 
+### 주의사항
+https://cors-anywhere.herokuapp.com/corsdemo
+위 사이트로 들어가 `Request temporary access to the demo server`버튼을 눌러야 Weather API가 작동합니다.
+
+
