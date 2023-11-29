@@ -32,6 +32,8 @@ const KakaoMap = ({onClickMarker, isOnRent}) => {
 
       } catch (error) {
         console.log(error);
+        alert("자전거 대여소 정보를 가져오는데 실패하였습니다.");
+        setIsLoaded(true);
       }
     })();
   }, [])

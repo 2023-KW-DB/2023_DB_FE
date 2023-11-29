@@ -1,9 +1,4 @@
-import {
-  createBrowserRouter,
-  Route,
-  RouterProvider,
-  Routes,
-} from "react-router-dom";
+import { createBrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Main from "./pages/Main";
@@ -24,9 +19,8 @@ import AdminTicketEdit from "./pages/admin/AdminTicketEdit";
 import Ranking from "./pages/Ranking";
 import PasswordFind from "./pages/PasswordFind";
 import AdminBikeEdit from "./pages/admin/AdminBikeEdit";
+import AdminBikeAdd from "./pages/admin/AdminBikeAdd";
 import AdminTicketAdd from "./pages/admin/AdminTicketAdd";
-
-
 
 const router = () => {
   return (
@@ -40,20 +34,22 @@ const router = () => {
       <Route path="/board/notice" element={<NoticeBoardList />} />
       <Route path="/board/notice/read" element={<NoticeBoardRead />} />
       <Route path="/board/notice/write" element={<NoticeBoardWrite />} />
-      
-      
+
       <Route path="/admin" element={<Admin />} />
       <Route path="/admin/user/edit" element={<AdminUserEdit />} />
+
       <Route path="/admin/ticket/edit" element={<AdminTicketEdit />} />
       <Route path="/admin/ticket/add" element={<AdminTicketAdd />} />
+
       <Route path="/admin/bike/edit" element={<AdminBikeEdit />} />
-      
+      <Route path="/admin/bike/add" element={<AdminBikeAdd />} />
+
       <Route path="/travelrating" element={<TravelRating />} />
-      <Route path="/ratingreview" element={<RatingReview/>}/>
-      <Route path="/userpage" element={<UserPage/>}/>
-      <Route path="/favorite" element={<Favorite/>}/>
-      <Route path="/news" element={<News/>}/>
-      <Route path="/ranking" element={<Ranking/>}/>
+      <Route path="/ratingreview" element={<RatingReview />} />
+      <Route path="/userpage" element={<UserPage />} />
+      <Route path="/favorite" element={<Favorite />} />
+      <Route path="/news" element={<News />} />
+      <Route path="/ranking" element={<Ranking />} />
       <Route path="find-password" element={<PasswordFind />} />
     </Routes>
   );
