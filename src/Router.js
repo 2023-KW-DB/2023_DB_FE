@@ -53,7 +53,7 @@ const router = () => {
       <Route path="/favorite" element={<Favorite />} />
       <Route path="/news" element={<News />} />
       <Route path="/ranking" element={<Ranking />} />
-      <Route path="find-password" element={<PasswordFind />} />
+      <Route path="/find-password" element={<PasswordFind />} />
     </Routes>
   );
 };

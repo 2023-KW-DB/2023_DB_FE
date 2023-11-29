@@ -49,7 +49,7 @@ const Favorite = () => {
     (async () => {
       fetchData();
     })();
-  }, []);
+  }, [user]);
 
   const fetchData = async () => {
     try {
@@ -88,7 +88,10 @@ const Favorite = () => {
                 <Typography variant="body1">대여가능 자전거: {station.total_bikes}</Typography>
               </Box>
               <Box marginLeft="auto" display="flex" alignItems="center">
-                <Rating name={`rating-${index}`} value={station.rating} readOnly precision={0.1} />
+                <Rating name={`rating-${index}`} value={station.average_rating} readOnly precision={0.1} />
+                <Typography variant="body1" sx={{ marginLeft: 1 }}>
+                  {station.average_rating}점
+                </Typography>
                 <Box marginLeft={3}></Box>
                 <Button variant="contained" color="primary" component={RouterLink} to={`/ratingreview?id=${station.lendplace_id}`}>
                   후기 보기

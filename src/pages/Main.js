@@ -1,17 +1,4 @@
-import {
-  Box,
-  Container,
-  Typography,
-  Button,
-  Link,
-  Autocomplete,
-  TextField,
-  Divider,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-} from "@mui/material";
+import { Box, Container, Typography, Button, Link, Autocomplete, TextField, Divider, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import KakaoMap from "./components/KakaoMap";
 import { useSelector, useDispatch } from "react-redux";
@@ -71,37 +58,44 @@ const Main = () => {
   // 날씨 정보
   const [weatherInfo, setWeatherInfo] = useState(null);
 
+  // 즐겨찾기 정보
+  const [favorite, setFavorite] = useState([]);
+
   useEffect(() => {
     (async () => {
       try {
-        const popularResponse = await fetch(
-          process.env.REACT_APP_API_URL + "/station/get-popular-lendplace",
-          {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-          },
-        );
+        const popularResponse = await fetch(process.env.REACT_APP_API_URL + "/station/get-popular-lendplace", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        });
         if (popularResponse.status !== 200) {
           throw new Error("인기 대여소 정보를 가져오는데 실패하였습니다.");
         }
         const popularJsonData = await popularResponse.json();
         _setPopular(popularJsonData.result);
         if (user && user.id) {
-          const recentResponse = await fetch(
-            process.env.REACT_APP_API_URL +
-              `/station/get-recent-lendplace?user_id=${user.id}`,
-            {
-              method: "GET",
-              headers: { "Content-Type": "application/json" },
-              credentials: "include",
-            },
-          );
+          const recentResponse = await fetch(process.env.REACT_APP_API_URL + `/station/get-recent-lendplace?user_id=${user.id}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+          });
           if (recentResponse.status !== 200) {
             throw new Error("최근 대여소 정보를 가져오는데 실패하였습니다.");
           }
           const recentJsonData = await recentResponse.json();
           _setRecent(recentJsonData.result);
+
+          const favoriteResponse = await fetch(process.env.REACT_APP_API_URL + `/favorite/get-lendplace?user_id=${user.id}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+          });
+          if (favoriteResponse.status !== 200) {
+            throw new Error("즐겨찾기 정보를 가져오는데 실패하였습니다.");
+          }
+          const favoriteJsonData = await favoriteResponse.json();
+          setFavorite(favoriteJsonData.result);
         } else {
           _setRecent([]);
         }
@@ -109,7 +103,7 @@ const Main = () => {
         console.log(error);
       }
     })();
-  }, []);
+  }, [user]);
 
   const onClickMarker = useCallback(
     (marker, lendplace) => {
@@ -165,20 +159,15 @@ const Main = () => {
   const onClickFavorite = () => {
     (async () => {
       try {
-        const response = await fetch(
-          process.env.REACT_APP_API_URL + "/favorite/favorite-lendplace",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              lendplace_id: isOnRent
-                ? endPos.lendplace_id
-                : startPos.lendplace_id,
-              user_id: user.id,
-            }),
-            credentials: "include",
-          },
-        );
+        const response = await fetch(process.env.REACT_APP_API_URL + "/favorite/favorite-lendplace", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            lendplace_id: isOnRent ? endPos.lendplace_id : startPos.lendplace_id,
+            user_id: user.id,
+          }),
+          credentials: "include",
+        });
         if (response.status !== 200) {
           throw new Error("즐겨찾기 설정에 실패하였습니다.");
         }
@@ -200,18 +189,15 @@ const Main = () => {
   const onRentBike = (lendplace) => {
     (async () => {
       try {
-        const response = await fetch(
-          process.env.REACT_APP_API_URL + "/users/bike-rental",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              departure_station: lendplace.lendplace_id,
-              user_id: user.id,
-            }),
-            credentials: "include",
-          },
-        );
+        const response = await fetch(process.env.REACT_APP_API_URL + "/users/bike-rental", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            departure_station: lendplace.lendplace_id,
+            user_id: user.id,
+          }),
+          credentials: "include",
+        });
         if (response.status !== 200) {
           throw new Error("자전거 대여에 실패하였습니다.");
         }
@@ -244,25 +230,19 @@ const Main = () => {
         const end_lnt = endPos.startn_lnt;
 
         // Calculate distance in meter
-        const distance =
-          Math.sqrt(
-            Math.pow(start_lat - end_lat, 2) + Math.pow(statr_lnt - end_lnt, 2),
-          ) * 100000;
+        const distance = Math.sqrt(Math.pow(start_lat - end_lat, 2) + Math.pow(statr_lnt - end_lnt, 2)) * 100000;
         console.log(distance);
 
-        const response = await fetch(
-          process.env.REACT_APP_API_URL + "/users/bike-return",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              arrival_station: endPos.lendplace_id,
-              user_id: user.id,
-              use_distance: distance ? parseInt(distance) : 0,
-            }),
-            credentials: "include",
-          },
-        );
+        const response = await fetch(process.env.REACT_APP_API_URL + "/users/bike-return", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            arrival_station: endPos.lendplace_id,
+            user_id: user.id,
+            use_distance: distance ? parseInt(distance) : 0,
+          }),
+          credentials: "include",
+        });
         if (response.status !== 200) {
           throw new Error("자전거 반납에 실패하였습니다.");
         }
@@ -332,20 +312,8 @@ const Main = () => {
                   <TextField
                     variant="standard"
                     sx={{ py: 1 }}
-                    value={
-                      startPos
-                        ? startPos.statn_addr2
-                          ? startPos.statn_addr2
-                          : startPos.statn_addr1
-                        : ""
-                    }
-                    placeholder={
-                      startPos
-                        ? startPos.statn_addr2
-                          ? startPos.statn_addr2
-                          : startPos.statn_addr1
-                        : "지도에서 도착지점을 선택해주세요"
-                    }
+                    value={startPos ? (startPos.statn_addr2 ? startPos.statn_addr2 : startPos.statn_addr1) : ""}
+                    placeholder={startPos ? (startPos.statn_addr2 ? startPos.statn_addr2 : startPos.statn_addr1) : "지도에서 도착지점을 선택해주세요"}
                     InputProps={{ readOnly: true }}
                   />
                 </>
@@ -360,13 +328,8 @@ const Main = () => {
                       width: "100%",
                     }}
                   >
-                    <DirectionsBikeIcon
-                      sx={{ fontSize: "3.5rem", width: "100px" }}
-                    />
-                    <Typography
-                      variant="span"
-                      sx={{ fontWeight: "bold", my: 2 }}
-                    >
+                    <DirectionsBikeIcon sx={{ fontSize: "3.5rem", width: "100px" }} />
+                    <Typography variant="span" sx={{ fontWeight: "bold", my: 2 }}>
                       자전거를 대여중입니다.
                     </Typography>
                   </Box>
@@ -377,20 +340,8 @@ const Main = () => {
                   <TextField
                     variant="standard"
                     sx={{ py: 1 }}
-                    value={
-                      endPos
-                        ? endPos.statn_addr2
-                          ? endPos.statn_addr2
-                          : endPos.statn_addr1
-                        : ""
-                    }
-                    placeholder={
-                      endPos
-                        ? endPos.statn_addr2
-                          ? endPos.statn_addr2
-                          : endPos.statn_addr1
-                        : "지도에서 도착지점을 선택해주세요"
-                    }
+                    value={endPos ? (endPos.statn_addr2 ? endPos.statn_addr2 : endPos.statn_addr1) : ""}
+                    placeholder={endPos ? (endPos.statn_addr2 ? endPos.statn_addr2 : endPos.statn_addr1) : "지도에서 도착지점을 선택해주세요"}
                     InputProps={{ readOnly: true }}
                   />
                 </>
@@ -454,21 +405,15 @@ const Main = () => {
               </Box>
               <Divider sx={{ my: 4 }} />
               <Weather data={weatherInfo} />
-              <Typography variant="h5" sx={{ fontWeight: "bold", my: 2 }}>
-                최근 사용 지점
-              </Typography>
+
               {_recent ? (
                 <>
+                  <Typography variant="h5" sx={{ fontWeight: "bold", my: 2 }}>
+                    최근 사용 지점
+                  </Typography>
                   {_recent.map((lendplace, index) => (
-                    <ul
-                      key={index}
-                      style={{ paddingLeft: 20, cursor: "pointer" }}
-                    >
-                      <li
-                        onClick={() =>
-                          onClickMarker(index, lendplace, isOnRent)
-                        }
-                      >
+                    <ul key={index} style={{ paddingLeft: 20, cursor: "pointer" }}>
+                      <li onClick={() => onClickMarker(index, lendplace, isOnRent)}>
                         {lendplace.statn_addr1} {lendplace.statn_addr2}
                       </li>
                     </ul>
@@ -479,21 +424,15 @@ const Main = () => {
                   최근 사용 지점이 없습니다.
                 </Typography>
               )}
-              <Typography variant="h5" sx={{ fontWeight: "bold", my: 2 }}>
-                인기 지점
-              </Typography>
+
               {_popular ? (
                 <>
+                  <Typography variant="h5" sx={{ fontWeight: "bold", my: 2 }}>
+                    인기 지점
+                  </Typography>
                   {_popular.map((lendplace, index) => (
-                    <ul
-                      key={index}
-                      style={{ paddingLeft: 20, cursor: "pointer" }}
-                    >
-                      <li
-                        onClick={() =>
-                          onClickMarker(index, lendplace, isOnRent)
-                        }
-                      >
+                    <ul key={index} style={{ paddingLeft: 20, cursor: "pointer" }}>
+                      <li onClick={() => onClickMarker(index, lendplace, isOnRent)}>
                         {lendplace.statn_addr1} {lendplace.statn_addr2}
                       </li>
                     </ul>
@@ -502,6 +441,25 @@ const Main = () => {
               ) : (
                 <Typography variant="span" sx={{ fontSize: "15px" }}>
                   인기 지점이 없습니다.
+                </Typography>
+              )}
+
+              {favorite ? (
+                <>
+                  <Typography variant="h5" sx={{ fontWeight: "bold", my: 2 }}>
+                    즐겨찾기 지점
+                  </Typography>
+                  {favorite.map((lendplace, index) => (
+                    <ul key={index} style={{ paddingLeft: 20, cursor: "pointer" }}>
+                      <li onClick={() => onClickMarker(index, lendplace, isOnRent)}>
+                        {lendplace.statn_addr1} {lendplace.statn_addr2}
+                      </li>
+                    </ul>
+                  ))}
+                </>
+              ) : (
+                <Typography variant="span" sx={{ fontSize: "15px" }}>
+                  즐겨찾기 지점이 없습니다.
                 </Typography>
               )}
             </>
