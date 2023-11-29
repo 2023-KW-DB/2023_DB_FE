@@ -5,9 +5,9 @@ import Main from "./pages/Main";
 import History from "./pages/History";
 import BuyTicket from "./pages/BuyTicket";
 import Payment from "./pages/Payment";
-import NoticeBoardList from "./pages/NoticeBoardList";
-import NoticeBoardRead from "./pages/NoticeBoardRead";
-import NoticeBoardWrite from "./pages/NoticeBoardWrite";
+import NoticeBoardList from "./pages/board/NoticeBoardList";
+import NoticeBoardRead from "./pages/board/NoticeBoardRead";
+import NoticeBoardWrite from "./pages/board/NoticeBoardWrite";
 import Admin from "./pages/Admin";
 import TravelRating from "./pages/TravelRating";
 import RatingReview from "./pages/RatingReview";
@@ -21,6 +21,7 @@ import PasswordFind from "./pages/PasswordFind";
 import AdminBikeEdit from "./pages/admin/AdminBikeEdit";
 import AdminBikeAdd from "./pages/admin/AdminBikeAdd";
 import AdminTicketAdd from "./pages/admin/AdminTicketAdd";
+import AdminBikeStationEdit from "./pages/admin/AdminBikeStationEdit";
 
 const router = () => {
   return (
@@ -43,6 +44,8 @@ const router = () => {
 
       <Route path="/admin/bike/edit" element={<AdminBikeEdit />} />
       <Route path="/admin/bike/add" element={<AdminBikeAdd />} />
+
+      <Route path="/admin/bikestation/edit" element={<AdminBikeStationEdit />} />
 
       <Route path="/travelrating" element={<TravelRating />} />
       <Route path="/ratingreview" element={<RatingReview />} />
