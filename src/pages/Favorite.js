@@ -3,6 +3,7 @@ import { Container, Typography, Card, CardContent, Box, Button, Rating, CssBasel
 import StarIcon from "@mui/icons-material/Star";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import { useSelector } from "react-redux";
+import { Link as RouterLink } from "react-router-dom";
 
 const mock = [
   { name: "Station 1", bikes: 5, rating: 4.5, isFavorite: true },
@@ -17,16 +18,16 @@ const Favorite = () => {
 
   const toggleFavorite = (index) => {
     const updatedStations = [...favoriteStations];
-    (async() => {
+    (async () => {
       try {
         const isFavorite = updatedStations[index].isFavorite;
         const response = await fetch(process.env.REACT_APP_API_URL + "/favorite/favorite-lendplace", {
           method: "POST",
-          headers: { "Content-Type": "application/json", },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             user_id: user.id,
             lendplace_id: updatedStations[index].lendplace_id,
-            is_favorite: !isFavorite
+            is_favorite: !isFavorite,
           }),
           credentials: "include",
         });
@@ -37,7 +38,7 @@ const Favorite = () => {
       } catch (error) {
         console.log(error);
       }
-    })()
+    })();
     updatedStations[index].isFavorite = !updatedStations[index].isFavorite;
     setFavoriteStations(updatedStations);
     // TODO: Send request to server to update favorite stations
@@ -45,30 +46,29 @@ const Favorite = () => {
 
   useEffect(() => {
     console.log(user);
-    (async() => {
+    (async () => {
       fetchData();
-    })()
-  }, [])
+    })();
+  }, []);
 
   const fetchData = async () => {
     try {
       const response = await fetch(process.env.REACT_APP_API_URL + `/favorite/get-lendplace?user_id=${user.id}`, {
         method: "GET",
-        headers: { "Content-Type": "application/json", },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
       });
       if (response.status !== 200) {
         throw new Error("자전거 대여소 정보를 가져오는데 실패하였습니다.");
       }
       const jsonData = await response.json();
+      console.log(jsonData.result);
       setFavoriteStations(jsonData.result);
       // setIsLoaded(true);
     } catch (error) {
       console.log(error);
     }
-
-  }
-  
+  };
 
   return (
     <Container component="main" maxWidth="md">
@@ -84,15 +84,13 @@ const Favorite = () => {
                 {station.isFavorite ? <StarIcon color="warning" /> : <StarOutlineIcon color="warning" />}
               </div>
               <Box>
-                <Typography variant="h6">
-                  {station.statn_addr2 ? station.statn_addr2 : station.statn_addr1}
-                </Typography>
+                <Typography variant="h6">{station.statn_addr2 ? station.statn_addr2 : station.statn_addr1}</Typography>
                 <Typography variant="body1">대여가능 자전거: {station.total_bikes}</Typography>
               </Box>
               <Box marginLeft="auto" display="flex" alignItems="center">
                 <Rating name={`rating-${index}`} value={station.rating} readOnly precision={0.1} />
                 <Box marginLeft={3}></Box>
-                <Button variant="contained" color="primary">
+                <Button variant="contained" color="primary" component={RouterLink} to={`/ratingreview?id=${station.lendplace_id}`}>
                   후기 보기
                 </Button>
               </Box>
