@@ -20,8 +20,11 @@ import UserPage from "./pages/UserPage";
 import Favorite from "./pages/Favorite";
 import News from "./pages/News";
 import AdminUserEdit from "./pages/admin/AdminUserEdit";
+import AdminTicketEdit from "./pages/admin/AdminTicketEdit";
 import Ranking from "./pages/Ranking";
 import PasswordFind from "./pages/PasswordFind";
+import AdminBikeEdit from "./pages/admin/AdminBikeEdit";
+import AdminTicketAdd from "./pages/admin/AdminTicketAdd";
 
 
 
@@ -41,6 +44,9 @@ const router = () => {
       
       <Route path="/admin" element={<Admin />} />
       <Route path="/admin/user/edit" element={<AdminUserEdit />} />
+      <Route path="/admin/ticket/edit" element={<AdminTicketEdit />} />
+      <Route path="/admin/ticket/add" element={<AdminTicketAdd />} />
+      <Route path="/admin/bike/edit" element={<AdminBikeEdit />} />
       
       <Route path="/travelrating" element={<TravelRating />} />
       <Route path="/ratingreview" element={<RatingReview/>}/>

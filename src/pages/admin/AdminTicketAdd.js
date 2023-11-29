@@ -27,48 +27,23 @@ const mock = {
     "total_money": 50000
 };
 
-const AdminTicketEdit = () => {
+const AdminTicketAdd = () => {
   const navigate = useNavigate();
-  const [ticketId, setTicketId] = useState(0);
-  const [ticketPrice, setTicketPrice] = useState(0);
+  const [ticketPrice, setTicketPrice] = useState(mock.username);
   const [searchParams] = useSearchParams();
   const query = searchParams.get("id");
 
   useEffect(() => {
-    // TODO: Fetch data
-    (async() => {
-      try {
-        const response = await fetch(process.env.REACT_APP_API_URL + `/get-all-ticket`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
-        if (response.status !== 200) {
-          throw new Error("데이터를 가져오는데 실패하였습니다.");
-        }
-        const jsonData = await response.json();
-        for (let i = 0; i < jsonData.result.length; i++) {
-          if (jsonData.result[i].id == query) {
-            setTicketId(jsonData.result[i].id)
-            setTicketPrice(jsonData.result[i].ticket_price)
-            break;
-          }
-        }
 
-      } catch (error) {
-        alert("데이터를 가져오는데 실패하였습니다.");
-      } 
-    })();
   }, []);
   const submitHandler = () => {
     (async() => {
       try {
-        const response = await fetch(process.env.REACT_APP_API_URL + "/admin/modify-ticket", {
-          method: "PATCH",
+        const response = await fetch(process.env.REACT_APP_API_URL + "/admin/create-ticket", {
+          method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            id: ticketId,
             ticket_price: ticketPrice,
-            
           })
         });
         if (response.status !== 200) {
@@ -92,20 +67,10 @@ const AdminTicketEdit = () => {
     <Container component="main" maxWidth="md">
       <CssBaseline />
       <Typography component="h1" variant="h5" sx={{ py: 3 }}>
-        티켓 정보 수정
+        티켓 정보 추가
       </Typography>
       <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", py: 3}}>
         <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="티켓 번호"
-              value={ticketId}
-              InputProps={{ readOnly: true }}
-              disabled
-            />
-          </Grid>
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -123,7 +88,7 @@ const AdminTicketEdit = () => {
           variant="contained"
           sx={{ mr: 3}}
         >
-          수정하기
+          추가하기
         </Button>
         <Button 
           component={RouterLink}
@@ -138,4 +103,4 @@ const AdminTicketEdit = () => {
   );
 };
 
-export default AdminTicketEdit;
+export default AdminTicketAdd;

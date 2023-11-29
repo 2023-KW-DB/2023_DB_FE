@@ -136,12 +136,22 @@ const AdminTicket = () => {
         </TableBody>
       </Table>
     </TableContainer>
-    <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", py: 3}}>
-      <ButtonGroup>
-        <Button onClick={() => setPages(page - 1 > 0 ? page - 1 : 1)}>이전</Button>
-        <Button>{page}</Button>
-        <Button onClick={() => setPages(page + 1 < totalPage ? page + 1 : totalPage)}>다음</Button>
-      </ButtonGroup>
+    <Box sx={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%", py: 3}}>
+      <Button
+        variant="contained"
+        color="primary"
+        component={RouterLink}
+        to={`/admin/ticket/add`}
+      >
+        추가
+      </Button>
+      <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}}>
+        <ButtonGroup>
+          <Button onClick={() => setPages(page - 1 > 0 ? page - 1 : 1)}>이전</Button>
+          <Button>{page}</Button>
+          <Button onClick={() => setPages(page + 1 < totalPage ? page + 1 : totalPage)}>다음</Button>
+        </ButtonGroup>
+      </Box>
     </Box>
     </>
   );

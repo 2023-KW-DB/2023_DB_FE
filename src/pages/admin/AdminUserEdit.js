@@ -187,12 +187,23 @@ const AdminUserEdit = () => {
           </Grid>
         </Grid>
       </Box>
-      <Button 
-        onClick={submitHandler}
-        variant="contained"
-      >
-        수정하기
-      </Button>
+      <Box sx={{display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center", width: "100%", py: 3}}>
+        <Button 
+          onClick={submitHandler}
+          variant="contained"
+          sx={{ mr: 3}}
+        >
+          수정하기
+        </Button>
+        <Button 
+          component={RouterLink}
+          to="/admin?type=user"
+          variant="contained"
+          color="warning"
+        >
+          뒤로가기
+        </Button>
+      </Box>
     </Container>
   );
 };

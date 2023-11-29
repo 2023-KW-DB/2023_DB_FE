@@ -59,7 +59,7 @@ const Admin = () => {
             component={RouterLink}
             to="/admin?type=ticket"
           >
-            이용권 이력
+            이용권 관리
           </Button>
           <Button
             variant="contained"

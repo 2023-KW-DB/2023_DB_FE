@@ -35,6 +35,9 @@ const mock = [
 
 const AdminUser = () => {
   const [userData, setUserData] = useState(mock);
+  const [showData, setShowData] = useState([mock[0]]);
+  const [page, setPages] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
   useEffect(() => {
     // TODO: Fetch data
     (async() => {
@@ -48,12 +51,43 @@ const AdminUser = () => {
         }
         const jsonData = await response.json();
         setUserData(jsonData.result)
+        setTotalPage(parseInt(jsonData.result.length / 10) + 1)
+        setShowData(jsonData.result.slice(0, 10))
       } catch (error) {
         alert("데이터를 가져오는데 실패하였습니다.");
       } 
     })();
+    
   }, []);
+
+  useEffect(() => {
+    setShowData(userData.slice((page - 1) * 10, page * 10));
+  }, [page]);
+
+  const handleRemoveUser = (id) => {
+    (async() => {
+      try {
+        const response = await fetch(process.env.REACT_APP_API_URL + `/admin/delete-user`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response.status !== 200) {
+          throw new Error("데이터를 삭제하는데 실패하였습니다.");
+        }
+        const jsonData = await response.json();
+        if (jsonData.result === "success") {
+          alert("데이터를 삭제하는데 성공하였습니다.");
+          window.location.reload();
+        } else {
+          throw new Error("데이터를 삭제하는데 실패하였습니다.");
+        }
+      } catch (error) {
+        alert("데이터를 삭제하는데 실패하였습니다.");
+      } 
+    })();
+  }
   return (
+    <>
     <TableContainer component={Paper}>
       <TableHead sx={{width: "100%"}}>
         <TableRow>
@@ -87,8 +121,8 @@ const AdminUser = () => {
         </TableRow>
       </TableHead>
       <TableBody sx={{width: "100%"}}>
-        {userData && userData.length > 0 ? (
-          userData.map((row, index) => (
+        {showData && showData.length > 0 ? (
+          showData.map((row, index) => (
             <TableRow>
               <TableCell className="user-table-cell">
                 <Typography variant="span">{row.id}</Typography>
@@ -130,6 +164,14 @@ const AdminUser = () => {
         )}
       </TableBody>
     </TableContainer>
+    <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", py: 3 }}>
+      <ButtonGroup>
+        <Button onClick={() => setPages(page - 1 > 0 ? page - 1 : 1)}>이전</Button>
+        <Button>{page}</Button>
+        <Button onClick={() => setPages(page + 1 < totalPage ? page + 1 : totalPage)}>다음</Button>
+      </ButtonGroup>
+    </Box>
+    </>
   );
 };
 

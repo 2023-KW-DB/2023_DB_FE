@@ -14,23 +14,25 @@ import { Link as RouterLink, useNavigate, useSearchParams } from "react-router-d
 import "./style.css";
 import moment from "moment";
 
-const mock = {
-    "id": 1,
-    "password": "abcd1234",
-    "username": "김데베",
-    "user_type": 1,
-    "email": "kw_db@kw.ac.kr",
-    "phone_number": "1.012345678E9",
-    "weight": 50.0,
-    "age": 20,
-    "last_accessed_at": null,
-    "total_money": 50000
-};
 
-const AdminTicketEdit = () => {
+const mock = {
+  "id": 1,
+  "lendplace_id": "ST-10",
+  "use_status": 0,
+  "bike_status": 0,
+  "statn_addr1": "서울특별시 마포구 양화로 93",
+  "statn_addr2": "427",
+  "startn_lat": 37.552746,
+  "startn_lnt": 126.918617
+}
+
+
+const AdminBikeEdit = () => {
   const navigate = useNavigate();
-  const [ticketId, setTicketId] = useState(0);
-  const [ticketPrice, setTicketPrice] = useState(0);
+  const [bikeId, setBikeId] = useState(mock.id);
+  const [lendplaceId, setLendplaceId] = useState(mock.lendplace_id);
+  const [useStatus, setUseStatus] = useState(mock.use_status);
+  const [bikeStatus, setBikeStatus] = useState(mock.bike_status);
   const [searchParams] = useSearchParams();
   const query = searchParams.get("id");
 
@@ -38,7 +40,7 @@ const AdminTicketEdit = () => {
     // TODO: Fetch data
     (async() => {
       try {
-        const response = await fetch(process.env.REACT_APP_API_URL + `/get-all-ticket`, {
+        const response = await fetch(process.env.REACT_APP_API_URL + `/bike/get-one?id=${query}`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
@@ -46,13 +48,11 @@ const AdminTicketEdit = () => {
           throw new Error("데이터를 가져오는데 실패하였습니다.");
         }
         const jsonData = await response.json();
-        for (let i = 0; i < jsonData.result.length; i++) {
-          if (jsonData.result[i].id == query) {
-            setTicketId(jsonData.result[i].id)
-            setTicketPrice(jsonData.result[i].ticket_price)
-            break;
-          }
-        }
+        setBikeId(jsonData.result.id)
+        setLendplaceId(jsonData.result.lendplace_id)
+        setUseStatus(jsonData.result.use_status)
+        setBikeStatus(jsonData.result.bike_status)
+        
 
       } catch (error) {
         alert("데이터를 가져오는데 실패하였습니다.");
@@ -62,13 +62,14 @@ const AdminTicketEdit = () => {
   const submitHandler = () => {
     (async() => {
       try {
-        const response = await fetch(process.env.REACT_APP_API_URL + "/admin/modify-ticket", {
+        const response = await fetch(process.env.REACT_APP_API_URL + "/bike/modify", {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            id: ticketId,
-            ticket_price: ticketPrice,
-            
+            id: bikeId,
+            lendplace_id: lendplaceId,
+            use_status: useStatus,
+            bike_status: bikeStatus,
           })
         });
         if (response.status !== 200) {
@@ -77,7 +78,7 @@ const AdminTicketEdit = () => {
         const jsonData = await response.json();
         if (jsonData.success) {
           alert("수정에 성공하였습니다.");
-          navigate("/admin?type=ticket");
+          navigate("/admin?type=bike");
         } else {
           throw new Error("수정에 실패했습니다.");
         }
@@ -92,7 +93,7 @@ const AdminTicketEdit = () => {
     <Container component="main" maxWidth="md">
       <CssBaseline />
       <Typography component="h1" variant="h5" sx={{ py: 3 }}>
-        티켓 정보 수정
+        자전거 정보 수정
       </Typography>
       <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", py: 3}}>
         <Grid container spacing={2}>
@@ -100,8 +101,8 @@ const AdminTicketEdit = () => {
             <TextField
               fullWidth
               variant="outlined"
-              label="티켓 번호"
-              value={ticketId}
+              label="자전거 번호"
+              value={bikeId}
               InputProps={{ readOnly: true }}
               disabled
             />
@@ -110,11 +111,30 @@ const AdminTicketEdit = () => {
             <TextField
               fullWidth
               variant="outlined"
-              label="티켓 가격"
-              value={ticketPrice}
-              onChange={(e) => setTicketPrice(e.target.value)}
+              label="자전거 위치"
+              value={lendplaceId}
+              onChange={(e) => setLendplaceId(e.target.value)}
             />
-          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="사용중 여부"
+              value={useStatus}
+              InputProps={{ readOnly: true }}
+              disabled
+            />
+        </Grid>
+        <Grid item xs={12}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="자전거 상태"
+              value={bikeStatus}
+              onChange={(e) => setBikeStatus(e.target.value)}
+            />
+        </Grid>
         </Grid>
       </Box>
       <Box sx={{display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center", width: "100%", py: 3}}>
@@ -127,7 +147,7 @@ const AdminTicketEdit = () => {
         </Button>
         <Button 
           component={RouterLink}
-          to="/admin?type=ticket"
+          to="/admin?type=bike"
           variant="contained"
           color="warning"
         >
@@ -136,6 +156,6 @@ const AdminTicketEdit = () => {
       </Box>
     </Container>
   );
-};
+}
 
-export default AdminTicketEdit;
+export default AdminBikeEdit;
