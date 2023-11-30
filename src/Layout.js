@@ -15,58 +15,68 @@ import {
   Toolbar,
   Typography,
   Button,
-  Link
+  Link,
 } from "@mui/material";
-import ListIcon from '@mui/icons-material/List';
+import ListIcon from "@mui/icons-material/List";
 import PageRouter from "./Router";
 import { RouterProvider, Link as RouterLink, Router } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./store/userSlice";
 
-
 const drawerWidth = 240;
-const navItems = [{
-  name: "공지사항",
-  path: "/board/notice"
-},{
-  name: "지도 확인",
-  path: "/",
-}, {
-  name: "이력 확인",
-  path: "/history",
-}, {
-  name: "티켓 구매",
-  path: "/ticket",
-}, {
-  name: "뉴스",
-  path: "/news",
-}, {
-  name: "즐겨찾기",
-  path: "/favorite",
-}, {
-  name: "랭킹",
-  path: "/ranking",
-}]
+const navItems = [
+  {
+    name: "공지사항",
+    path: "/board?id=notice",
+  },
+  {
+    name: "지도 확인",
+    path: "/",
+  },
+  {
+    name: "이력 확인",
+    path: "/history",
+  },
+  {
+    name: "티켓 구매",
+    path: "/ticket",
+  },
+  {
+    name: "뉴스",
+    path: "/news",
+  },
+  {
+    name: "즐겨찾기",
+    path: "/favorite",
+  },
+  {
+    name: "랭킹",
+    path: "/ranking",
+  },
+];
 
-const guestNavItems = [{
-  name: "로그인",
-  path: "/login",
-}, {
-  name: "회원가입",
-  path: "/register"
-}]
+const guestNavItems = [
+  {
+    name: "로그인",
+    path: "/login",
+  },
+  {
+    name: "회원가입",
+    path: "/register",
+  },
+];
 
 function DrawerAppBar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies(['id']);
+  const [cookies, setCookie, removeCookie] = useCookies(["id"]);
   const user = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    (async() => {
+    (async () => {
       try {
         const response = await fetch(process.env.REACT_APP_API_URL + `/users/get-userinfo?user_id=${cookies.id}`, {
           method: "GET",
@@ -80,16 +90,15 @@ function DrawerAppBar(props) {
       } catch (error) {
         console.log(error);
       }
-      
     })();
-  }, [])
+  }, []);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
   const handleLogout = () => {
-    (async() => {
+    (async () => {
       try {
         const response = await fetch(process.env.REACT_APP_API_URL + "/users/signout", {
           method: "POST",
@@ -103,10 +112,8 @@ function DrawerAppBar(props) {
       document.cookie = "";
       dispatch(setUser({}));
       document.location.href = "/";
-      
-
     })();
-  }
+  };
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
@@ -128,33 +135,20 @@ function DrawerAppBar(props) {
     </Box>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar component="nav">
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
+          <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2, display: { sm: "none" } }}>
             <ListIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" }, underline: "none", color: "#fff"}}
-            component={RouterLink}
-            to="/"
-          >
+          <Typography variant="h6" sx={{ flexGrow: 1, display: { xs: "none", sm: "block" }, underline: "none", color: "#fff" }} component={RouterLink} to="/">
             따릉이 시뮬레이터
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            
             {navItems.map((item) => (
               <Button key={item.name} sx={{ color: "#fff" }}>
                 <Link component={RouterLink} to={item.path} underline="none" color="inherit">
@@ -162,12 +156,12 @@ function DrawerAppBar(props) {
                 </Link>
               </Button>
             ))}
-            {(cookies && cookies.id) && (
+            {cookies && cookies.id && (
               <Button sx={{ color: "#fff" }} onClick={handleLogout}>
                 로그아웃
               </Button>
             )}
-            {(!user || !user.username) && 
+            {(!user || !user.username) && (
               <>
                 {guestNavItems.map((item) => (
                   <Button key={item.name} sx={{ color: "#fff" }}>
@@ -176,8 +170,8 @@ function DrawerAppBar(props) {
                     </Link>
                   </Button>
                 ))}
-                </>
-            }
+              </>
+            )}
             <Button sx={{ color: "#fff" }}>
               <Link component={RouterLink} to="/userpage" underline="none" color="inherit">
                 <Typography variant="span">

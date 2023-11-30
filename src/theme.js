@@ -1,35 +1,34 @@
 import { createTheme } from "@mui/material";
 
-
 const theme = createTheme({
   palette: {
-    mode: 'light',
+    mode: "light",
     primary: {
-      main: '#3f51b5',
+      main: "#3f51b5",
     },
     secondary: {
-      main: '#f50057',
+      main: "#f50057",
     },
     // background: {
-    //   default: '#303030',
-    //   paper: '#424240',
+    //   default: "#303030",
+    //   paper: "#424240",
     // },
   },
   typography: {
     fontFamily: "'Noto Sans KR', sans-serif;",
     h3: {
-      fontSize: '2rem',
+      fontSize: "2rem",
     },
     h1: {
-      fontSize: '3rem',
+      fontSize: "3rem",
     },
     h2: {
-      fontSize: '2.7rem',
+      fontSize: "2.7rem",
     },
     h4: {
-      fontSize: '1.7rem',
+      fontSize: "1.7rem",
     },
-  }
-})
+  },
+});
 
 export default theme;
