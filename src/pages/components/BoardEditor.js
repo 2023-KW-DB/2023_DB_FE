@@ -14,19 +14,22 @@ const BoardEditor = ({ setParentContent }) => {
       upload() {
         // Convert data to base64...
         return loader.file.then((file) => {
-          return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onloadend = () => {
-              const base64String = reader.result;
-              resolve({
-                default: base64String,
-              });
-            };
-            reader.onerror = (error) => {
-              reject(error);
-            };
-          });
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("type", "image");
+          return fetch(process.env.REACT_APP_API_URL + "/board/file-upload", {
+            method: "POST",
+            body: formData,
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              console.log(res);
+              const imageUrl = process.env.REACT_APP_API_URL + "/board/" + res.result.url;
+              loader.uploaded = true;
+              return {
+                default: imageUrl,
+              };
+            });
         });
       },
     };

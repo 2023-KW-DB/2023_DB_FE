@@ -1,17 +1,4 @@
-import {
-  Box,
-  Container,
-  Table,
-  TableBody,
-  TableHead,
-  TableCell,
-  TableRow,
-  TableContainer,
-  Typography,
-  Link,
-  ButtonGroup,
-  Button,
-} from "@mui/material";
+import { Box, Container, Table, TableBody, TableHead, TableCell, TableRow, TableContainer, Typography, Link, ButtonGroup, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ConfirmationNumber, Redeem } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
@@ -59,27 +46,29 @@ const BoardList = ({ category_id, datas = mock }) => {
   const [page, setPages] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
+  const readPage =
+    category_id === 1
+      ? "/board/notice/read"
+      : category_id === 2
+      ? "/board/free/read"
+      : category_id === 3
+      ? "/board/report/read"
+      : category_id === 4
+      ? "/board/qna/read"
+      : "";
+
   useEffect(() => {
     (async () => {
       // TODO: get data from server
-      console.log(
-        process.env.REACT_APP_API_URL +
-          `/board/get-category-titles?category_id=${category_id}`,
-      );
       try {
-        const response = await fetch(
-          process.env.REACT_APP_API_URL +
-            `/board/get-category-titles?category_id=${category_id}`,
-          {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          },
-        );
+        const response = await fetch(process.env.REACT_APP_API_URL + `/board/get-category-titles?category_id=${category_id}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
         if (response.status !== 200) {
           throw new Error("데이터를 가져오는데 실패하였습니다.");
         }
         const jsonData = await response.json();
-        console.log(jsonData.result);
         let boardData = jsonData.result.filter((data) => data.notice === false);
         let noticeData = jsonData.result.filter((data) => data.notice === true);
         // Sort data by id
@@ -136,25 +125,16 @@ const BoardList = ({ category_id, datas = mock }) => {
               noticeData.map(
                 (data) =>
                   data.category_id === category_id && (
-                    <TableRow
-                      key={data.id}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
+                    <TableRow key={data.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                       <TableCell align="center">[공지] {data.id}</TableCell>
                       <TableCell align="center">
-                        <Link
-                          component={RouterLink}
-                          to={`/board/notice/read?id=${data.id}`}
-                          sx={{ width: "100%" }}
-                        >
+                        <Link component={RouterLink} to={readPage + "?id=" + data.id} sx={{ width: "100%" }}>
                           {data.title}
                         </Link>
                       </TableCell>
                       <TableCell align="center">{data.user_name}</TableCell>
                       <TableCell align="center">{data.views}</TableCell>
-                      <TableCell align="center">
-                        {moment(data.created_at).format("YYYY-MM-DD HH:mm")}
-                      </TableCell>
+                      <TableCell align="center">{moment(data.created_at).format("YYYY-MM-DD HH:mm")}</TableCell>
                     </TableRow>
                   ),
               )}
@@ -163,25 +143,16 @@ const BoardList = ({ category_id, datas = mock }) => {
               boardData.map(
                 (data) =>
                   data.category_id === category_id && (
-                    <TableRow
-                      key={data.id}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
+                    <TableRow key={data.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                       <TableCell align="center">{data.id}</TableCell>
                       <TableCell align="center">
-                        <Link
-                          component={RouterLink}
-                          to={`/board/notice/read?id=${data.id}`}
-                          sx={{ width: "100%" }}
-                        >
+                        <Link component={RouterLink} to={readPage + "?id=" + data.id} sx={{ width: "100%" }}>
                           {data.title}
                         </Link>
                       </TableCell>
                       <TableCell align="center">{data.user_name}</TableCell>
                       <TableCell align="center">{data.views}</TableCell>
-                      <TableCell align="center">
-                        {moment(data.created_at).format("YYYY-MM-DD HH:mm")}
-                      </TableCell>
+                      <TableCell align="center">{moment(data.created_at).format("YYYY-MM-DD HH:mm")}</TableCell>
                     </TableRow>
                   ),
               )}
@@ -209,20 +180,13 @@ const BoardList = ({ category_id, datas = mock }) => {
           justifyContent: "center",
           alignItems: "center",
           width: "100%",
+          mt: 2,
         }}
       >
         <ButtonGroup>
-          <Button onClick={() => setPages(page - 1 > 0 ? page - 1 : 1)}>
-            이전
-          </Button>
+          <Button onClick={() => setPages(page - 1 > 0 ? page - 1 : 1)}>이전</Button>
           <Button>{page}</Button>
-          <Button
-            onClick={() =>
-              setPages(page + 1 < totalPage ? page + 1 : totalPage)
-            }
-          >
-            다음
-          </Button>
+          <Button onClick={() => setPages(page + 1 < totalPage ? page + 1 : totalPage)}>다음</Button>
         </ButtonGroup>
       </Box>
     </>
