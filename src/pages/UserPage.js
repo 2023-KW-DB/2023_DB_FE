@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Container, TextField, Button, Typography, Grid } from "@mui/material";
 
 const mock= {
   email: "user1@gmail.com",
-  name: "user1",
+  username: "user1",
   age: 23,
   password: "1234",
-  phone: "+82 01012345678",
+  phone_number: "+82 01012345678",
   weight: 70,
 };
 
@@ -19,9 +20,35 @@ const UserPage = () => {
   const [isPasswordSame, setIsPasswordSame] = useState(true);
   const [newPhone, setNewPhone] = useState("");
   const [newWeight, setNewWeight] = useState("");
+
+
+  const user = useSelector((state) => state.user);
+
+  
   useEffect(() => {
-    setUserData(mock);
-  }, []);
+    (async () => {
+      try {
+        if (user && user.id) {
+          const userResponse = await fetch(process.env.REACT_APP_API_URL + `/users/get-userinfo?user_id=${user.id}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+          });
+          if (userResponse.status !== 200) {
+            throw new Error("사용자 정보를 가져오는데 실패하였습니다.");
+          }
+          const userJsonData = await userResponse.json();
+          console.log(userJsonData.result);
+          setUserData(userJsonData.result);
+        }
+        else {
+          throw new Error("로그인 상태가 아닙니다.");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [user]);
 
   const handleEditClick = () => {
     setEditMode(true);
@@ -44,7 +71,7 @@ const UserPage = () => {
         setUserData((prevUserData) => ({
           ...prevUserData,
           password: newPassword || prevUserData.password,
-          phone: newPhone || prevUserData.phone,
+          phone: newPhone || prevUserData.phone_number,
           weight: newWeight || prevUserData.weight,
         }));
        
@@ -91,7 +118,7 @@ const UserPage = () => {
               fullWidth
               variant="outlined"
               label="이름"
-              value={userData.name}
+              value={userData.username}
               InputProps={{ readOnly: true }}
             />
           </Grid>
@@ -146,7 +173,7 @@ const UserPage = () => {
               fullWidth
               variant="outlined"
               label="전화번호"
-              value={editMode ? newPhone || userData.phone : userData.phone}
+              value={editMode ? newPhone || userData.phone_number : userData.phone_number}
               onChange={(e) => setNewPhone(e.target.value)}
               disabled={!editMode}
             />
