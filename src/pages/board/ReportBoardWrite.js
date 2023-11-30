@@ -1,15 +1,15 @@
 import { Container, Typography } from "@mui/material";
 import BoardWrite from "../components/BoardWrite";
 
-const NoticeBoardWrite = () => {
+const ReportBoardWrite = () => {
   return (
     <Container component="main" maxWidth="md">
       <Typography component="h1" variant="h5" sx={{ py: 3 }}>
-        공지사항 수정
+        따릉이 고장 신고 게시판
       </Typography>
-      <BoardWrite category_id={1} beforeLink={"/board?id=notice"} />
+      <BoardWrite category_id={4} beforeLink={"/board?id=report"} />
     </Container>
   );
 };
 
-export default NoticeBoardWrite;
+export default ReportBoardWrite;

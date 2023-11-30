@@ -8,6 +8,8 @@ import Payment from "./pages/Payment";
 import NoticeBoardList from "./pages/board/NoticeBoardList";
 import NoticeBoardRead from "./pages/board/NoticeBoardRead";
 import NoticeBoardWrite from "./pages/board/NoticeBoardWrite";
+import FreeBoardRead from "./pages/board/FreeBoardRead";
+import FreeBoardWrite from "./pages/board/FreeBoardWrite";
 import Admin from "./pages/Admin";
 import TravelRating from "./pages/TravelRating";
 import RatingReview from "./pages/RatingReview";
@@ -22,6 +24,12 @@ import AdminBikeEdit from "./pages/admin/AdminBikeEdit";
 import AdminBikeAdd from "./pages/admin/AdminBikeAdd";
 import AdminTicketAdd from "./pages/admin/AdminTicketAdd";
 import AdminBikeStationEdit from "./pages/admin/AdminBikeStationEdit";
+import AdminBikeStationAdd from "./pages/admin/AdminBikeStationAdd";
+import Board from "./pages/Board";
+import QnaBoardRead from "./pages/board/QnaBoardRead";
+import QnaBoardWrite from "./pages/board/QnaBoardWrite";
+import ReportBoardWrite from "./pages/board/ReportBoardWrite";
+import ReportBoardRead from "./pages/board/ReportBoardRead";
 
 const router = () => {
   return (
@@ -32,9 +40,19 @@ const router = () => {
       <Route path="/history" element={<History />} />
       <Route path="/ticket" element={<BuyTicket />} />
       <Route path="/payment" element={<Payment />} />
-      <Route path="/board/notice" element={<NoticeBoardList />} />
+
+      <Route path="/board" element={<Board />} />
       <Route path="/board/notice/read" element={<NoticeBoardRead />} />
       <Route path="/board/notice/write" element={<NoticeBoardWrite />} />
+
+      <Route path="/board/free/read" element={<FreeBoardRead />} />
+      <Route path="/board/free/write" element={<FreeBoardWrite />} />
+
+      <Route path="/board/qna/read" element={<QnaBoardRead />} />
+      <Route path="/board/qna/write" element={<QnaBoardWrite />} />
+
+      <Route path="/board/report/read" element={<ReportBoardRead />} />
+      <Route path="/board/report/write" element={<ReportBoardWrite />} />
 
       <Route path="/admin" element={<Admin />} />
       <Route path="/admin/user/edit" element={<AdminUserEdit />} />
@@ -46,6 +64,7 @@ const router = () => {
       <Route path="/admin/bike/add" element={<AdminBikeAdd />} />
 
       <Route path="/admin/bikestation/edit" element={<AdminBikeStationEdit />} />
+      <Route path="/admin/bikestation/add" element={<AdminBikeStationAdd />} />
 
       <Route path="/travelrating" element={<TravelRating />} />
       <Route path="/ratingreview" element={<RatingReview />} />

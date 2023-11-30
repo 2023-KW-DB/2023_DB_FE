@@ -95,9 +95,9 @@ const KakaoMap = ({ onClickMarker, isOnRent }) => {
       });
 
       kakao.maps.event.addListener(marker, "mouseout", () => {
-        // setTimeout(() => {
-        //   infoWindow.close();
-        // }, 3000);
+        setTimeout(() => {
+          infoWindow.close();
+        }, 3000);
       });
 
       // 마커 이벤트 리스너 등록

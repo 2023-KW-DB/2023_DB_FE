@@ -7,7 +7,7 @@ const NoticeBoardWrite = () => {
       <Typography component="h1" variant="h5" sx={{ py: 3 }}>
         공지사항
       </Typography>
-      <BoardWrite category_id={1} beforeLink={"/board/notice"} />
+      <BoardWrite category_id={1} beforeLink={"/board?id=notice"} />
     </Container>
   );
 };
