@@ -19,7 +19,12 @@ import {
 } from "@mui/material";
 import ListIcon from "@mui/icons-material/List";
 import PageRouter from "./Router";
-import { RouterProvider, Link as RouterLink, Router } from "react-router-dom";
+import {
+  RouterProvider,
+  Link as RouterLink,
+  Router,
+  useNavigate,
+} from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./store/userSlice";
@@ -27,32 +32,34 @@ import { setUser } from "./store/userSlice";
 const drawerWidth = 240;
 const navItems = [
   {
-    name: "공지사항",
+    name: "게시판 / 문의",
     path: "/board?id=notice",
-  },
-  {
-    name: "지도 확인",
-    path: "/",
+    need_login: false,
   },
   {
     name: "이력 확인",
     path: "/history",
+    need_login: true,
   },
   {
     name: "티켓 구매",
     path: "/ticket",
+    need_login: true,
   },
   {
     name: "뉴스",
     path: "/news",
+    need_login: false,
   },
   {
     name: "즐겨찾기",
     path: "/favorite",
+    need_login: true,
   },
   {
     name: "랭킹",
     path: "/ranking",
+    need_login: false,
   },
 ];
 
@@ -74,14 +81,19 @@ function DrawerAppBar(props) {
   const user = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch(process.env.REACT_APP_API_URL + `/users/get-userinfo?user_id=${cookies.id}`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
+        const response = await fetch(
+          process.env.REACT_APP_API_URL +
+            `/users/get-userinfo?user_id=${cookies.id}`,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
         if (response.status !== 200) {
           throw new Error("로그인에 실패하였습니다.");
         }
@@ -100,11 +112,14 @@ function DrawerAppBar(props) {
   const handleLogout = () => {
     (async () => {
       try {
-        const response = await fetch(process.env.REACT_APP_API_URL + "/users/signout", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-        });
+        const response = await fetch(
+          process.env.REACT_APP_API_URL + "/users/signout",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+          },
+        );
       } catch (error) {
         console.log(error);
       }
@@ -117,7 +132,7 @@ function DrawerAppBar(props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
+      <Typography variant="h6" sx={{ my: 2 }} component={RouterLink} to={"/"}>
         따릉이 시뮬레이터
       </Typography>
       <Divider />
@@ -125,7 +140,12 @@ function DrawerAppBar(props) {
         {navItems.map((item) => (
           <ListItem key={item.name} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
-              <Link component={RouterLink} to={item.path} underline="none" color="inherit">
+              <Link
+                component={RouterLink}
+                to={item.path}
+                underline="none"
+                color="inherit"
+              >
                 <ListItemText primary={item.name} />
               </Link>
             </ListItemButton>
@@ -135,27 +155,57 @@ function DrawerAppBar(props) {
     </Box>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar component="nav">
         <Toolbar>
-          <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2, display: { sm: "none" } }}>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: "none" } }}
+          >
             <ListIcon />
           </IconButton>
-          <Typography variant="h6" sx={{ flexGrow: 1, display: { xs: "none", sm: "block" }, underline: "none", color: "#fff" }} component={RouterLink} to="/">
+          <Typography
+            variant="h6"
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", sm: "block" },
+              underline: "none",
+              color: "#fff",
+            }}
+            component={RouterLink}
+            to="/"
+          >
             따릉이 시뮬레이터
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map((item) => (
-              <Button key={item.name} sx={{ color: "#fff" }}>
-                <Link component={RouterLink} to={item.path} underline="none" color="inherit">
-                  {item.name}
-                </Link>
-              </Button>
-            ))}
+            {navItems.map(
+              (item) =>
+                (!item.need_login ||
+                  (item.need_login && cookies && cookies.id)) && (
+                  <Button
+                    key={item.name}
+                    sx={{ color: "#fff", textTransform: "none" }}
+                  >
+                    <Link
+                      component={RouterLink}
+                      to={item.path}
+                      underline="none"
+                      color="inherit"
+                    >
+                      {item.name}
+                    </Link>
+                  </Button>
+                ),
+            )}
+
             {cookies && cookies.id && (
               <Button sx={{ color: "#fff" }} onClick={handleLogout}>
                 로그아웃
@@ -165,15 +215,28 @@ function DrawerAppBar(props) {
               <>
                 {guestNavItems.map((item) => (
                   <Button key={item.name} sx={{ color: "#fff" }}>
-                    <Link component={RouterLink} to={item.path} underline="none" color="inherit">
+                    <Link
+                      component={RouterLink}
+                      to={item.path}
+                      underline="none"
+                      color="inherit"
+                    >
                       {item.name}
                     </Link>
                   </Button>
                 ))}
               </>
             )}
-            <Button sx={{ color: "#fff" }}>
-              <Link component={RouterLink} to="/userpage" underline="none" color="inherit">
+            <Button
+              sx={{ color: "#fff", textTransform: "none" }}
+              style={{ textTransform: "none" }}
+            >
+              <Link
+                component={RouterLink}
+                to="/userpage"
+                underline="none"
+                color="inherit"
+              >
                 <Typography variant="span">
                   {user && user.username ? user.username + "님 " : "손님 "}
                   반갑습니다.
@@ -205,7 +268,13 @@ function DrawerAppBar(props) {
       </nav>
       <Box component="main" sx={{ width: "100%" }}>
         <Toolbar />
-        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <PageRouter />
         </Box>
       </Box>

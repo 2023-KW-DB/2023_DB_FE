@@ -1,4 +1,11 @@
-import { Box, Container, TextField, Typography, Divider, Button } from "@mui/material";
+import {
+  Box,
+  Container,
+  TextField,
+  Typography,
+  Divider,
+  Button,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { ConfirmationNumber, Redeem } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
@@ -51,10 +58,14 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_URL + `/board/get-board?id=${board_id}&user_id=1`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await fetch(
+        process.env.REACT_APP_API_URL +
+          `/board/get-board?id=${board_id}&user_id=1`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        },
+      );
       if (response.status !== 200) {
         throw new Error("데이터를 가져오는데 실패하였습니다.");
       }
@@ -73,27 +84,33 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
     (async () => {
       try {
         if (!like) {
-          const response = await fetch(process.env.REACT_APP_API_URL + `/board/like`, {
-            method: "POST",
-            body: JSON.stringify({
-              user_id: user.id,
-              liked_id: boardData.id,
-              category_id: boardData.category_id,
-            }),
-            headers: { "Content-Type": "application/json" },
-          });
+          const response = await fetch(
+            process.env.REACT_APP_API_URL + `/board/like`,
+            {
+              method: "POST",
+              body: JSON.stringify({
+                user_id: user.id,
+                liked_id: boardData.id,
+                category_id: boardData.category_id,
+              }),
+              headers: { "Content-Type": "application/json" },
+            },
+          );
           setLikeCount(like ? likeCount - 1 : likeCount + 1);
           setLike(!like);
         } else {
-          const response = await fetch(process.env.REACT_APP_API_URL + `/board/like-cancel`, {
-            method: "DELETE",
-            body: JSON.stringify({
-              user_id: user.id,
-              liked_id: boardData.id,
-              category_id: boardData.category_id,
-            }),
-            headers: { "Content-Type": "application/json" },
-          });
+          const response = await fetch(
+            process.env.REACT_APP_API_URL + `/board/like-cancel`,
+            {
+              method: "DELETE",
+              body: JSON.stringify({
+                user_id: user.id,
+                liked_id: boardData.id,
+                category_id: boardData.category_id,
+              }),
+              headers: { "Content-Type": "application/json" },
+            },
+          );
           setLikeCount(like ? likeCount - 1 : likeCount + 1);
           setLike(!like);
         }
@@ -109,23 +126,31 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
         (async () => {
           try {
             if (!comment.userLiked) {
-              const response = await fetch(process.env.REACT_APP_API_URL + `/board/comment/like`, {
-                method: "POST",
-                body: JSON.stringify({
-                  user_id: user.id,
-                  liked_id: comment.id,
-                }),
-                headers: { "Content-Type": "application/json" },
-              });
+              const response = await fetch(
+                process.env.REACT_APP_API_URL + `/board/comment/like`,
+                {
+                  method: "POST",
+                  body: JSON.stringify({
+                    user_id: user.id,
+                    liked_id: comment.id,
+                    category_id: boardData.category_id,
+                  }),
+                  headers: { "Content-Type": "application/json" },
+                },
+              );
             } else {
-              const response = await fetch(process.env.REACT_APP_API_URL + `/board/comment/like-cancel`, {
-                method: "DELETE",
-                body: JSON.stringify({
-                  user_id: user.id,
-                  liked_id: comment.id,
-                }),
-                headers: { "Content-Type": "application/json" },
-              });
+              const response = await fetch(
+                process.env.REACT_APP_API_URL + `/board/comment/like-cancel`,
+                {
+                  method: "DELETE",
+                  body: JSON.stringify({
+                    user_id: user.id,
+                    liked_id: comment.id,
+                    category_id: boardData.category_id,
+                  }),
+                  headers: { "Content-Type": "application/json" },
+                },
+              );
             }
           } catch (e) {
             alert("데이터를 처리하는데 실패하였습니다.");
@@ -146,22 +171,26 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
   const submitCommentHandler = () => {
     (async () => {
       try {
-        const response = await fetch(process.env.REACT_APP_API_URL + `/board/comment-write`, {
-          method: "POST",
-          body: JSON.stringify({
-            user_id: user.id,
-            write_id: boardData.id,
-            category_id: boardData.category_id,
-            content: myComment,
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
+        const response = await fetch(
+          process.env.REACT_APP_API_URL + `/board/comment-write`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              user_id: user.id,
+              write_id: boardData.id,
+              category_id: boardData.category_id,
+              content: myComment,
+            }),
+            headers: { "Content-Type": "application/json" },
+          },
+        );
         if (response.status !== 200) {
           throw new Error("데이터를 가져오는데 실패하였습니다.");
         }
         const jsonData = await response.json();
         alert("댓글이 등록되었습니다.");
         fetchData();
+        setMyComment("");
       } catch (e) {
         alert("데이터를 처리하는데 실패하였습니다.");
       }
@@ -178,9 +207,19 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
       <Typography component="h3" variant="h5" sx={{ py: 1 }}>
         {boardData.title}
       </Typography>
-      <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", width: "100%", justifyContent: "space-between" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          width: "100%",
+          justifyContent: "space-between",
+        }}
+      >
         <Typography>작성자: {boardData.user_name}</Typography>
-        <Typography>작성일: {moment(boardData.created_at).format("YYYY-MM-DD")}</Typography>
+        <Typography>
+          작성일: {moment(boardData.created_at).format("YYYY-MM-DD")}
+        </Typography>
       </Box>
       <Divider sx={{ my: 3 }} />
       <Box sx={{ minHeight: "300px", boxShadow: 1, p: 3 }}>
@@ -190,55 +229,137 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
         </Typography>
       </Box>
       {/* 버튼 목록 */}
-      <Box sx={{ display: "flex", my: 3, flexDirection: "row", alignItems: "center", width: "100%", justifyContent: "space-between" }}>
-        <Button variant="contained" sx={{ mt: 3 }} component={RouterLink} to={beforeLink}>
+      <Box
+        sx={{
+          display: "flex",
+          my: 3,
+          flexDirection: "row",
+          alignItems: "center",
+          width: "100%",
+          justifyContent: "space-between",
+        }}
+      >
+        <Button
+          variant="contained"
+          sx={{ mt: 3 }}
+          component={RouterLink}
+          to={beforeLink}
+        >
           목록으로 이동
         </Button>
         <Box>
           {like ? (
             <FavoriteIcon
               className={useAnimate && "heart-animate"}
-              sx={{ mr: 1, cursor: "pointer", width: "100%", textAlign: "center", color: "#FF3040" }}
+              sx={{
+                mr: 1,
+                cursor: "pointer",
+                width: "100%",
+                textAlign: "center",
+                color: "#FF3040",
+              }}
               onClick={postLikeHandler}
             />
           ) : (
-            <FavoriteBorderOutlinedIcon sx={{ mr: 1, cursor: "pointer", width: "100%", textAlign: "center" }} onClick={postLikeHandler} />
+            <FavoriteBorderOutlinedIcon
+              sx={{
+                mr: 1,
+                cursor: "pointer",
+                width: "100%",
+                textAlign: "center",
+              }}
+              onClick={postLikeHandler}
+            />
           )}
-          <Typography sx={{ width: "100%", textAlign: "center" }}>{likeCount}</Typography>
+          <Typography sx={{ width: "100%", textAlign: "center" }}>
+            {likeCount}
+          </Typography>
         </Box>
       </Box>
       <Box>
         {comments &&
           comments.map((comment) => (
             <Box sx={{ boxShadow: 1, p: 3, m: 1, my: 3 }}>
-              <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", width: "100%", justifyContent: "space-between" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Typography>{comment.username}</Typography>
-                <Typography>{moment(comment.created_at).format("YYYY-MM-DD HH:mm")}</Typography>
+                <Typography>
+                  {moment(comment.created_at).format("YYYY-MM-DD HH:mm")}
+                </Typography>
               </Box>
               <Divider sx={{ width: "300px" }} />
-              <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", width: "100%", justifyContent: "space-between" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Typography>{comment.content}</Typography>
                 <Box>
                   {comment.userLiked ? (
                     <FavoriteIcon
                       className={useAnimate && "heart-animate"}
-                      sx={{ mr: 1, width: "100%", textAlign: "center", cursor: "pointer", color: "#FF3040" }}
+                      sx={{
+                        mr: 1,
+                        width: "100%",
+                        textAlign: "center",
+                        cursor: "pointer",
+                        color: "#FF3040",
+                      }}
                       onClick={() => postCommentLikeHandler(comment.id)}
                     />
                   ) : (
                     <FavoriteBorderOutlinedIcon
-                      sx={{ mr: 1, width: "100%", textAlign: "center", cursor: "pointer" }}
+                      sx={{
+                        mr: 1,
+                        width: "100%",
+                        textAlign: "center",
+                        cursor: "pointer",
+                      }}
                       onClick={() => postCommentLikeHandler(comment.id)}
                     />
                   )}
-                  <Typography sx={{ width: "100%", textAlign: "center" }}>{comment.likeCount}</Typography>
+                  <Typography sx={{ width: "100%", textAlign: "center" }}>
+                    {comment.likeCount}
+                  </Typography>
                 </Box>
               </Box>
             </Box>
           ))}
-        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", width: "100%", justifyContent: "space-between", py: 2, pb: 10 }}>
-          <TextField id="standard-basic" label="댓글" variant="standard" sx={{ width: "100%", mx: 2 }} onChange={(e) => setMyComment(e.target.value)} />
-          <Button variant="contained" sx={{ mt: 3 }} onClick={submitCommentHandler}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            width: "100%",
+            justifyContent: "space-between",
+            py: 2,
+            pb: 10,
+          }}
+        >
+          <TextField
+            id="standard-basic"
+            label="댓글"
+            variant="standard"
+            sx={{ width: "100%", mx: 2 }}
+            value={myComment}
+            onChange={(e) => setMyComment(e.target.value)}
+          />
+          <Button
+            variant="contained"
+            sx={{ mt: 3 }}
+            onClick={submitCommentHandler}
+          >
             등록
           </Button>
         </Box>
