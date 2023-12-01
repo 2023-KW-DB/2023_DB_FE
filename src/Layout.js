@@ -42,7 +42,7 @@ const navItems = [
     need_login: true,
   },
   {
-    name: "티켓 구매",
+    name: "이용권 구매",
     path: "/ticket",
     need_login: true,
   },
@@ -176,45 +176,66 @@ function DrawerAppBar(props) {
             variant="h6"
             sx={{
               flexGrow: 1,
-              display: { xs: "none", sm: "block" },
+              // display: { xs: "none", sm: "block" },
               underline: "none",
+              justifyContent: "center",
               color: "#fff",
             }}
             component={RouterLink}
             to="/"
           >
             따릉이 시뮬레이터
+            <Link
+              component={RouterLink}
+              to="/userpage"
+              underline="none"
+              color="inherit"
+              sx={{ pl: 3, justifyContent: "center" }}
+            >
+              <Typography variant="span" sx={{ fontSize: "14px" }}>
+                {user && user.username ? user.username + "님 " : "손님 "}
+                반갑습니다
+              </Typography>
+            </Link>
           </Typography>
+
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map(
               (item) =>
                 (!item.need_login ||
                   (item.need_login && cookies && cookies.id)) && (
-                  <Button
-                    key={item.name}
-                    sx={{ color: "#fff", textTransform: "none" }}
-                  >
-                    <Link
-                      component={RouterLink}
-                      to={item.path}
-                      underline="none"
-                      color="inherit"
+                  <>
+                    <Button
+                      key={item.name}
+                      sx={{
+                        color: "#fff",
+                        textTransform: "none",
+                        // width: "100px",
+                        mx: 1,
+                      }}
                     >
-                      {item.name}
-                    </Link>
-                  </Button>
+                      <Link
+                        component={RouterLink}
+                        to={item.path}
+                        underline="none"
+                        color="inherit"
+                      >
+                        {item.name}
+                      </Link>
+                    </Button>
+                  </>
                 ),
             )}
 
             {cookies && cookies.id && (
-              <Button sx={{ color: "#fff" }} onClick={handleLogout}>
+              <Button sx={{ color: "#fff", mx: 1 }} onClick={handleLogout}>
                 로그아웃
               </Button>
             )}
             {(!user || !user.username) && (
               <>
                 {guestNavItems.map((item) => (
-                  <Button key={item.name} sx={{ color: "#fff" }}>
+                  <Button key={item.name} sx={{ color: "#fff", mx: 1 }}>
                     <Link
                       component={RouterLink}
                       to={item.path}
@@ -237,10 +258,7 @@ function DrawerAppBar(props) {
                 underline="none"
                 color="inherit"
               >
-                <Typography variant="span">
-                  {user && user.username ? user.username + "님 " : "손님 "}
-                  반갑습니다.
-                </Typography>
+                <Typography variant="span">마이 페이지</Typography>
               </Link>
             </Button>
           </Box>

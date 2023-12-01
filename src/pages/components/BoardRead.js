@@ -204,7 +204,7 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
         InputProps={{ readOnly: true }}
         sx={{ height: "200px"}}
       /> */}
-      <Typography component="h3" variant="h5" sx={{ py: 1 }}>
+      <Typography component="h3" variant="h5" sx={{ py: 1, fontWeight: 700 }}>
         {boardData.title}
       </Typography>
       <Box
@@ -213,11 +213,12 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
           flexDirection: "row",
           alignItems: "center",
           width: "100%",
-          justifyContent: "space-between",
+          justifyContent: "start",
         }}
       >
-        <Typography>작성자: {boardData.user_name}</Typography>
-        <Typography>
+        <Typography sx={{ pr: 2 }}>작성자: {boardData.user_name}</Typography>
+        <Typography sx={{ px: 2 }}>조회수: {boardData.views}</Typography>
+        <Typography sx={{ px: 2 }}>
           작성일: {moment(boardData.created_at).format("YYYY-MM-DD")}
         </Typography>
       </Box>
