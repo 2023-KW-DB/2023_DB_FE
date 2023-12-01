@@ -80,6 +80,14 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
     }
   };
 
+  const handleEdit = () => {
+    console.log("Edit button clicked");
+  };
+
+  const handleDelete = () => {
+    console.log("Delete button clicked");
+  };
+
   const postLikeHandler = () => {
     (async () => {
       try {
@@ -238,16 +246,26 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
           alignItems: "center",
           width: "100%",
           justifyContent: "space-between",
+          gap : 1,
         }}
       >
         <Button
           variant="contained"
-          sx={{ mt: 3 }}
+          sx={{ mt: 3, mr: 0.17 }}
           component={RouterLink}
           to={beforeLink}
         >
           목록으로 이동
         </Button>
+        
+        <Button variant="contained" sx={{ mt: 3, mr: 0.17 }} onClick={handleEdit}>
+            수정
+        </Button>
+
+        <Button variant="contained" sx={{ mt: 3}} onClick={handleDelete}>
+            삭제
+        </Button>
+        
         <Box>
           {like ? (
             <FavoriteIcon
