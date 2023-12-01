@@ -66,23 +66,19 @@ const AdminUser = () => {
   const handleRemoveUser = (id) => {
     (async () => {
       try {
-        const response = await fetch(process.env.REACT_APP_API_URL + `/admin/delete-user`, {
+        const response = await fetch(process.env.REACT_APP_API_URL + "/admin/delete-user", {
           method: "DELETE",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             id: id,
           }),
+          headers: { "Content-Type": "application/json" },
         });
         if (response.status !== 200) {
           throw new Error("데이터를 삭제하는데 실패하였습니다.");
         }
         const jsonData = await response.json();
-        if (jsonData.result === "success") {
-          alert("데이터를 삭제하는데 성공하였습니다.");
-          window.location.reload();
-        } else {
-          throw new Error("데이터를 삭제하는데 실패하였습니다.");
-        }
+        alert("데이터를 삭제하는데 성공하였습니다.");
+        window.location.reload();
       } catch (error) {
         alert("데이터를 삭제하는데 실패하였습니다.");
       }

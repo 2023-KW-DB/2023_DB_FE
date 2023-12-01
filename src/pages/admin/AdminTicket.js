@@ -58,7 +58,7 @@ const AdminTicket = () => {
   const handleRemoveTicket = (id) => {
     (async () => {
       try {
-        const response = await fetch(process.env.REACT_APP_API_URL + "/admin/delete-user", {
+        const response = await fetch(process.env.REACT_APP_API_URL + "/admin/delete-ticket", {
           method: "DELETE",
           body: JSON.stringify({
             id: id,
