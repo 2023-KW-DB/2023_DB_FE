@@ -188,14 +188,13 @@ const Main = () => {
         }
         const jsonData = await response.json();
         if (jsonData.status !== 2025) {
-          
           setIsFavorite(!isFavorite);
-          if(isFavorite){
+          if (isFavorite) {
             alert("즐겨찾기 해제에 성공하였습니다.");
-          }else{
+          } else {
             alert("즐겨찾기 설정에 성공하였습니다.");
           }
-          
+
           return;
         } else {
           alert("즐겨찾기 설정에 실패하였습니다.");
@@ -205,12 +204,12 @@ const Main = () => {
         alert("즐겨찾기 설정에 실패하였습니다.");
       }
     })();
-    localStorage.setItem('isFavorite', !isFavorite);
+    localStorage.setItem("isFavorite", !isFavorite);
     setIsFavorite(!isFavorite);
   };
 
   useEffect(() => {
-    const favoriteStatus = localStorage.getItem('isFavorite') === 'true';
+    const favoriteStatus = localStorage.getItem("isFavorite") === "true";
     setIsFavorite(favoriteStatus);
   }, []);
 
@@ -544,7 +543,13 @@ const Main = () => {
                         <StarOutlineIcon />
                       </Button>
                     )}
-                    <Button type="button" variant="contained" color="info" onClick={() => {}}>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="info"
+                      component={RouterLink}
+                      to={"/ratingreview?id=" + (isOnRent ? endPos.lendplace_id : startPos.lendplace_id)}
+                    >
                       후기 보기
                     </Button>
                   </Box>
