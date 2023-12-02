@@ -407,9 +407,11 @@ const Main = () => {
         >
           {!user || !user.id ? (
             <>
-              <Typography variant="h5" sx={{ fontWeight: "bold", my: 2 }}>
-                로그인이 필요합니다.
-              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", height: "100%" }}>
+                <Typography variant="h5" sx={{ fontWeight: "bold", fontSize: "16px", my: 2, color: "gray" }}>
+                  로그인이 필요합니다.
+                </Typography>
+              </Box>
             </>
           ) : (
             <>
