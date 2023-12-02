@@ -59,21 +59,12 @@ const BuyTicket = () => {
         }
         const jsonData = await response.json();
         alert("티켓 구매에 성공했습니다.");
-        // for (let i = 0; i < ticketList.length; i++) {
-        //   if (ticketList[i].id === id) {
-        //     setMoney(money - ticketList[i].ticket_price);
-        //     break;
-        //   }
-        // }
-        const response2 = await fetch(process.env.REACT_APP_API_URL + `/users/get-userinfo?user_id=${cookies.id}`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
-        if (response2.status !== 200) {
-          throw new Error("데이터를 가져오는데 실패하였습니다.");
+        for (let i = 0; i < ticketList.length; i++) {
+          if (ticketList[i].id === id) {
+            setMoney(money - ticketList[i].ticket_price);
+            break;
+          }
         }
-        const jsonData2 = await response2.json();
-        dispatch(setUser(jsonData2.result));
       } catch (e) {
         alert("티켓 구매에 실패했습니다.");
       }
