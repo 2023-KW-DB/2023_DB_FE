@@ -121,7 +121,6 @@ const Main = () => {
 
   const onClickMarker = useCallback(
     (marker, lendplace, userid) => {
-      console.log(userid);
       setIsOnRent((prevIsOnRent) => {
         if (prevIsOnRent) {
           getLendPlaceData(lendplace.lendplace_id, false, userid);
@@ -135,14 +134,15 @@ const Main = () => {
         const lon = lendplace.startn_lnt;
         const date = new Date().getTime();
         const datestr = moment(date).format("YYYY-MM-DD");
-        await fetchWeather(lat, lon);
+        console.log("==========lendplace");
+        console.log(lat, lon, lendplace);
+        await fetchWeather(lat, lon, lendplace);
       })();
     },
     [startPos, endPos, isOnRent],
   );
 
-  const fetchWeather = async (lat, lon) => {
-    console.log(lat, lon);
+  const fetchWeather = async (lat, lon, lendplace) => {
     const API_KEY = "6f96069f9b5896f4eadf1a221d0333ab";
     try {
       const response = await fetch(
@@ -158,7 +158,6 @@ const Main = () => {
       const jsonData = await response.json();
       jsonData.lendplace = lendplace;
       setWeatherInfo(jsonData);
-      console.log(jsonData);
     } catch (error) {
       console.log(error);
     }
@@ -250,7 +249,6 @@ const Main = () => {
   const onReturnBike = (lendplace) => {
     (async () => {
       try {
-        console.log(startPos, endPos);
         const start_lat = startPos.startn_lat;
         const statr_lnt = startPos.startn_lnt;
         const end_lat = endPos.startn_lat;
@@ -258,10 +256,6 @@ const Main = () => {
 
         // Calculate distance in meter
         const distance = Math.sqrt(Math.pow(start_lat - end_lat, 2) + Math.pow(statr_lnt - end_lnt, 2)) * 100000;
-        console.log("=========== Distance Info ===============");
-        console.log(start_lat, statr_lnt, end_lat, end_lnt);
-        console.log(distance);
-        console.log("=========================================");
 
         const response = await fetch(process.env.REACT_APP_API_URL + "/users/bike-return", {
           method: "POST",
@@ -354,7 +348,6 @@ const Main = () => {
   };
 
   const getLendPlaceData = async (lendplace_id, isStart, userid) => {
-    console.log(user.id);
     try {
       const response = await fetch(
         process.env.REACT_APP_API_URL + `/station/get-lendplace-status?lendplace_id=${lendplace_id}&user_id=${userid ? userid : 1}`,
@@ -374,8 +367,7 @@ const Main = () => {
         ...jsonData.result,
         label: "[" + jsonData.result.lendplace_id + "] " + jsonData.result.statn_addr1 + " " + jsonData.result.statn_addr2,
       };
-      console.log(newData);
-      fetchWeather(newData.startn_lat, newData.startn_lnt);
+      fetchWeather(newData.startn_lat, newData.startn_lnt, newData);
       if (isStart) {
         dispatch(setStartPos(newData));
         _setStartPos(newData);
