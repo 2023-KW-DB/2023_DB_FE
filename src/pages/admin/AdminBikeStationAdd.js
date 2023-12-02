@@ -68,7 +68,7 @@ const AdminBikeStationAdd = () => {
     <Container component="main" maxWidth="md">
       <CssBaseline />
       <Typography component="h1" variant="h5" sx={{ py: 3 }}>
-        대여소 정보 수정
+        대여소 추가
       </Typography>
       <Box
         sx={{
