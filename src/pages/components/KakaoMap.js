@@ -1,39 +1,30 @@
 import { useEffect, useState } from "react";
 import bikeStationData from "./bikeStationData.json";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Link,
-  Rating,
-  Typography,
-} from "@mui/material";
+import { Box, Button, CircularProgress, Link, Rating, Typography } from "@mui/material";
 import ReactDOMServer from "react-dom/server";
 import StarIcon from "@mui/icons-material/Star";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import { Link as RouterLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 const { kakao } = window;
 
-const KakaoMap = ({ onClickMarker, isOnRent }) => {
-  const [lat, setLat] = useState(37.62019307507592);
-  const [long, setLong] = useState(127.0586406171661);
+const KakaoMap = ({ onClickMarker, isOnRent, lat, long }) => {
+  // const [lat, setLat] = useState(37.62019307507592);
+  // const [long, setLong] = useState(127.0586406171661);
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [bikeInformationData, setBikeInformationData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch(
-          process.env.REACT_APP_API_URL +
-            "/station/get-all-lendplace?user_id=1",
-          {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-          },
-        );
+        const response = await fetch(process.env.REACT_APP_API_URL + "/station/get-all-lendplace?user_id=1", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        });
         if (response.status !== 200) {
           throw new Error("자전거 대여소 정보를 가져오는데 실패하였습니다.");
         }
@@ -71,24 +62,18 @@ const KakaoMap = ({ onClickMarker, isOnRent }) => {
 
       const marker = new kakao.maps.Marker({
         map: map,
-        position: new kakao.maps.LatLng(
-          bikeStation.startn_lat,
-          bikeStation.startn_lnt,
-        ),
+        position: new kakao.maps.LatLng(bikeStation.startn_lat, bikeStation.startn_lnt),
         text: `[${bikeStation.lendplace_id}]`,
         clickable: true,
         id: bikeStation.lendplace_id,
       });
       const infoWindow = new kakao.maps.InfoWindow({
         content: ReactDOMServer.renderToString(
-          <Box
-            style={{ padding: 5, fontSize: 12, minHeight: 100, minWidth: 175 }}
-          >
+          <Box style={{ padding: 5, fontSize: 12, minHeight: 100, minWidth: 175 }}>
             [{bikeStation.lendplace_id}]
             <br />
-            {bikeStation.statn_addr2
-              ? bikeStation.statn_addr2
-              : bikeStation.statn_addr1}
+            {bikeStation.statn_addr2 ? bikeStation.statn_addr2 : bikeStation.statn_addr1}
+            <br />
             <br />
             <Box
               style={{
@@ -98,31 +83,12 @@ const KakaoMap = ({ onClickMarker, isOnRent }) => {
                 alignItems: "center",
               }}
             >
-              {bikeStation.favorite ? <StarIcon /> : <StarOutlineIcon />}
-              {/* <Rating name="read-only" value={bikeStation.average_rating} readOnly precision={0.1} /> */}
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Typography
-                  variant="body1"
-                  sx={{ px: 2, py: 0, my: 0 }}
-                  style={{ marginTop: 0, marginBottom: 0, textAlign: "right" }}
-                >
-                  평균 평점 : {bikeStation.average_rating}점
-                </Typography>
-                <Typography
-                  variant="body1"
-                  sx={{ px: 2, py: 0, my: 0 }}
-                  style={{ marginTop: 0, marginBottom: 0, textAlign: "right" }}
-                >
-                  자전거 대수 : {bikeStation.usable_bikes}대
-                </Typography>
-              </Box>
+              <Typography variant="body1" sx={{ px: 2, py: 0, my: 0 }} style={{ marginTop: 0, marginBottom: 0, textAlign: "left" }}>
+                평점 : {bikeStation.average_rating}점
+              </Typography>
+              <Typography variant="body1" sx={{ px: 2, py: 0, my: 0 }} style={{ marginTop: 0, marginBottom: 0, textAlign: "right" }}>
+                자전거 수 : {bikeStation.usable_bikes}대
+              </Typography>
             </Box>
           </Box>,
         ),
@@ -143,7 +109,7 @@ const KakaoMap = ({ onClickMarker, isOnRent }) => {
       // 마커 이벤트 리스너 등록
       kakao.maps.event.addListener(marker, "click", () => {
         infoWindow.open(map, marker);
-        onClickMarker(marker, bikeStation);
+        onClickMarker(marker, bikeStation, user.id ? user.id : null);
       });
       newMarkers.push(marker);
     }
@@ -173,17 +139,7 @@ const KakaoMap = ({ onClickMarker, isOnRent }) => {
       updateMarkder(map, leftTop, rightBottom);
     });
     map.addOverlayMapTypeId(kakao.maps.MapTypeId.BICYCLE);
-    updateMarkder(
-      map,
-      map.getBounds().getSouthWest(),
-      map.getBounds().getNorthEast(),
-    );
-
-    setLat();
-    navigator.geolocation.getCurrentPosition(function (position) {
-      setLat(37.6194277);
-      setLong(127.05982);
-    });
+    updateMarkder(map, map.getBounds().getSouthWest(), map.getBounds().getNorthEast());
   }, [isLoaded]);
 
   useEffect(() => {
@@ -222,9 +178,7 @@ const KakaoMap = ({ onClickMarker, isOnRent }) => {
             justifyContent: "center",
           }}
         >
-          <h1 style={{ color: "white" }}>
-            자전거 대여소 정보를 가져오는 중입니다.
-          </h1>
+          <h1 style={{ color: "white" }}>자전거 대여소 정보를 가져오는 중입니다.</h1>
           <CircularProgress />
         </div>
       )}
