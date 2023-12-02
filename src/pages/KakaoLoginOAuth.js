@@ -16,9 +16,6 @@ const KakaoLoginOAuth = () => {
     }
 
     (async () => {
-      console.log(":::KakaoLoginOAuth:::");
-      console.log(":::KakaoLoginOAuth:::token:::", token);
-      console.log(":::KakaoLoginOAuth:::query:::", query);
       try {
         const url = process.env.REACT_APP_API_URL + "/login/oauth2/code/kakao" + "?code=" + query + "&fcm=" + token;
         const response = await fetch(url, {
