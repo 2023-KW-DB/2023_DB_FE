@@ -31,6 +31,7 @@ import QnaBoardWrite from "./pages/board/QnaBoardWrite";
 import ReportBoardWrite from "./pages/board/ReportBoardWrite";
 import ReportBoardRead from "./pages/board/ReportBoardRead";
 import KakaoLoginOAuth from "./pages/KakaoLoginOAuth";
+import Coupon from "./pages/Coupon";
 
 const router = () => {
   return (
@@ -75,6 +76,7 @@ const router = () => {
       <Route path="/ranking" element={<Ranking />} />
       <Route path="/find-password" element={<PasswordFind />} />
       <Route path="/oauth/kakao" element={<KakaoLoginOAuth />} />
+      <Route path="/coupon" element={<Coupon />}/>
     </Routes>
   );
 };
