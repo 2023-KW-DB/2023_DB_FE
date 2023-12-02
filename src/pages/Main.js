@@ -397,7 +397,7 @@ const Main = () => {
       >
         <Box
           sx={{
-            width: "300px",
+            width: "400px",
             borderRight: "1px solid black",
             height: "100%",
             // py: 3,
