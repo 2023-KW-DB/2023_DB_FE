@@ -305,8 +305,8 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
         }}
       >
         <Typography sx={{ pr: 2 }}>작성자: {boardData.user_name}</Typography>
-        <Typography sx={{ px: 2 }}>조회수: {boardData.views}</Typography>
-        <Typography sx={{ px: 2 }}>작성일: {moment(boardData.created_at).format("YYYY-MM-DD")}</Typography>
+        <Typography sx={{ px: 2 }}>조회수: {boardData.views + 1}</Typography>
+        <Typography sx={{ px: 2 }}>작성일: {moment(boardData.created_at).format("YYYY-MM-DD HH:mm")}</Typography>
       </Box>
       <Divider sx={{ my: 3 }} />
       <Box sx={{ minHeight: "300px", boxShadow: 1, p: 3 }}>
