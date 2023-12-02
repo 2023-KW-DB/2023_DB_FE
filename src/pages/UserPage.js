@@ -292,7 +292,7 @@ const UserPage = () => {
           )}
         </form>
       </Container>
-      <Typography component="h1" variant="h5" sx={{ py: 3 }}>
+      {/* <Typography component="h1" variant="h5" sx={{ py: 3 }}>
         이력 확인
       </Typography>
       <ButtonGroup variant="contained" aria-label="outlined primary button group" sx={{ mb: 3 }}>
@@ -304,7 +304,7 @@ const UserPage = () => {
         </Button>
       </ButtonGroup>
       {query === "travel" && <TravelHistory />}
-      {query === "ticket" && <TicketHistory />}
+      {query === "ticket" && <TicketHistory />} */}
     </Container>
   );
 };
