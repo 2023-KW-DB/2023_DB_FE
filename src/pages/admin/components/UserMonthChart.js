@@ -48,6 +48,16 @@ const UserMonthChart = ({ data }) => {
       title: {
         text: "일자별 이동거리 및 횟수",
       },
+      tooltip: {
+        trigger: "item",
+        formatter: function (params) {
+          if (params.seriesName === "이동거리") {
+            return params.seriesName + "<br/>" + params.name + "일: " + params.value + "km";
+          } else {
+            return params.seriesName + "<br/>" + params.name + "일: " + params.value + "회";
+          }
+        },
+      },
       xAxis: {
         data: xAxisData,
       },
@@ -75,18 +85,12 @@ const UserMonthChart = ({ data }) => {
           type: "line",
           data: useDistanceData,
           yAxisIndex: 0,
-          tooltip: {
-            formatter: "{a} <br/>{b}일: {c}km",
-          },
         },
         {
           name: "이용횟수",
           type: "line",
           data: useCountData,
           yAxisIndex: 1,
-          tooltip: {
-            formatter: "{a} <br/>{b}일: {c}회",
-          },
         },
       ],
     };
