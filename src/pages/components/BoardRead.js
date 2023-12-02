@@ -70,7 +70,39 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
   };
 
   const handleEdit = () => {
-    console.log("Edit button clicked");
+    const newTitle = prompt("수정할 제목을 입력하세요", boardData.title);
+    const newContent = prompt("수정할 내용을 입력하세요",boardData.content);
+    
+    if (newTitle && newContent) {
+      (async () => {
+        try {
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/board/modify-board`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id: boardData.id,
+              category_id: boardData.category_id,
+              user_id: user.id,
+              title: newTitle,
+              content: newContent,
+              notice: boardData.notice,
+              file_name: "",
+              url: "",
+            }),
+          });
+  
+          if (response.status !== 200) {
+            throw new Error("게시글 수정에 실패했습니다.");
+          }
+  
+          const jsonData = await response.json();
+          alert("게시글이 수정에 성공했습니다.");
+          fetchData();
+        } catch (e) {
+          alert(e.message);
+        }
+      })();
+    }
   };
 
   const handleDelete = () => {

@@ -169,7 +169,7 @@ function DrawerAppBar(props) {
                 </Typography>
               </Link>
             ) : (
-              <Link component={RouterLink} to="/" underline="none" color="inherit" sx={{ pl: 3, justifyContent: "center" }}>
+              <Link component={RouterLink} to="/login" underline="none" color="inherit" sx={{ pl: 3, justifyContent: "center" }}>
                 <Typography variant="span" sx={{ fontSize: "14px" }}>
                   {user && user.username ? user.username + "님 " : "손님 "}
                   반갑습니다
