@@ -84,7 +84,7 @@ const AdminBikeStationEdit = () => {
             startn_lat: startn_lat,
             startn_lnt: startn_lnt,
             max_stands: max_stands,
-            station_status: station_status,
+            station_status: station_status ? 1 : 0,
           }),
         });
         if (response.status !== 200) {

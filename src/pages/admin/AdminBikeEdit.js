@@ -86,8 +86,8 @@ const AdminBikeEdit = () => {
           body: JSON.stringify({
             id: bikeId,
             lendplace_id: lendplaceId,
-            use_status: useStatus,
-            bike_status: bikeStatus,
+            use_status: useStatus ? 1 : 0,
+            bike_status: bikeStatus ? 1 : 0,
           }),
         });
         if (response.status !== 200) {
