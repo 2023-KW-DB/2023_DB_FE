@@ -79,21 +79,26 @@ function DrawerAppBar(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await fetch(process.env.REACT_APP_API_URL + `/users/get-userinfo?user_id=${cookies.id}`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
-        if (response.status !== 200) {
-          throw new Error("로그인에 실패하였습니다.");
+    if (cookies && cookies.id) {
+      (async () => {
+        try {
+          const response = await fetch(process.env.REACT_APP_API_URL + `/users/get-userinfo?user_id=${cookies.id}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          });
+          if (response.status !== 200) {
+            throw new Error("로그인에 실패하였습니다.");
+          }
+          const jsonData = await response.json();
+          dispatch(setUser(jsonData.result));
+        } catch (error) {
+          console.log(error);
+          document.cookie = "";
+          dispatch(setUser({}));
+          document.location.href = "/";
         }
-        const jsonData = await response.json();
-        dispatch(setUser(jsonData.result));
-      } catch (error) {
-        console.log(error);
-      }
-    })();
+      })();
+    }
   }, []);
 
   const handleDrawerToggle = () => {
