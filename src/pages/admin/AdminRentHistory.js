@@ -93,84 +93,86 @@ const AdminRentHistory = () => {
   return (
     <>
       <TableContainer component={Paper}>
-        <TableHead>
-          <TableRow>
-            <TableCell align="center" className="tablecell">
-              <Typography variant="span">번호</Typography>
-            </TableCell>
-            <TableCell align="center" className="tablecell">
-              <Typography variant="span">유저명</Typography>
-            </TableCell>
-            <TableCell align="center" className="tablecell">
-              <Typography variant="span">자전거명</Typography>
-            </TableCell>
-            <TableCell align="center" className="tablecell">
-              <Typography variant="span">출발지</Typography>
-            </TableCell>
-            <TableCell align="center" className="tablecell">
-              <Typography variant="span">도착지</Typography>
-            </TableCell>
-            <TableCell align="center" className="tablecell">
-              <Typography variant="span">출발시간</Typography>
-            </TableCell>
-            <TableCell align="center" className="tablecell">
-              <Typography variant="span">도착시간</Typography>
-            </TableCell>
-            <TableCell align="center" className="tablecell">
-              <Typography variant="span">이용 시간</Typography>
-            </TableCell>
-            <TableCell align="center" className="tablecell">
-              <Typography variant="span">이용 거리</Typography>
-            </TableCell>
-            <TableCell align="center" className="tablecell">
-              <Typography variant="span">이용 결과</Typography>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {showData && showData.length > 0 ? (
-            showData.map((row, index) => (
-              <TableRow>
-                <TableCell align="center" className="tablecell">
-                  <Typography variant="span">{row.history_id}</Typography>
-                </TableCell>
-                <TableCell align="center" className="tablecell">
-                  <Typography variant="span">{row.user_id}</Typography>
-                </TableCell>
-                <TableCell align="center" className="tablecell">
-                  <Typography variant="span">{row.bike_id}</Typography>
-                </TableCell>
-                <TableCell align="center" className="tablecell">
-                  <Typography variant="span">{row.departure_station}</Typography>
-                </TableCell>
-                <TableCell align="center" className="tablecell">
-                  <Typography variant="span">{row.arrival_station}</Typography>
-                </TableCell>
-                <TableCell align="center" className="tablecell">
-                  <Typography variant="span">{moment(row.departure_time).format("YYYY-MM-DD HH:mm:ss")}</Typography>
-                </TableCell>
-                <TableCell align="center" className="tablecell">
-                  <Typography variant="span">{row.arrival_time == null ? "" : moment(row.arrival_time).format("YYYY-MM-DD HH:mm:ss")}</Typography>
-                </TableCell>
-                <TableCell align="center" className="tablecell">
-                  <Typography variant="span">{row.use_time}</Typography>
-                </TableCell>
-                <TableCell align="center" className="tablecell">
-                  <Typography variant="span">{row.use_distance}</Typography>
-                </TableCell>
-                <TableCell align="center" className="tablecell">
-                  <Typography variant="span">{row.return_status ? "대여완료" : "대여중"}</Typography>
-                </TableCell>
-              </TableRow>
-            ))
-          ) : (
+        <Table>
+          <TableHead>
             <TableRow>
-              <TableCell align="center" colSpan={10} className="tablecell">
-                <Typography variant="span">데이터가 없습니다.</Typography>
+              <TableCell align="center" className="tablecell">
+                <Typography variant="span">번호</Typography>
+              </TableCell>
+              <TableCell align="center" className="tablecell">
+                <Typography variant="span">유저명</Typography>
+              </TableCell>
+              <TableCell align="center" className="tablecell">
+                <Typography variant="span">자전거명</Typography>
+              </TableCell>
+              <TableCell align="center" className="tablecell">
+                <Typography variant="span">출발지</Typography>
+              </TableCell>
+              <TableCell align="center" className="tablecell">
+                <Typography variant="span">도착지</Typography>
+              </TableCell>
+              <TableCell align="center" className="tablecell">
+                <Typography variant="span">출발시간</Typography>
+              </TableCell>
+              <TableCell align="center" className="tablecell">
+                <Typography variant="span">도착시간</Typography>
+              </TableCell>
+              <TableCell align="center" className="tablecell">
+                <Typography variant="span">이용 시간</Typography>
+              </TableCell>
+              <TableCell align="center" className="tablecell">
+                <Typography variant="span">이용 거리</Typography>
+              </TableCell>
+              <TableCell align="center" className="tablecell">
+                <Typography variant="span">이용 결과</Typography>
               </TableCell>
             </TableRow>
-          )}
-        </TableBody>
+          </TableHead>
+          <TableBody>
+            {showData && showData.length > 0 ? (
+              showData.map((row, index) => (
+                <TableRow>
+                  <TableCell align="center" className="tablecell">
+                    <Typography variant="span">{row.history_id}</Typography>
+                  </TableCell>
+                  <TableCell align="center" className="tablecell">
+                    <Typography variant="span">{row.user_id}</Typography>
+                  </TableCell>
+                  <TableCell align="center" className="tablecell">
+                    <Typography variant="span">{row.bike_id}</Typography>
+                  </TableCell>
+                  <TableCell align="center" className="tablecell">
+                    <Typography variant="span">{row.departure_station}</Typography>
+                  </TableCell>
+                  <TableCell align="center" className="tablecell">
+                    <Typography variant="span">{row.arrival_station}</Typography>
+                  </TableCell>
+                  <TableCell align="center" className="tablecell">
+                    <Typography variant="span">{moment(row.departure_time).format("YYYY-MM-DD HH:mm:ss")}</Typography>
+                  </TableCell>
+                  <TableCell align="center" className="tablecell">
+                    <Typography variant="span">{row.arrival_time == null ? "" : moment(row.arrival_time).format("YYYY-MM-DD HH:mm:ss")}</Typography>
+                  </TableCell>
+                  <TableCell align="center" className="tablecell">
+                    <Typography variant="span">{row.use_time}</Typography>
+                  </TableCell>
+                  <TableCell align="center" className="tablecell">
+                    <Typography variant="span">{row.use_distance}</Typography>
+                  </TableCell>
+                  <TableCell align="center" className="tablecell">
+                    <Typography variant="span">{row.return_status ? "대여완료" : "대여중"}</Typography>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell align="center" colSpan={10} className="tablecell">
+                  <Typography variant="span">데이터가 없습니다.</Typography>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </TableContainer>
       <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", py: 3 }}>
         <ButtonGroup>
