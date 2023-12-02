@@ -1,22 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { store } from './store';
-import { Provider } from 'react-redux';
-import theme from "./theme"
-import { ThemeProvider } from '@mui/material';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { store } from "./store";
+import { Provider } from "react-redux";
+import theme from "./theme";
+import { ThemeProvider } from "@mui/material";
 import { token } from "./firebase-messaging-sw.js";
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <Provider store={store}>
-        <App />      
-      </Provider>
-    </ThemeProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <ThemeProvider theme={theme}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </ThemeProvider>,
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
@@ -24,15 +24,15 @@ root.render(
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/firebase-messaging-sw.js')
-    .then(function(registration) {
-      console.log('Service Worker 등록 성공:', registration.scope);
-    })
-    .catch(function(err) {
-      console.log('Service Worker 등록 실패:', err);
-    });
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker
+      .register("/firebase-messaging-sw.js")
+      .then(function (registration) {
+        console.log("Service Worker 등록 성공:", registration.scope);
+      })
+      .catch(function (err) {
+        console.log("Service Worker 등록 실패:", err);
+      });
   });
 }
-
