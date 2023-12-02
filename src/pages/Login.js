@@ -44,9 +44,9 @@ const Login = () => {
   };
 
   const onClickKakaoLogin = () => {
-    const redirectUri = process.env.REACT_APP_API_URL + "/login/oauth2/code/kakao";
+    const redirectUri = "http://localhost:3000/oauth/kakao";
     document.location.href =
-      "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=1534887d85f1d525b986e2521f7309b7&redirect_uri=http://localhost:8080/login/oauth2/code/kakao";
+      "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=1534887d85f1d525b986e2521f7309b7&redirect_uri=" + redirectUri;
   };
   return (
     <Container component="main" maxWidth="xs">
@@ -62,11 +62,8 @@ const Login = () => {
           <Grid item xs={12}>
             <TextField variant="outlined" required fullWidth name="password" label="비밀번호" type="password" id="password" autoComplete="current-password" />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControlLabel control={<Checkbox value="MaintainLogin" color="primary" />} label="로그인 상태 유지" />
-          </Grid>
         </Grid>
-        <Button type="submit" fullWidth variant="contained" color="primary">
+        <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3 }}>
           로그인하기
         </Button>
       </form>
