@@ -65,6 +65,15 @@ const BuyTicket = () => {
             break;
           }
         }
+        const response2 = await fetch(process.env.REACT_APP_API_URL + `/users/get-userinfo?user_id=${cookies.id}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response.status !== 200) {
+          throw new Error("티켓 구매에 실패하였습니다.");
+        }
+        const jsonData2 = await response2.json();
+        dispatch(setUser(jsonData2.result));
       } catch (e) {
         alert("티켓 구매에 실패했습니다.");
       }
@@ -87,7 +96,7 @@ const BuyTicket = () => {
               {/* <TableCell sx={{ maxWidth: "25px"}} >
                 <Typography variant="span">번호</Typography>
               </TableCell> */}
-              <TableCell sx={{ alignItems: "center", textAlign: "center" }}>
+              <TableCell>
                 <Typography variant="span">가격</Typography>
               </TableCell>
               <TableCell
@@ -109,7 +118,7 @@ const BuyTicket = () => {
                     {/* <TableCell>
                       <Typography variant="span">{row.id}</Typography>
                     </TableCell> */}
-                    <TableCell sx={{ alignItems: "center", textAlign: "center" }}>
+                    <TableCell>
                       <Typography variant="span">{row.ticket_price}</Typography>
                     </TableCell>
                     <TableCell
