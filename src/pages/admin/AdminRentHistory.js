@@ -95,34 +95,34 @@ const AdminRentHistory = () => {
       <TableContainer component={Paper}>
         <TableHead>
           <TableRow>
-            <TableCell className="tablecell">
+            <TableCell align="center" className="tablecell">
               <Typography variant="span">번호</Typography>
             </TableCell>
-            <TableCell className="tablecell">
+            <TableCell align="center" className="tablecell">
               <Typography variant="span">유저명</Typography>
             </TableCell>
-            <TableCell className="tablecell">
+            <TableCell align="center" className="tablecell">
               <Typography variant="span">자전거명</Typography>
             </TableCell>
-            <TableCell className="tablecell">
+            <TableCell align="center" className="tablecell">
               <Typography variant="span">출발지</Typography>
             </TableCell>
-            <TableCell className="tablecell">
+            <TableCell align="center" className="tablecell">
               <Typography variant="span">도착지</Typography>
             </TableCell>
-            <TableCell className="tablecell">
+            <TableCell align="center" className="tablecell">
               <Typography variant="span">출발시간</Typography>
             </TableCell>
-            <TableCell className="tablecell">
+            <TableCell align="center" className="tablecell">
               <Typography variant="span">도착시간</Typography>
             </TableCell>
-            <TableCell className="tablecell">
+            <TableCell align="center" className="tablecell">
               <Typography variant="span">이용 시간</Typography>
             </TableCell>
-            <TableCell className="tablecell">
+            <TableCell align="center" className="tablecell">
               <Typography variant="span">이용 거리</Typography>
             </TableCell>
-            <TableCell className="tablecell">
+            <TableCell align="center" className="tablecell">
               <Typography variant="span">이용 결과</Typography>
             </TableCell>
           </TableRow>
@@ -131,41 +131,41 @@ const AdminRentHistory = () => {
           {showData && showData.length > 0 ? (
             showData.map((row, index) => (
               <TableRow>
-                <TableCell className="tablecell">
+                <TableCell align="center" className="tablecell">
                   <Typography variant="span">{row.history_id}</Typography>
                 </TableCell>
-                <TableCell className="tablecell">
+                <TableCell align="center" className="tablecell">
                   <Typography variant="span">{row.user_id}</Typography>
                 </TableCell>
-                <TableCell className="tablecell">
+                <TableCell align="center" className="tablecell">
                   <Typography variant="span">{row.bike_id}</Typography>
                 </TableCell>
-                <TableCell className="tablecell">
+                <TableCell align="center" className="tablecell">
                   <Typography variant="span">{row.departure_station}</Typography>
                 </TableCell>
-                <TableCell className="tablecell">
+                <TableCell align="center" className="tablecell">
                   <Typography variant="span">{row.arrival_station}</Typography>
                 </TableCell>
-                <TableCell className="tablecell">
+                <TableCell align="center" className="tablecell">
                   <Typography variant="span">{moment(row.departure_time).format("YYYY-MM-DD HH:mm:ss")}</Typography>
                 </TableCell>
-                <TableCell className="tablecell">
+                <TableCell align="center" className="tablecell">
                   <Typography variant="span">{row.arrival_time == null ? "" : moment(row.arrival_time).format("YYYY-MM-DD HH:mm:ss")}</Typography>
                 </TableCell>
-                <TableCell className="tablecell">
+                <TableCell align="center" className="tablecell">
                   <Typography variant="span">{row.use_time}</Typography>
                 </TableCell>
-                <TableCell className="tablecell">
+                <TableCell align="center" className="tablecell">
                   <Typography variant="span">{row.use_distance}</Typography>
                 </TableCell>
-                <TableCell className="tablecell">
+                <TableCell align="center" className="tablecell">
                   <Typography variant="span">{row.return_status ? "대여완료" : "대여중"}</Typography>
                 </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={10} className="tablecell">
+              <TableCell align="center" colSpan={10} className="tablecell">
                 <Typography variant="span">데이터가 없습니다.</Typography>
               </TableCell>
             </TableRow>

@@ -83,22 +83,22 @@ const AdminCoupon = () => {
         <Table>
           <TableHead sx={{ width: "100%" }}>
             <TableRow>
-              <TableCell>
+              <TableCell align="center">
                 <Typography variant="span">번호</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell align="center">
                 <Typography variant="span">이름</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell align="center">
                 <Typography variant="span">가격</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell align="center">
                 <Typography variant="span">사용 여부</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell align="center">
                 <Typography variant="span">수정</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell align="center">
                 <Typography variant="span">취소</Typography>
               </TableCell>
             </TableRow>
@@ -108,24 +108,24 @@ const AdminCoupon = () => {
               <>
                 {showData.map((row, index) => (
                   <TableRow key={index}>
-                    <TableCell>
+                    <TableCell align="center">
                       <Typography variant="span">{row.id}</Typography>
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       <Typography variant="span">{row.value}</Typography>
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       <Typography variant="span">{row.ticket_price}</Typography>
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       <Typography variant="span">{row.is_used ? "사용됨" : "사용안됨"}</Typography>
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       <Button variant="contained" component={RouterLink} to={`/admin/coupon/edit?id=${row.id}`}>
                         수정
                       </Button>
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       <Button
                         variant="contained"
                         onClick={() => {
@@ -142,7 +142,7 @@ const AdminCoupon = () => {
               </>
             ) : (
               <TableRow>
-                <TableCell colSpan={4} align="center">
+                <TableCell align="center" colSpan={4} align="center">
                   <Typography variant="span">데이터가 없습니다.</Typography>
                 </TableCell>
               </TableRow>

@@ -48,13 +48,10 @@ const AdminBike = () => {
     // TODO: Fetch data
     (async () => {
       try {
-        const response = await fetch(
-          process.env.REACT_APP_API_URL + "/bike/get-all",
-          {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          },
-        );
+        const response = await fetch(process.env.REACT_APP_API_URL + "/bike/get-all", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
         if (response.status !== 200) {
           throw new Error("데이터를 가져오는데 실패하였습니다.");
         }
@@ -75,16 +72,13 @@ const AdminBike = () => {
   const handleRemoveBikeStation = (id) => {
     (async () => {
       try {
-        const response = await fetch(
-          process.env.REACT_APP_API_URL + "/bike/delete",
-          {
-            method: "DELETE",
-            body: JSON.stringify({
-              id: id,
-            }),
-            headers: { "Content-Type": "application/json" },
-          },
-        );
+        const response = await fetch(process.env.REACT_APP_API_URL + "/bike/delete", {
+          method: "DELETE",
+          body: JSON.stringify({
+            id: id,
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
         if (response.status !== 200) {
           throw new Error("데이터를 삭제하는데 실패하였습니다.");
         }
@@ -102,22 +96,22 @@ const AdminBike = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell className="user-bike-cell">
+              <TableCell align="center" className="user-bike-cell">
                 <Typography variant="span">ID</Typography>
               </TableCell>
-              <TableCell className="user-bike-cell">
+              <TableCell align="center" className="user-bike-cell">
                 <Typography variant="span">대여소 위치</Typography>
               </TableCell>
-              <TableCell className="user-bike-cell">
+              <TableCell align="center" className="user-bike-cell">
                 <Typography variant="span">사용 여부</Typography>
               </TableCell>
-              <TableCell className="user-bike-cell">
+              <TableCell align="center" className="user-bike-cell">
                 <Typography variant="span">자전거 상태</Typography>
               </TableCell>
-              <TableCell className="user-bike-cell">
+              <TableCell align="center" className="user-bike-cell">
                 <Typography variant="span">수정</Typography>
               </TableCell>
-              <TableCell className="user-bike-cell">
+              <TableCell align="center" className="user-bike-cell">
                 <Typography variant="span">삭제</Typography>
               </TableCell>
             </TableRow>
@@ -127,32 +121,24 @@ const AdminBike = () => {
               <>
                 {showData.map((row, index) => (
                   <TableRow>
-                    <TableCell className="user-bike-cell">
+                    <TableCell align="center" className="user-bike-cell">
                       <Typography variant="span">{row.id}</Typography>
                     </TableCell>
-                    <TableCell className="user-bike-cell">
+                    <TableCell align="center" className="user-bike-cell">
                       <Typography variant="span">{row.lendplace_id}</Typography>
                     </TableCell>
-                    <TableCell className="user-bike-cell">
-                      <Typography variant="span">
-                        {row.use_status ? "사용중" : "미사용중"}
-                      </Typography>
+                    <TableCell align="center" className="user-bike-cell">
+                      <Typography variant="span">{row.use_status ? "사용중" : "미사용중"}</Typography>
                     </TableCell>
-                    <TableCell className="user-bike-cell">
-                      <Typography variant="span">
-                        {row.bike_status ? "사용 가능" : "사용 불가능"}
-                      </Typography>
+                    <TableCell align="center" className="user-bike-cell">
+                      <Typography variant="span">{row.bike_status ? "사용 가능" : "사용 불가능"}</Typography>
                     </TableCell>
-                    <TableCell className="user-bike-cell">
-                      <Button
-                        variant="contained"
-                        component={RouterLink}
-                        to={`/admin/bike/edit?id=${row.id}`}
-                      >
+                    <TableCell align="center" className="user-bike-cell">
+                      <Button variant="contained" component={RouterLink} to={`/admin/bike/edit?id=${row.id}`}>
                         수정
                       </Button>
                     </TableCell>
-                    <TableCell className="user-bike-cell">
+                    <TableCell align="center" className="user-bike-cell">
                       <Button
                         variant="contained"
                         onClick={() => {
@@ -169,7 +155,7 @@ const AdminBike = () => {
               </>
             ) : (
               <TableRow>
-                <TableCell colSpan={6} align="center">
+                <TableCell align="center" colSpan={6} align="center">
                   <Typography variant="span">데이터가 없습니다.</Typography>
                 </TableCell>
               </TableRow>
@@ -187,12 +173,7 @@ const AdminBike = () => {
           py: 3,
         }}
       >
-        <Button
-          variant="contained"
-          color="primary"
-          component={RouterLink}
-          to={`/admin/bike/add`}
-        >
+        <Button variant="contained" color="primary" component={RouterLink} to={`/admin/bike/add`}>
           추가
         </Button>
         <Box
@@ -205,17 +186,9 @@ const AdminBike = () => {
           }}
         >
           <ButtonGroup>
-            <Button onClick={() => setPages(page - 1 > 0 ? page - 1 : 1)}>
-              이전
-            </Button>
+            <Button onClick={() => setPages(page - 1 > 0 ? page - 1 : 1)}>이전</Button>
             <Button>{page}</Button>
-            <Button
-              onClick={() =>
-                setPages(page + 1 < totalPage ? page + 1 : totalPage)
-              }
-            >
-              다음
-            </Button>
+            <Button onClick={() => setPages(page + 1 < totalPage ? page + 1 : totalPage)}>다음</Button>
           </ButtonGroup>
         </Box>
       </Box>

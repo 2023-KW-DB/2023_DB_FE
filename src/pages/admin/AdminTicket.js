@@ -83,16 +83,16 @@ const AdminTicket = () => {
         <Table>
           <TableHead sx={{ width: "100%" }}>
             <TableRow>
-              <TableCell>
+              <TableCell align="center">
                 <Typography variant="span">번호</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell align="center">
                 <Typography variant="span">가격</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell align="center">
                 <Typography variant="span">수정</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell align="center">
                 <Typography variant="span">삭제</Typography>
               </TableCell>
             </TableRow>
@@ -102,18 +102,18 @@ const AdminTicket = () => {
               <>
                 {showData.map((row, index) => (
                   <TableRow key={index}>
-                    <TableCell>
+                    <TableCell align="center">
                       <Typography variant="span">{row.id}</Typography>
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       <Typography variant="span">{row.ticket_price}</Typography>
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       <Button variant="contained" component={RouterLink} to={`/admin/ticket/edit?id=${row.id}`}>
                         수정
                       </Button>
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       <Button
                         variant="contained"
                         onClick={() => {
@@ -130,7 +130,7 @@ const AdminTicket = () => {
               </>
             ) : (
               <TableRow>
-                <TableCell colSpan={4} align="center">
+                <TableCell align="center" colSpan={4} align="center">
                   <Typography variant="span">데이터가 없습니다.</Typography>
                 </TableCell>
               </TableRow>

@@ -87,34 +87,34 @@ const AdminBikeStation = () => {
       <TableContainer component={Paper}>
         <TableHead sx={{ width: "100%" }}>
           <TableRow>
-            <TableCell className="user-bike-station-cell">
+            <TableCell align="center" className="user-bike-station-cell">
               <Typography variant="span">ID</Typography>
             </TableCell>
-            <TableCell className="user-bike-station-cell">
+            <TableCell align="center" className="user-bike-station-cell">
               <Typography variant="span">전체 주소</Typography>
             </TableCell>
-            <TableCell className="user-bike-station-cell">
+            <TableCell align="center" className="user-bike-station-cell">
               <Typography variant="span">이름</Typography>
             </TableCell>
-            <TableCell className="user-bike-station-cell">
+            <TableCell align="center" className="user-bike-station-cell">
               <Typography variant="span">위도</Typography>
             </TableCell>
-            <TableCell className="user-bike-station-cell">
+            <TableCell align="center" className="user-bike-station-cell">
               <Typography variant="span">경도</Typography>
             </TableCell>
-            <TableCell className="user-bike-station-cell">
+            <TableCell align="center" className="user-bike-station-cell">
               <Typography variant="span">최대 자전거 개수</Typography>
             </TableCell>
-            <TableCell className="user-bike-station-cell">
+            <TableCell align="center" className="user-bike-station-cell">
               <Typography variant="span">현재 자전거 개수</Typography>
             </TableCell>
-            <TableCell className="user-bike-station-cell">
+            <TableCell align="center" className="user-bike-station-cell">
               <Typography variant="span">사용 여부</Typography>
             </TableCell>
-            <TableCell className="user-bike-station-cell">
+            <TableCell align="center" className="user-bike-station-cell">
               <Typography variant="span">수정</Typography>
             </TableCell>
-            <TableCell className="user-bike-station-cell">
+            <TableCell align="center" className="user-bike-station-cell">
               <Typography variant="span">삭제</Typography>
             </TableCell>
           </TableRow>
@@ -124,36 +124,36 @@ const AdminBikeStation = () => {
             <>
               {showData.map((row, index) => (
                 <TableRow>
-                  <TableCell className="user-bike-station-cell">
+                  <TableCell align="center" className="user-bike-station-cell">
                     <Typography variant="span">{row.lendplace_id}</Typography>
                   </TableCell>
-                  <TableCell className="user-bike-station-cell">
+                  <TableCell align="center" className="user-bike-station-cell">
                     <Typography variant="span">{row.statn_addr1}</Typography>
                   </TableCell>
-                  <TableCell className="user-bike-station-cell">
+                  <TableCell align="center" className="user-bike-station-cell">
                     <Typography variant="span">{row.statn_addr2}</Typography>
                   </TableCell>
-                  <TableCell className="user-bike-station-cell">
+                  <TableCell align="center" className="user-bike-station-cell">
                     <Typography variant="span">{row.startn_lat}</Typography>
                   </TableCell>
-                  <TableCell className="user-bike-station-cell">
+                  <TableCell align="center" className="user-bike-station-cell">
                     <Typography variant="span">{row.startn_lnt}</Typography>
                   </TableCell>
-                  <TableCell className="user-bike-station-cell">
+                  <TableCell align="center" className="user-bike-station-cell">
                     <Typography variant="span">{row.max_stands}</Typography>
                   </TableCell>
-                  <TableCell className="user-bike-station-cell">
+                  <TableCell align="center" className="user-bike-station-cell">
                     <Typography variant="span">{row.total_bikes}</Typography>
                   </TableCell>
-                  <TableCell className="user-bike-station-cell">
+                  <TableCell align="center" className="user-bike-station-cell">
                     <Typography variant="span">{row.station_status}</Typography>
                   </TableCell>
-                  <TableCell className="user-bike-station-cell">
+                  <TableCell align="center" className="user-bike-station-cell">
                     <Button variant="contained" component={RouterLink} to={`/admin/bikestation/edit?id=${row.lendplace_id}`}>
                       수정
                     </Button>
                   </TableCell>
-                  <TableCell className="user-bike-station-cell">
+                  <TableCell align="center" className="user-bike-station-cell">
                     <Button
                       variant="contained"
                       onClick={() => {
@@ -170,7 +170,7 @@ const AdminBikeStation = () => {
             </>
           ) : (
             <TableRow>
-              <TableCell colSpan={9} align="center">
+              <TableCell align="center" colSpan={9} align="center">
                 <Typography variant="span">데이터가 없습니다.</Typography>
               </TableCell>
             </TableRow>
