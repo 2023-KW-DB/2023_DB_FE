@@ -77,8 +77,15 @@ const BoardList = ({ category_id, datas = [] }) => {
   useEffect(() => {
     (async () => {
       // TODO: get data from server
+
       try {
-        const response = await fetch(process.env.REACT_APP_API_URL + `/board/get-category-titles?category_id=${category_id}`, {
+        let url = "";
+        if (category_id === 1) {
+          url = `/board/get-notice-titles`;
+        } else {
+          url = `/board/get-category-titles?category_id=${category_id}`;
+        }
+        const response = await fetch(process.env.REACT_APP_API_URL + url, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
@@ -97,6 +104,7 @@ const BoardList = ({ category_id, datas = [] }) => {
         for (let i = 0; i < noticeData.length; i++) {
           noticeData[i].showIndex = noticeData.length - i;
         }
+        console.log(boardData, noticeData);
         setNoticeData(noticeData);
         setBoardData(boardData);
         setTotalPage(parseInt(boardData.length / 10) + 1);
@@ -165,7 +173,7 @@ const BoardList = ({ category_id, datas = [] }) => {
               noticeData.length > 0 &&
               noticeData.map(
                 (data) =>
-                  data.category_id === category_id && (
+                  (category_id === 1 || data.category_id === category_id) && (
                     <TableRow key={data.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                       <TableCell align="center">[공지]</TableCell>
                       <TableCell align="center">
@@ -182,7 +190,6 @@ const BoardList = ({ category_id, datas = [] }) => {
             {showData &&
               showData.length > 0 &&
               showData.map((data, idx) => {
-                console.log(user.user_type, data.category_id, user.username, data.user_name);
                 if (data.category_id !== category_id) return;
                 if (user.user_type === 1 && data.category_id === 3 && user.username !== data.user_name) return;
                 return (
@@ -207,14 +214,14 @@ const BoardList = ({ category_id, datas = [] }) => {
               </TableRow>
             ) : (
               <>
-                {!boardData && (
+                {!boardData && !noticeData && (
                   <TableRow>
                     <TableCell colSpan={5} align="center">
                       데이터가 없습니다.
                     </TableCell>
                   </TableRow>
                 )}
-                {boardData && boardData.length === 0 && (
+                {boardData && boardData.length === 0 && noticeData && noticeData.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={5} align="center">
                       데이터가 없습니다.
