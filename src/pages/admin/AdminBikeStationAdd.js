@@ -35,8 +35,8 @@ const AdminBikeStationAdd = () => {
   const submitHandler = () => {
     (async () => {
       try {
-        const response = await fetch(process.env.REACT_APP_API_URL + "/station/modify-lendplace", {
-          method: "PATCH",
+        const response = await fetch(process.env.REACT_APP_API_URL + "/station/create-lendplace", {
+          method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             lendplace_id: lendplace_id,
@@ -44,6 +44,7 @@ const AdminBikeStationAdd = () => {
             statn_addr2: statn_addr2,
             startn_lat: startn_lat,
             startn_lnt: startn_lnt,
+            max_stands: max_stands,
           }),
         });
         if (response.status !== 200) {
