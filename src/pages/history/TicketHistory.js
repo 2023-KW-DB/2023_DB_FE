@@ -56,7 +56,7 @@ const TicketHistory = () => {
               ticketHistory.map((row) => (
                 <TableRow key={row.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                   <TableCell align="center">{row.ticket_id}</TableCell>
-                  <TableCell align="center">{moment(row.purchased_at).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
+                  <TableCell align="center">{moment(row.registration_at).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
                   <TableCell align="center">{row.is_used ? "사용 완료" : "사용 전"}</TableCell>
                 </TableRow>
               ))
