@@ -455,7 +455,7 @@ const Main = () => {
                         자전거 대수 : {startPos.usable_bikes} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 평점 : {startPos.average_rating}점
                       </Typography>
                     ) : (
-                      "지도에서 도착지점을 선택해주세요"
+                      "지도에서 출발지점을 선택해주세요"
                     )}
                   </>
                 ) : (
