@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { ConfirmationNumber, Redeem } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import moment from "moment";
+import { useSelector } from "react-redux";
 const mock = [
   {
     category_id: 1,
@@ -60,6 +61,7 @@ const BoardList = ({ category_id, datas = [] }) => {
   const [page, setPages] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [isLoad, setIsLoad] = useState(false);
+  const user = useSelector((state) => state.user);
 
   const readPage =
     category_id === 1
@@ -95,7 +97,6 @@ const BoardList = ({ category_id, datas = [] }) => {
         for (let i = 0; i < noticeData.length; i++) {
           noticeData[i].showIndex = noticeData.length - i;
         }
-        console.log(boardData, noticeData);
         setNoticeData(noticeData);
         setBoardData(boardData);
         setTotalPage(parseInt(boardData.length / 10) + 1);
@@ -180,22 +181,23 @@ const BoardList = ({ category_id, datas = [] }) => {
               )}
             {showData &&
               showData.length > 0 &&
-              showData.map(
-                (data, idx) =>
-                  data.category_id === category_id && (
-                    <TableRow key={data.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                      <TableCell align="center">{data.showIndex}</TableCell>
-                      <TableCell align="center">
-                        <Link component={RouterLink} to={readPage + "?id=" + data.id} sx={{ width: "100%" }}>
-                          {data.title} &nbsp; {data.commentCount > 0 && <span>[{data.commentCount}]</span>}
-                        </Link>
-                      </TableCell>
-                      <TableCell align="center">{data.user_name}</TableCell>
-                      <TableCell align="center">{data.views}</TableCell>
-                      <TableCell align="center">{moment(data.created_at).format("YYYY-MM-DD HH:mm")}</TableCell>
-                    </TableRow>
-                  ),
-              )}
+              showData.map((data, idx) => {
+                if (data.category_id !== category_id) return;
+                if (user.user_type !== 1 && data.category_id === 3 && user.id !== data.user_id) return;
+                return (
+                  <TableRow key={data.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                    <TableCell align="center">{data.showIndex}</TableCell>
+                    <TableCell align="center">
+                      <Link component={RouterLink} to={readPage + "?id=" + data.id} sx={{ width: "100%" }}>
+                        {data.title} &nbsp; {data.commentCount > 0 && <span>[{data.commentCount}]</span>}
+                      </Link>
+                    </TableCell>
+                    <TableCell align="center">{data.user_name}</TableCell>
+                    <TableCell align="center">{data.views}</TableCell>
+                    <TableCell align="center">{moment(data.created_at).format("YYYY-MM-DD HH:mm")}</TableCell>
+                  </TableRow>
+                );
+              })}
             {!isLoad ? (
               <TableRow>
                 <TableCell colSpan={5} align="center">

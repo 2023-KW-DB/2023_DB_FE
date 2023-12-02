@@ -51,7 +51,7 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_URL + `/board/get-board?id=${board_id}&user_id=1`, {
+      const response = await fetch(process.env.REACT_APP_API_URL + `/board/get-board?id=${board_id}&user_id=${user.id ? user.id : 1}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -74,7 +74,26 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
   };
 
   const handleDelete = () => {
-    console.log("Delete button clicked");
+    (async () => {
+      try {
+        const response = await fetch(process.env.REACT_APP_API_URL + `/board/delete-board`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: board_id,
+            user_id: user.id,
+          }),
+        });
+        if (response.status !== 200) {
+          throw new Error("데이터를 가져오는데 실패하였습니다.");
+        }
+        const jsonData = await response.json();
+        alert("삭제되었습니다.");
+        window.location.href = beforeLink;
+      } catch (e) {
+        alert("데이터를 가져오는데 실패하였습니다.");
+      }
+    })();
   };
 
   const postLikeHandler = () => {
@@ -137,6 +156,7 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
                 headers: { "Content-Type": "application/json" },
               });
             }
+            fetchData();
           } catch (e) {
             alert("데이터를 처리하는데 실패하였습니다.");
           }
@@ -150,7 +170,6 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
       }
       return comment;
     });
-    fetchData();
   };
 
   const submitCommentHandler = () => {
@@ -173,6 +192,55 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
         alert("댓글이 등록되었습니다.");
         fetchData();
         setMyComment("");
+      } catch (e) {
+        alert("데이터를 처리하는데 실패하였습니다.");
+      }
+    })();
+  };
+
+  const onEditReply = (content, id) => {
+    const newComments = prompt("수정할 댓글을 입력하세요.", content);
+    if (newComments) {
+      (async () => {
+        try {
+          const response = await fetch(process.env.REACT_APP_API_URL + `/board/comment-modify`, {
+            method: "PATCH",
+            body: JSON.stringify({
+              id: id,
+              user_id: user.id,
+              content: newComments,
+            }),
+            headers: { "Content-Type": "application/json" },
+          });
+          if (response.status !== 200) {
+            throw new Error("데이터를 가져오는데 실패하였습니다.");
+          }
+          const jsonData = await response.json();
+          alert("댓글이 수정되었습니다.");
+          fetchData();
+        } catch (e) {
+          alert("데이터를 처리하는데 실패하였습니다.");
+        }
+      })();
+    }
+  };
+  const onRemoveReply = (id) => {
+    (async () => {
+      try {
+        const response = await fetch(process.env.REACT_APP_API_URL + `/board/comment-delete`, {
+          method: "DELETE",
+          body: JSON.stringify({
+            id: id,
+            user_id: user.id,
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response.status !== 200) {
+          throw new Error("데이터를 가져오는데 실패하였습니다.");
+        }
+        const jsonData = await response.json();
+        alert("댓글이 삭제되었습니다.");
+        fetchData();
       } catch (e) {
         alert("데이터를 처리하는데 실패하였습니다.");
       }
@@ -225,7 +293,7 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
           <Button variant="contained" sx={{ mt: 3, mr: 1 }} component={RouterLink} to={beforeLink}>
             목록으로 이동
           </Button>
-          {boardData.user_id === user.id && (
+          {boardData.user_name === user.username && (
             <>
               <Button variant="contained" sx={{ mt: 3, mr: 1 }} onClick={handleEdit} color="warning">
                 수정
@@ -318,31 +386,64 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
                   <Typography sx={{ width: "100%", textAlign: "center" }}>{comment.likeCount}</Typography>
                 </Box>
               </Box>
+              {(user.user_type === 0 || user.username === comment.username) && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                >
+                  <Button
+                    variant="span"
+                    sx={{ mr: 1, display: "inline" }}
+                    color="warning"
+                    onClick={() => {
+                      onEditReply(comment.content, comment.id);
+                    }}
+                  >
+                    수정
+                  </Button>
+                  <Button
+                    variant="span"
+                    sx={{ mr: 1, display: "inline" }}
+                    color="error"
+                    onClick={() => {
+                      onRemoveReply(comment.id);
+                    }}
+                  >
+                    삭제
+                  </Button>
+                </Box>
+              )}
             </Box>
           ))}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            width: "100%",
-            justifyContent: "space-between",
-            py: 2,
-            pb: 10,
-          }}
-        >
-          <TextField
-            id="standard-basic"
-            label="댓글"
-            variant="standard"
-            sx={{ width: "100%", mx: 2 }}
-            value={myComment}
-            onChange={(e) => setMyComment(e.target.value)}
-          />
-          <Button variant="contained" sx={{ mt: 3 }} onClick={submitCommentHandler}>
-            등록
-          </Button>
-        </Box>
+        {!boardData.notice && (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              width: "100%",
+              justifyContent: "space-between",
+              py: 2,
+              pb: 10,
+            }}
+          >
+            <TextField
+              id="standard-basic"
+              label="댓글"
+              variant="standard"
+              sx={{ width: "100%", mx: 2 }}
+              value={myComment}
+              onChange={(e) => setMyComment(e.target.value)}
+            />
+            <Button variant="contained" sx={{ mt: 3 }} onClick={submitCommentHandler}>
+              등록
+            </Button>
+          </Box>
+        )}
       </Box>
     </Container>
   );
