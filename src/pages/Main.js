@@ -188,8 +188,14 @@ const Main = () => {
         }
         const jsonData = await response.json();
         if (jsonData.status !== 2025) {
-          alert("즐겨찾기 설정에 성공하였습니다.");
+          
           setIsFavorite(!isFavorite);
+          if(isFavorite){
+            alert("즐겨찾기 해제에 성공하였습니다.");
+          }else{
+            alert("즐겨찾기 설정에 성공하였습니다.");
+          }
+          
           return;
         } else {
           alert("즐겨찾기 설정에 실패하였습니다.");
