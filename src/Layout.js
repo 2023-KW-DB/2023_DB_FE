@@ -243,6 +243,15 @@ function DrawerAppBar(props) {
             ) : (
               <></>
             )}
+            {user && user.user_type == 0 && (
+              <>
+                <Button key="관리자" sx={{ color: "#fff", mx: 1 }}>
+                  <Link component={RouterLink} to={"/admin"} underline="none" color="inherit">
+                    관리자
+                  </Link>
+                </Button>
+              </>
+            )}
             {!user || !user.username ? (
               <>
                 {guestNavItems.map((item) => (
