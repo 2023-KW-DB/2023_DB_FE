@@ -323,10 +323,13 @@ const Main = () => {
   };
 
   const onInputChange = (event, value, reason) => {
-    if (value) {
-      searchLendPlace(value);
-    } else {
-      setSearchedLendplace([]);
+    if (event === null) return;
+    if (event.type === "change") {
+      if (value) {
+        searchLendPlace(value);
+      } else {
+        setSearchedLendplace([]);
+      }
     }
   };
 
@@ -417,6 +420,7 @@ const Main = () => {
                       시작 대여소
                     </Typography>
                     <Autocomplete
+                      noOptionsText={"검색 결과가 없습니다."}
                       fullWidth
                       options={searchedLendplace}
                       disablePortal
@@ -459,6 +463,7 @@ const Main = () => {
                       도착 대여소
                     </Typography>
                     <Autocomplete
+                      noOptionsText={"검색 결과가 없습니다."}
                       fullWidth
                       options={searchedLendplace}
                       disablePortal
