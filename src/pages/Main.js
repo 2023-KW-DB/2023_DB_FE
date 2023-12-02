@@ -111,7 +111,7 @@ const Main = () => {
           setUserId(user.id);
         } else {
           _setRecent([]);
-          _setFavorite([]);
+          setFavorite([]);
         }
       } catch (error) {
         console.log(error);
