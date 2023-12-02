@@ -71,7 +71,11 @@ const RatingReview = () => {
         options={lendplaceData}
         sx={{ width: "100%" }}
         value={query}
-        onChange={(e, value) => navigate(`/ratingreview?id=${value.lendplace_id}`)}
+        onChange={(e, value) => {
+          if (!value) return;
+          if (value.lendplace_id === query) return;
+          navigate(`/ratingreview?id=${value.lendplace_id}`);
+        }}
       />
       <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", py: 3 }}>
         <Typography variant="h6" component="h1" sx={{ py: 2 }}>
