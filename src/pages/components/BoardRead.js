@@ -51,7 +51,7 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [user]);
 
   const fetchData = async () => {
     try {
