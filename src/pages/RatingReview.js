@@ -91,7 +91,7 @@ const RatingReview = () => {
         reviews.map((review, index) => (
           <Card key={index} elevation={2} sx={{ mb: 2 }}>
             <CardHeader
-              // title={review.user_id}
+              title={review.username}
               titleTypographyProps={{ style: { fontSize: "1.2rem" } }}
               // subheader={review.date}
               action={<Rating value={review.rating} readOnly />}
