@@ -445,17 +445,18 @@ const Main = () => {
                       value={startPos ? startPos : null}
                       onChange={(e, value) => {
                         if (!value) return;
-                        if (value.lendplace_id === endPos) return;
+                        if (value.lendplace_id === startPos) return;
                         getLendPlaceData(value.lendplace_id, true, user.id ? user.id : 0);
                       }}
                     />
-                    {/* <TextField
-                      variant="standard"
-                      sx={{ py: 1 }}
-                      value={startPos ? (startPos.statn_addr2 ? startPos.statn_addr2 : startPos.statn_addr1) : ""}
-                      placeholder={startPos ? (startPos.statn_addr2 ? startPos.statn_addr2 : startPos.statn_addr1) : "지도에서 도착지점을 선택해주세요"}
-                      InputProps={{ readOnly: true }}
-                    /> */}
+
+                    {startPos ? (
+                      <Typography variant="span" sx={{ fontWeight: "bold", my: 2 }}>
+                        자전거 대수 : {startPos.usable_bikes} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 평점 : {startPos.average_rating}점
+                      </Typography>
+                    ) : (
+                      "지도에서 도착지점을 선택해주세요"
+                    )}
                   </>
                 ) : (
                   <>
@@ -492,13 +493,13 @@ const Main = () => {
                         getLendPlaceData(value.lendplace_id, false, user.id ? user.id : 0);
                       }}
                     />
-                    {/* <TextField
-                      variant="standard"
-                      sx={{ py: 1 }}
-                      value={endPos ? (endPos.statn_addr2 ? endPos.statn_addr2 : endPos.statn_addr1) : ""}
-                      placeholder={endPos ? (endPos.statn_addr2 ? endPos.statn_addr2 : endPos.statn_addr1) : "지도에서 도착지점을 선택해주세요"}
-                      InputProps={{ readOnly: true }}
-                    /> */}
+                    {endPos ? (
+                      <Typography variant="span" sx={{ fontWeight: "bold", my: 2 }}>
+                        자전거 대수 : {endPos.usable_bikes} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 평점 : {endPos.average_rating}점
+                      </Typography>
+                    ) : (
+                      "지도에서 도착지점을 선택해주세요"
+                    )}
                   </>
                 )}
                 <>
