@@ -72,8 +72,8 @@ const TravelHistory = () => {
                     <TableCell align="center">{row.departure_station}</TableCell>
                     <TableCell align="center">{moment(row.departure_time).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
                     <TableCell align="center">{row.arrival_station}</TableCell>
-                    <TableCell align="center">{moment(row.arrival_time).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
-                    <TableCell align="center">{row.use_distance}m</TableCell>
+                    <TableCell align="center">{row.arrival_time == null ? "" : moment(row.arrival_time).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
+                    <TableCell align="center">{row.use_distance == null ? "" : row.use_distance + "m"}</TableCell>
                   </TableRow>
                 ))
               ) : (
