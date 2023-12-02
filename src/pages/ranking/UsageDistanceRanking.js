@@ -76,16 +76,16 @@ const UsageDistanceRanking = () => {
         <Table>
           <TableHead sx={{ width: "100%" }}>
             <TableRow>
-              <TableCell sx={{ textAlign: "center" }}>
+              <TableCell align="center" sx={{ textAlign: "center" }}>
                 <Typography variant="span">등수</Typography>
               </TableCell>
-              <TableCell sx={{ textAlign: "center" }}>
+              <TableCell align="center" sx={{ textAlign: "center" }}>
                 <Typography variant="span">이름</Typography>
               </TableCell>
-              <TableCell sx={{ textAlign: "center" }}>
+              <TableCell align="center" sx={{ textAlign: "center" }}>
                 <Typography variant="span">이메일</Typography>
               </TableCell>
-              <TableCell sx={{ textAlign: "center" }}>
+              <TableCell align="center" sx={{ textAlign: "center" }}>
                 <Typography variant="span">거리</Typography>
               </TableCell>
             </TableRow>
@@ -95,19 +95,16 @@ const UsageDistanceRanking = () => {
               <>
                 {showData.map((row, index) => (
                   <TableRow key={index}>
-                    <TableCell sx={{ textAlign: "center" }}>
+                    <TableCell align="center" sx={{ textAlign: "center" }}>
                       <Typography variant="span">{index + 1}</Typography>
                     </TableCell>
-                    <TableCell sx={{ textAlign: "center" }}>
+                    <TableCell align="center" sx={{ textAlign: "center" }}>
                       <Typography variant="span">{row.username}</Typography>
                     </TableCell>
-                    <TableCell sx={{ textAlign: "center" }}>
+                    <TableCell align="center" sx={{ textAlign: "center" }}>
                       <Typography variant="span">{row.email}</Typography>
                     </TableCell>
-                    <TableCell sx={{ textAlign: "center" }}>
-                      <Typography variant="span">{row.ticket_price}</Typography>
-                    </TableCell>
-                    <TableCell sx={{ textAlign: "center" }}>
+                    <TableCell align="center" sx={{ textAlign: "center" }}>
                       <Typography variant="span">{row.total_use_distance}</Typography>
                     </TableCell>
                   </TableRow>
@@ -115,7 +112,7 @@ const UsageDistanceRanking = () => {
               </>
             ) : (
               <TableRow>
-                <TableCell colSpan={4} align="center">
+                <TableCell align="center" colSpan={4} align="center">
                   <Typography variant="span">데이터가 없습니다.</Typography>
                 </TableCell>
               </TableRow>
