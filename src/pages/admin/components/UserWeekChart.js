@@ -39,14 +39,6 @@ const UserWeekChart = ({ data }) => {
       title: {
         text: "요일별 이동거리 및 횟수",
       },
-      tooltip: [
-        {
-          formatter: "{a} <br/>{b}요일: {c}m",
-        },
-        {
-          formatter: "{a} <br/>{b}요일: {c}회",
-        },
-      ],
       xAxis: {
         data: ["일", "월", "화", "수", "목", "금", "토"],
       },
@@ -74,12 +66,18 @@ const UserWeekChart = ({ data }) => {
           type: "line",
           data: useDistanceData,
           yAxisIndex: 0,
+          tooltip: {
+            formatter: "{a} <br/>{b}요일: {c}km",
+          },
         },
         {
           name: "이용횟수",
           type: "line",
           data: useCountData,
           yAxisIndex: 1,
+          tooltip: {
+            formatter: "{a} <br/>{b}요일: {c}회",
+          },
         },
       ],
     };

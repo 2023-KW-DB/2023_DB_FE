@@ -131,33 +131,38 @@ const Main = () => {
         return prevIsOnRent;
       });
       (async () => {
-        const API_KEY = "6f96069f9b5896f4eadf1a221d0333ab";
         const lat = lendplace.startn_lat;
         const lon = lendplace.startn_lnt;
         const date = new Date().getTime();
         const datestr = moment(date).format("YYYY-MM-DD");
-        try {
-          const response = await fetch(
-            `https://cors-anywhere.herokuapp.com/https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&lang=kr&units=metric`,
-            {
-              method: "GET",
-              headers: { "Content-Type": "application/json" },
-            },
-          );
-          if (response.status !== 200) {
-            throw new Error("날씨 정보를 가져오는데 실패하였습니다.");
-          }
-          const jsonData = await response.json();
-          jsonData.lendplace = lendplace;
-          setWeatherInfo(jsonData);
-          console.log(jsonData);
-        } catch (error) {
-          console.log(error);
-        }
+        await fetchWeather(lat, lon);
       })();
     },
     [startPos, endPos, isOnRent],
   );
+
+  const fetchWeather = async (lat, lon) => {
+    console.log(lat, lon);
+    const API_KEY = "6f96069f9b5896f4eadf1a221d0333ab";
+    try {
+      const response = await fetch(
+        `https://cors-anywhere.herokuapp.com/https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&lang=kr&units=metric`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        },
+      );
+      if (response.status !== 200) {
+        throw new Error("날씨 정보를 가져오는데 실패하였습니다.");
+      }
+      const jsonData = await response.json();
+      jsonData.lendplace = lendplace;
+      setWeatherInfo(jsonData);
+      console.log(jsonData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const onClickLendplaceClear = () => {
     dispatch(setStartPos(null));
@@ -241,7 +246,10 @@ const Main = () => {
 
         // Calculate distance in meter
         const distance = Math.sqrt(Math.pow(start_lat - end_lat, 2) + Math.pow(statr_lnt - end_lnt, 2)) * 100000;
+        console.log("=========== Distance Info ===============");
+        console.log(start_lat, statr_lnt, end_lat, end_lnt);
         console.log(distance);
+        console.log("=========================================");
 
         const response = await fetch(process.env.REACT_APP_API_URL + "/users/bike-return", {
           method: "POST",
@@ -355,6 +363,7 @@ const Main = () => {
         label: "[" + jsonData.result.lendplace_id + "] " + jsonData.result.statn_addr1 + " " + jsonData.result.statn_addr2,
       };
       console.log(newData);
+      fetchWeather(newData.startn_lat, newData.startn_lnt);
       if (isStart) {
         dispatch(setStartPos(newData));
         _setStartPos(newData);
@@ -397,7 +406,7 @@ const Main = () => {
       >
         <Box
           sx={{
-            width: "400px",
+            width: "500px",
             borderRight: "1px solid black",
             height: "100%",
             // py: 3,
@@ -488,44 +497,50 @@ const Main = () => {
                     /> */}
                   </>
                 )}
+                <>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      width: "100%",
+                      mt: 2,
+                    }}
+                  >
+                    {isFavorite ? (
+                      <Button
+                        type="button"
+                        variant="contained"
+                        color="warning"
+                        onClick={() => {
+                          onClickFavorite();
+                        }}
+                      >
+                        <StarIcon />
+                      </Button>
+                    ) : (
+                      <Button
+                        type="button"
+                        variant="contained"
+                        color="warning"
+                        onClick={() => {
+                          onClickFavorite();
+                        }}
+                      >
+                        <StarOutlineIcon />
+                      </Button>
+                    )}
+                    <Button type="button" variant="contained" color="info" onClick={() => {}}>
+                      후기 보기
+                    </Button>
+                  </Box>
 
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    width: "100%",
-                    mt: 2,
-                  }}
-                >
-                  {isFavorite ? (
-                    <Button
-                      type="button"
-                      variant="contained"
-                      color="warning"
-                      onClick={() => {
-                        onClickFavorite();
-                      }}
-                    >
-                      <StarIcon />
-                    </Button>
-                  ) : (
-                    <Button
-                      type="button"
-                      variant="contained"
-                      color="warning"
-                      onClick={() => {
-                        onClickFavorite();
-                      }}
-                    >
-                      <StarOutlineIcon />
-                    </Button>
-                  )}
                   <Button
                     type="button"
                     variant="contained"
                     color="primary"
+                    sx={{ width: "100%", mt: 2 }}
                     onClick={() => {
                       if (!isOnRent) {
                         if (startPos) {
@@ -544,7 +559,7 @@ const Main = () => {
                   >
                     {!isOnRent ? "자전거 대여" : "자전거 반납"}
                   </Button>
-                </Box>
+                </>
               </Card>
               <Card sx={{ py: 2, px: 1, m: 1 }}>
                 <Weather data={weatherInfo} />

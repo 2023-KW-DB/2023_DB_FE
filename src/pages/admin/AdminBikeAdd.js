@@ -103,7 +103,10 @@ const AdminBikeAdd = () => {
               options={lendplaceData}
               sx={{ width: "100%" }}
               value={lendplaceId}
-              onChange={(e, value) => setLendplaceId(value.lendplace_id)}
+              onChange={(e, value) => {
+                if (!value) return;
+                setLendplaceId(value.lendplace_id);
+              }}
             />
             {/* <TextField fullWidth variant="outlined" label="자전거 위치" value={lendplaceId} onChange={(e) => setLendplaceId(e.target.value)} /> */}
           </Grid>
