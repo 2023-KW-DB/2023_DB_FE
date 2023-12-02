@@ -47,11 +47,30 @@ const BoardRead = ({ board_id, data = mock, beforeLink, editLink }) => {
   const [myComment, setMyComment] = useState("");
   const [fileName, setFileName] = useState("");
   const [fileUrl, setFileUrl] = useState("");
+  const [showReplyInput, setShowReplyInput] = useState(false);
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
     fetchData();
   }, [user]);
+
+  useEffect(() => {
+    console.log(user);
+    console.log(user.user_type);
+    if (boardData.notice) {
+      setShowReplyInput(false);
+      return;
+    } else {
+      if (user.user_type == 0) {
+        setShowReplyInput(true);
+        return;
+      } else if (boardData.category_id != 4) {
+        setShowReplyInput(true);
+        return;
+      }
+    }
+    setShowReplyInput(false);
+  }, [boardData, user]);
 
   const fetchData = async () => {
     try {
@@ -476,7 +495,8 @@ const BoardRead = ({ board_id, data = mock, beforeLink, editLink }) => {
               )}
             </Box>
           ))}
-        {!boardData.notice && (
+
+        {showReplyInput && (
           <Box
             sx={{
               display: "flex",
