@@ -350,7 +350,7 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
           <Button variant="contained" sx={{ mt: 3, mr: 1 }} component={RouterLink} to={beforeLink}>
             목록으로 이동
           </Button>
-          {boardData.user_name === user.username && (
+          {(boardData.user_name === user.username || user.user_type === 0) && (
             <>
               <Button variant="contained" sx={{ mt: 3, mr: 1 }} onClick={handleEdit} color="warning">
                 수정
