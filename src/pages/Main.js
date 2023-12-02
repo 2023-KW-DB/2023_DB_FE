@@ -205,7 +205,14 @@ const Main = () => {
         alert("즐겨찾기 설정에 실패하였습니다.");
       }
     })();
+    localStorage.setItem('isFavorite', !isFavorite);
+    setIsFavorite(!isFavorite);
   };
+
+  useEffect(() => {
+    const favoriteStatus = localStorage.getItem('isFavorite') === 'true';
+    setIsFavorite(favoriteStatus);
+  }, []);
 
   const onRentBike = (lendplace) => {
     (async () => {
