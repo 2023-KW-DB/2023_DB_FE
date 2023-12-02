@@ -44,7 +44,6 @@ const mock = {
 };
 
 const Weather = ({ data }) => {
-  console.log(data);
   return (
     <Box sx={{ p: 0 }}>
       <Typography variant="h5" sx={{ fontWeight: "bold", my: 1 }}>
