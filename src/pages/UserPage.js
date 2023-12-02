@@ -213,7 +213,7 @@ const UserPage = () => {
                 fullWidth
                 variant="outlined"
                 label="전화번호"
-                value={editMode ? newPhone || userData.phone_number : userData.phone_number}
+                value={editMode ? newPhone || userData.phone_number : userData.phone_number ?? ""}
                 onChange={(e) => setNewPhone(e.target.value)}
                 disabled={!editMode}
               />
