@@ -69,9 +69,9 @@ const BoardList = ({ category_id, datas = [] }) => {
       : category_id === 2
       ? "/board/free/read"
       : category_id === 3
-      ? "/board/report/read"
-      : category_id === 4
       ? "/board/qna/read"
+      : category_id === 4
+      ? "/board/report/read"
       : "";
 
   useEffect(() => {
