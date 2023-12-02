@@ -13,6 +13,9 @@ const TravelHistory = () => {
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
+    if (!user.id) {
+      return;
+    }
     const fetchData = async () => {
       try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/get-userlog?userId=${user.id}`, {
@@ -69,9 +72,17 @@ const TravelHistory = () => {
               {showData && showData.length > 0 ? (
                 showData.map((row) => (
                   <TableRow key={row.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                    <TableCell align="center">{row.departure_station}</TableCell>
+                    <TableCell align="center">
+                      {row.depature_station_statn_addr2
+                        ? row.depature_station_statn_addr2 + " " + row.depature_station_statn_addr1
+                        : row.depature_station_statn_addr1}
+                    </TableCell>
                     <TableCell align="center">{moment(row.departure_time).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
-                    <TableCell align="center">{row.arrival_station}</TableCell>
+                    <TableCell align="center">
+                      {row.arrival_station_statn_addr2
+                        ? row.arrival_station_statn_addr2 + " " + row.arrival_station_statn_addr1
+                        : row.arrival_station_statn_addr1}
+                    </TableCell>
                     <TableCell align="center">{row.arrival_time == null ? "" : moment(row.arrival_time).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
                     <TableCell align="center">{row.use_distance == null ? "" : row.use_distance + "m"}</TableCell>
                   </TableRow>
