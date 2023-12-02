@@ -548,7 +548,7 @@ const Main = () => {
                       variant="contained"
                       color="info"
                       component={RouterLink}
-                      to={"/ratingreview?id=" + (isOnRent ? endPos.lendplace_id : startPos.lendplace_id)}
+                      to={"/ratingreview?id=" + (isOnRent ? (endPos ? endPos.lendplace_id : "") : startPos ? startPos.lendplace_id : "")}
                     >
                       후기 보기
                     </Button>
