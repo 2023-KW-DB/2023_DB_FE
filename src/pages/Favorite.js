@@ -99,7 +99,7 @@ const Favorite = () => {
                     activeColor="#faaf00"
                     size="16px"
                   />
-                  <Typography variant="body1" sx={{ marginLeft: 1 }}>
+                  <Typography variant="body1" sx={{ marginLeft: 1, width: "50px" }}>
                     {station.average_rating}점
                   </Typography>
                   <Box marginLeft={3}></Box>
