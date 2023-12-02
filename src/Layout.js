@@ -161,12 +161,21 @@ function DrawerAppBar(props) {
             to="/"
           >
             따릉이 시뮬레이터
-            <Link component={RouterLink} to="/userpage" underline="none" color="inherit" sx={{ pl: 3, justifyContent: "center" }}>
-              <Typography variant="span" sx={{ fontSize: "14px" }}>
-                {user && user.username ? user.username + "님 " : "손님 "}
-                반갑습니다
-              </Typography>
-            </Link>
+            {user && user.username ? (
+              <Link component={RouterLink} to="/userpage" underline="none" color="inherit" sx={{ pl: 3, justifyContent: "center" }}>
+                <Typography variant="span" sx={{ fontSize: "14px" }}>
+                  {user && user.username ? user.username + "님 " : "손님 "}
+                  반갑습니다
+                </Typography>
+              </Link>
+            ) : (
+              <Link component={RouterLink} to="/" underline="none" color="inherit" sx={{ pl: 3, justifyContent: "center" }}>
+                <Typography variant="span" sx={{ fontSize: "14px" }}>
+                  {user && user.username ? user.username + "님 " : "손님 "}
+                  반갑습니다
+                </Typography>
+              </Link>
+            )}
           </Typography>
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
