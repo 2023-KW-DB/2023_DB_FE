@@ -1,4 +1,18 @@
-import { Button, ButtonGroup, Container, CssBaseline, Typography, Box, Grid, TextField, Paper, Autocomplete } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  Container,
+  CssBaseline,
+  Typography,
+  Box,
+  Grid,
+  TextField,
+  Paper,
+  Autocomplete,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate, useSearchParams } from "react-router-dom";
 import "./style.css";
@@ -119,10 +133,14 @@ const AdminBikeEdit = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField fullWidth variant="outlined" label="사용중 여부" value={useStatus} InputProps={{ readOnly: true }} disabled />
+            <FormGroup>
+              <FormControlLabel control={<Checkbox checked={useStatus} onChange={(e) => setUseStatus(e.target.checked)} />} label="사용중 여부" />
+            </FormGroup>
           </Grid>
           <Grid item xs={12}>
-            <TextField fullWidth variant="outlined" label="자전거 상태" value={bikeStatus} onChange={(e) => setBikeStatus(e.target.value)} />
+            <FormGroup>
+              <FormControlLabel control={<Checkbox checked={bikeStatus} onChange={(e) => setBikeStatus(e.target.checked)} />} label="자전거 상태" />
+            </FormGroup>
           </Grid>
         </Grid>
       </Box>

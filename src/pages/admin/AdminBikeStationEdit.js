@@ -9,13 +9,12 @@ import {
   TextField,
   Paper,
   Autocomplete,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import {
-  Link as RouterLink,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { Link as RouterLink, useNavigate, useSearchParams } from "react-router-dom";
 import "./style.css";
 import moment from "moment";
 
@@ -50,14 +49,10 @@ const AdminBikeStationEdit = () => {
     // TODO: Fetch data
     (async () => {
       try {
-        const response = await fetch(
-          process.env.REACT_APP_API_URL +
-            `/station/get-lendplace?lendplace_id=${query}`,
-          {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          },
-        );
+        const response = await fetch(process.env.REACT_APP_API_URL + `/station/get-lendplace?lendplace_id=${query}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
         if (response.status !== 200) {
           throw new Error("데이터를 가져오는데 실패하였습니다.");
         }
@@ -79,22 +74,19 @@ const AdminBikeStationEdit = () => {
   const submitHandler = () => {
     (async () => {
       try {
-        const response = await fetch(
-          process.env.REACT_APP_API_URL + "/station/modify-lendplace",
-          {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              lendplace_id: lendplace_id,
-              statn_addr1: statn_addr1,
-              statn_addr2: statn_addr2,
-              startn_lat: startn_lat,
-              startn_lnt: startn_lnt,
-              max_stands: max_stands,
-              station_status: station_status,
-            }),
-          },
-        );
+        const response = await fetch(process.env.REACT_APP_API_URL + "/station/modify-lendplace", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            lendplace_id: lendplace_id,
+            statn_addr1: statn_addr1,
+            statn_addr2: statn_addr2,
+            startn_lat: startn_lat,
+            startn_lnt: startn_lnt,
+            max_stands: max_stands,
+            station_status: station_status,
+          }),
+        });
         if (response.status !== 200) {
           throw new Error("데이터를 가져오는데 실패하였습니다.");
         }
@@ -130,90 +122,36 @@ const AdminBikeStationEdit = () => {
       >
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="대여소 ID"
-              value={lendplace_id}
-              InputProps={{ readOnly: true }}
-              disabled
-            />
+            <TextField fullWidth variant="outlined" label="대여소 ID" value={lendplace_id} InputProps={{ readOnly: true }} disabled />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="대여소 주소"
-              value={statn_addr1}
-              onChange={(e) => setStatnAddr1(e.target.value)}
-            />
+            <TextField fullWidth variant="outlined" label="대여소 주소" value={statn_addr1} onChange={(e) => setStatnAddr1(e.target.value)} />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="대여소 이름"
-              value={statn_addr2}
-              onChange={(e) => setStatnAddr2(e.target.value)}
-            />
+            <TextField fullWidth variant="outlined" label="대여소 이름" value={statn_addr2} onChange={(e) => setStatnAddr2(e.target.value)} />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="위도"
-              value={startn_lat}
-              onChange={(e) => setStartnLat(e.target.value)}
-            />
+            <TextField fullWidth variant="outlined" label="위도" value={startn_lat} onChange={(e) => setStartnLat(e.target.value)} />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="경도"
-              value={startn_lnt}
-              onChange={(e) => setStartnLnt(e.target.value)}
-            />
+            <TextField fullWidth variant="outlined" label="경도" value={startn_lnt} onChange={(e) => setStartnLnt(e.target.value)} />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="최대 거치대 수"
-              value={max_stands}
-              InputProps={{ readOnly: true }}
-              disabled
-            />
+            <TextField fullWidth variant="outlined" label="최대 거치대 수" value={max_stands} InputProps={{ readOnly: true }} disabled />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="현재 자전거 수"
-              value={total_bikes}
-              InputProps={{ readOnly: true }}
-              disabled
-            />
+            <TextField fullWidth variant="outlined" label="현재 자전거 수" value={total_bikes} InputProps={{ readOnly: true }} disabled />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="남은 거치대 수"
-              value={empty_stands}
-              InputProps={{ readOnly: true }}
-              disabled
-            />
+            <TextField fullWidth variant="outlined" label="남은 거치대 수" value={empty_stands} InputProps={{ readOnly: true }} disabled />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="대여소 상태"
-              value={station_status}
-              InputProps={{ readOnly: true }}
-              disabled
-            />
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox checked={station_status} disabled onChange={(e) => setStationStatus(e.target.checked)} />}
+                label="대여소 사용 여부"
+              />
+            </FormGroup>
           </Grid>
         </Grid>
       </Box>
@@ -230,12 +168,7 @@ const AdminBikeStationEdit = () => {
         <Button onClick={submitHandler} variant="contained" sx={{ mr: 3 }}>
           수정하기
         </Button>
-        <Button
-          component={RouterLink}
-          to="/admin?type=bike"
-          variant="contained"
-          color="warning"
-        >
+        <Button component={RouterLink} to="/admin?type=bike" variant="contained" color="warning">
           뒤로가기
         </Button>
       </Box>
