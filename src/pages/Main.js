@@ -109,6 +109,19 @@ const Main = () => {
           const favoriteJsonData = await favoriteResponse.json();
           setFavorite(favoriteJsonData.result);
           setUserId(user.id);
+
+          const checkRentResponse = await fetch(process.env.REACT_APP_API_URL + `/station/rental-status?user_id=${user.id}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+          });
+          if (checkRentResponse.status !== 200) {
+            throw new Error("대여 정보를 가져오는데 실패하였습니다.");
+          }
+          const checkRentJsonData = await checkRentResponse.json();
+          if (checkRentJsonData.result === true) {
+            setIsOnRent(true);
+          }
         } else {
           _setRecent([]);
           setFavorite([]);
