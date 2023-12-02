@@ -38,7 +38,7 @@ const mock = {
   ],
 };
 
-const BoardRead = ({ board_id, data = mock, beforeLink }) => {
+const BoardRead = ({ board_id, data = mock, beforeLink, editLink }) => {
   const [boardData, setBoardData] = useState(data);
   const [like, setLike] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
@@ -352,7 +352,7 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
           </Button>
           {(boardData.user_name === user.username || user.user_type === 0) && (
             <>
-              <Button variant="contained" sx={{ mt: 3, mr: 1 }} onClick={handleEdit} color="warning">
+              <Button variant="contained" sx={{ mt: 3, mr: 1 }} color="warning" component={RouterLink} to={editLink + "?id=" + boardData.id}>
                 수정
               </Button>
               <Button variant="contained" sx={{ mt: 3 }} onClick={handleDelete} color="error">

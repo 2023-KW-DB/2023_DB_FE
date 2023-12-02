@@ -34,6 +34,10 @@ import ReportBoardWrite from "./pages/board/ReportBoardWrite";
 import ReportBoardRead from "./pages/board/ReportBoardRead";
 import KakaoLoginOAuth from "./pages/KakaoLoginOAuth";
 import Coupon from "./pages/Coupon";
+import NoticeBoardEdit from "./pages/board/NoticeBoardEdit";
+import FreeBoardEdit from "./pages/board/FreeBoardEdit";
+import ReportBoardEdit from "./pages/board/ReportBoardEdit";
+import QnaBoardEdit from "./pages/board/QnaBoardEdit";
 
 const router = () => {
   return (
@@ -48,15 +52,19 @@ const router = () => {
       <Route path="/board" element={<Board />} />
       <Route path="/board/notice/read" element={<NoticeBoardRead />} />
       <Route path="/board/notice/write" element={<NoticeBoardWrite />} />
+      <Route path="/board/notice/edit" element={<NoticeBoardEdit />} />
 
       <Route path="/board/free/read" element={<FreeBoardRead />} />
       <Route path="/board/free/write" element={<FreeBoardWrite />} />
+      <Route path="/board/free/edit" element={<FreeBoardEdit />} />
 
       <Route path="/board/qna/read" element={<QnaBoardRead />} />
       <Route path="/board/qna/write" element={<QnaBoardWrite />} />
+      <Route path="/board/qna/edit" element={<QnaBoardEdit />} />
 
       <Route path="/board/report/read" element={<ReportBoardRead />} />
       <Route path="/board/report/write" element={<ReportBoardWrite />} />
+      <Route path="/board/report/edit" element={<ReportBoardEdit />} />
 
       <Route path="/admin" element={<Admin />} />
       <Route path="/admin/user/edit" element={<AdminUserEdit />} />

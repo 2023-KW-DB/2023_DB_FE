@@ -1,13 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import "./ckboard.css";
 
-const BoardEditor = ({ setParentContent }) => {
+const BoardEditor = ({ setParentContent, initialContent }) => {
   const titleRef = useRef();
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState();
 
   const customUploadAdapter = (loader) => {
     return {
@@ -40,13 +40,18 @@ const BoardEditor = ({ setParentContent }) => {
       return customUploadAdapter(loader);
     };
   }
+  useEffect(() => {
+    if (initialContent) {
+      setContent(initialContent);
+    }
+  }, [initialContent]);
 
   return (
     <div className="Editor">
       <section>
         <CKEditor
           editor={ClassicEditor}
-          data=""
+          data={content}
           config={{ extraPlugins: [uploadPlugin] }}
           onReady={(editor) => {
             // You can store the "editor" and use when it is needed.

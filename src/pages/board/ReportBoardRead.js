@@ -10,7 +10,7 @@ const ReportBoardRead = () => {
       <Typography component="h1" variant="h5" sx={{ py: 3 }}>
         따릉이 고장 신고 게시판
       </Typography>
-      <BoardRead category_id={4} board_id={query} beforeLink="/board?id=report" />
+      <BoardRead category_id={4} board_id={query} beforeLink="/board?id=report" editLink="/board/report/edit" />
     </Container>
   );
 };

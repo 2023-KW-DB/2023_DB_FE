@@ -10,7 +10,7 @@ const FreeBoardRead = () => {
       <Typography component="h1" variant="h5" sx={{ py: 3 }}>
         자유게시판
       </Typography>
-      <BoardRead category_id={2} board_id={query} beforeLink={"/board?id=free"} />
+      <BoardRead category_id={2} board_id={query} beforeLink={"/board?id=free"} editLink="/board/free/edit" />
     </Container>
   );
 };

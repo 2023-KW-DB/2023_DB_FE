@@ -10,7 +10,7 @@ const QnaBoardRead = () => {
       <Typography component="h1" variant="h5" sx={{ py: 3 }}>
         1:1 문의 게시판
       </Typography>
-      <BoardRead category_id={3} board_id={query} beforeLink="/board?id=qna" />
+      <BoardRead category_id={3} board_id={query} beforeLink="/board?id=qna" editLink="/board/qna/edit" />
     </Container>
   );
 };
