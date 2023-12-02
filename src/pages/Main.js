@@ -1,5 +1,5 @@
 import { Box, Container, Typography, Button, Link, Autocomplete, TextField, Divider, List, ListItem, ListItemButton, ListItemText, Card } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import KakaoMap from "./components/KakaoMap";
 import { useSelector, useDispatch } from "react-redux";
 import { setStartPos, setEndPos } from "../store/positionSlice";
@@ -61,9 +61,21 @@ const Main = () => {
   // 즐겨찾기 정보
   const [favorite, setFavorite] = useState([]);
 
+  // 전체 정보
+  const [searchedLendplace, setSearchedLendplace] = useState([]);
+
+  const [userId, setUserId] = useState(null);
+
+  const perviousAutocompleteController = useRef();
+  const perviousEndAutocompleteController = useRef();
+
+  const [lat, setLat] = useState(37.62019307507592);
+  const [long, setLong] = useState(127.0586406171661);
+
   useEffect(() => {
     (async () => {
       try {
+        // 인기 대여소 정보 가져오기
         const popularResponse = await fetch(process.env.REACT_APP_API_URL + "/station/get-popular-lendplace", {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -96,8 +108,10 @@ const Main = () => {
           }
           const favoriteJsonData = await favoriteResponse.json();
           setFavorite(favoriteJsonData.result);
+          setUserId(user.id);
         } else {
           _setRecent([]);
+          _setFavorite([]);
         }
       } catch (error) {
         console.log(error);
@@ -106,17 +120,13 @@ const Main = () => {
   }, [user]);
 
   const onClickMarker = useCallback(
-    (marker, lendplace) => {
-      console.log(lendplace);
+    (marker, lendplace, userid) => {
+      console.log(userid);
       setIsOnRent((prevIsOnRent) => {
         if (prevIsOnRent) {
-          dispatch(setEndPos(lendplace));
-          _setEndPos(lendplace);
-          setIsFavorite(lendplace.favorite);
+          getLendPlaceData(lendplace.lendplace_id, false, userid);
         } else {
-          dispatch(setStartPos(lendplace));
-          _setStartPos(lendplace);
-          setIsFavorite(lendplace.favorite);
+          getLendPlaceData(lendplace.lendplace_id, true, userid);
         }
         return prevIsOnRent;
       });
@@ -266,6 +276,101 @@ const Main = () => {
     })();
   };
 
+  const searchLendPlace = (value) => {
+    if (perviousAutocompleteController.current) {
+      perviousAutocompleteController.current.abort();
+    }
+    const controller = new AbortController();
+    const signal = controller.signal;
+    perviousAutocompleteController.current = controller;
+    fetch(process.env.REACT_APP_API_URL + `/station/search-lendplace?name=${value}`, {
+      signal,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .catch(function (error) {
+        if (error.name === "AbortError") {
+          console.log("요청이 중단되었습니다.");
+        } else {
+          console.log(error);
+        }
+      })
+      .then(function (response) {
+        return response.json();
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .then(function (jsonData) {
+        if (!jsonData) {
+          setSearchedLendplace([]);
+          return;
+        }
+        if (!jsonData.result) {
+          setSearchedLendplace([]);
+          return;
+        }
+        const newLendplace = jsonData.result.map((lendplace) => {
+          return {
+            ...lendplace,
+            label: "[" + lendplace.lendplace_id + "] " + lendplace.statn_addr1 + " " + lendplace.statn_addr2,
+          };
+        });
+        setSearchedLendplace(newLendplace);
+      });
+  };
+
+  const onInputChange = (event, value, reason) => {
+    if (value) {
+      searchLendPlace(value);
+    } else {
+      setSearchedLendplace([]);
+    }
+  };
+
+  const getLendPlaceData = async (lendplace_id, isStart, userid) => {
+    console.log(user.id);
+    try {
+      const response = await fetch(
+        process.env.REACT_APP_API_URL + `/station/get-lendplace-status?lendplace_id=${lendplace_id}&user_id=${userid ? userid : 1}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        },
+      );
+      if (response.status !== 200) {
+        throw new Error("대여소 정보를 가져오는데 실패하였습니다.");
+      }
+      const jsonData = await response.json();
+      if (jsonData.status !== 200) {
+        throw new Error("대여소 정보를 가져오는데 실패하였습니다.");
+      }
+      const newData = {
+        ...jsonData.result,
+        label: "[" + jsonData.result.lendplace_id + "] " + jsonData.result.statn_addr1 + " " + jsonData.result.statn_addr2,
+      };
+      console.log(newData);
+      if (isStart) {
+        dispatch(setStartPos(newData));
+        _setStartPos(newData);
+        setIsFavorite(newData.favorite);
+        // TODO: lat, long 정보 제공 시 수정
+        // setLat(newData.startn_lat);
+        // setLong(newData.startn_lnt);
+      } else {
+        dispatch(setEndPos(newData));
+        _setEndPos(newData);
+        setIsFavorite(newData.favorite);
+        // TODO: lat, long 정보 제공 시 수정
+        // setLat(newData.startn_lat);
+        // setLong(newData.startn_lnt);
+      }
+    } catch (error) {
+      alert("대여소 정보를 가져오는데 실패하였습니다.");
+    }
+  };
   return (
     <Container
       sx={{
@@ -311,13 +416,27 @@ const Main = () => {
                     <Typography variant="h5" sx={{ fontWeight: "bold", my: 1, pl: 1 }}>
                       시작 대여소
                     </Typography>
-                    <TextField
+                    <Autocomplete
+                      fullWidth
+                      options={searchedLendplace}
+                      disablePortal
+                      onInputChange={onInputChange}
+                      renderInput={(params) => <TextField {...params} label="자전거 대여소 위치" />}
+                      sx={{ width: "100%" }}
+                      value={startPos ? startPos : null}
+                      onChange={(e, value) => {
+                        if (!value) return;
+                        if (value.lendplace_id === endPos) return;
+                        getLendPlaceData(value.lendplace_id, true, user.id ? user.id : 0);
+                      }}
+                    />
+                    {/* <TextField
                       variant="standard"
                       sx={{ py: 1 }}
                       value={startPos ? (startPos.statn_addr2 ? startPos.statn_addr2 : startPos.statn_addr1) : ""}
                       placeholder={startPos ? (startPos.statn_addr2 ? startPos.statn_addr2 : startPos.statn_addr1) : "지도에서 도착지점을 선택해주세요"}
                       InputProps={{ readOnly: true }}
-                    />
+                    /> */}
                   </>
                 ) : (
                   <>
@@ -339,13 +458,27 @@ const Main = () => {
                     <Typography variant="h5" sx={{ fontWeight: "bold", my: 1, pl: 1 }}>
                       도착 대여소
                     </Typography>
-                    <TextField
+                    <Autocomplete
+                      fullWidth
+                      options={searchedLendplace}
+                      disablePortal
+                      onInputChange={onInputChange}
+                      renderInput={(params) => <TextField {...params} label="자전거 대여소 위치" />}
+                      sx={{ width: "100%" }}
+                      value={endPos ? endPos : null}
+                      onChange={(e, value) => {
+                        if (!value) return;
+                        if (value.lendplace_id === endPos) return;
+                        getLendPlaceData(value.lendplace_id, false, user.id ? user.id : 0);
+                      }}
+                    />
+                    {/* <TextField
                       variant="standard"
                       sx={{ py: 1 }}
                       value={endPos ? (endPos.statn_addr2 ? endPos.statn_addr2 : endPos.statn_addr1) : ""}
                       placeholder={endPos ? (endPos.statn_addr2 ? endPos.statn_addr2 : endPos.statn_addr1) : "지도에서 도착지점을 선택해주세요"}
                       InputProps={{ readOnly: true }}
-                    />
+                    /> */}
                   </>
                 )}
 
@@ -475,7 +608,7 @@ const Main = () => {
         </Box>
 
         <Box sx={{ width: "100%", height: "100%" }}>
-          <KakaoMap onClickMarker={onClickMarker} isOnRent={isOnRent} />
+          <KakaoMap onClickMarker={onClickMarker} isOnRent={isOnRent} lat={lat} long={long} />
         </Box>
       </Box>
     </Container>
