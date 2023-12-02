@@ -112,7 +112,10 @@ const AdminBikeEdit = () => {
               options={lendplaceData}
               sx={{ width: "100%" }}
               value={lendplaceId}
-              onChange={(e, value) => setLendplaceId(value.lendplace_id)}
+              onChange={(e, value) => {
+                if (!value) return;
+                setLendplaceId(value.lendplace_id);
+              }}
             />
           </Grid>
           <Grid item xs={12}>
