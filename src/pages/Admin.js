@@ -7,6 +7,7 @@ import AdminBikeStation from "./admin/AdminBikeStation";
 import AdminTicket from "./admin/AdminTicket";
 import { useEffect } from "react";
 import AdminBike from "./admin/AdminBike";
+import AdminCoupon from "./admin/AdminCoupon";
 const Admin = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("type");
@@ -48,6 +49,9 @@ const Admin = () => {
           <Button variant="contained" component={RouterLink} to="/admin?type=bike">
             자전거 관리
           </Button>
+          <Button variant="contained" component={RouterLink} to="/admin?type=coupon">
+            쿠폰 관리
+          </Button>
         </ButtonGroup>
       </Box>
       {!query && <AdminMain />}
@@ -56,6 +60,7 @@ const Admin = () => {
       {query === "ticket" && <AdminTicket />}
       {query === "bikestation" && <AdminBikeStation />}
       {query === "bike" && <AdminBike />}
+      {query === "coupon" && <AdminCoupon />}
     </Container>
   );
 };
