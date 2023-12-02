@@ -228,6 +228,9 @@ const UserPage = () => {
                 disabled={!editMode}
               />
             </Grid>
+            <Grid item xs={12}>
+              <TextField fullWidth variant="outlined" label="보유 금액" value={userData.total_money} disabled={true} InputProps={{ readOnly: true }} />
+            </Grid>
 
             {editMode && (
               <>
