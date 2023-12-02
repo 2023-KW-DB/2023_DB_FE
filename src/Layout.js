@@ -207,28 +207,29 @@ function DrawerAppBar(props) {
           </Typography>
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map(
-              (item) =>
-                (!item.need_login || (item.need_login && cookies && cookies.id)) && (
-                  <>
-                    <Button
-                      key={item.name}
-                      sx={{
-                        color: "#fff",
-                        textTransform: "none",
-                        // width: "100px",
-                        mx: 1,
-                      }}
-                    >
-                      <Link component={RouterLink} to={item.path} underline="none" color="inherit">
-                        {item.name}
-                      </Link>
-                    </Button>
-                  </>
-                ),
+            {navItems.map((item) =>
+              !item.need_login || (item.need_login && cookies && cookies.id) ? (
+                <>
+                  <Button
+                    key={item.name}
+                    sx={{
+                      color: "#fff",
+                      textTransform: "none",
+                      // width: "100px",
+                      mx: 1,
+                    }}
+                  >
+                    <Link component={RouterLink} to={item.path} underline="none" color="inherit">
+                      {item.name}
+                    </Link>
+                  </Button>
+                </>
+              ) : (
+                <></>
+              ),
             )}
 
-            {cookies && cookies.id && (
+            {cookies && cookies.id ? (
               <>
                 <Button sx={{ color: "#fff", mx: 1 }} onClick={handleLogout}>
                   로그아웃
@@ -239,8 +240,10 @@ function DrawerAppBar(props) {
                   </Link>
                 </Button>
               </>
+            ) : (
+              <></>
             )}
-            {(!user || !user.username) && (
+            {!user || !user.username ? (
               <>
                 {guestNavItems.map((item) => (
                   <Button key={item.name} sx={{ color: "#fff", mx: 1 }}>
@@ -250,6 +253,8 @@ function DrawerAppBar(props) {
                   </Button>
                 ))}
               </>
+            ) : (
+              <></>
             )}
           </Box>
         </Toolbar>
