@@ -119,7 +119,20 @@ const Main = () => {
             throw new Error("대여 정보를 가져오는데 실패하였습니다.");
           }
           const checkRentJsonData = await checkRentResponse.json();
-          if (checkRentJsonData.result === true) {
+          if (checkRentJsonData.result.length === 0) {
+            setStartPos(null);
+            setEndPos(null);
+            _setStartPos(null);
+            _setEndPos(null);
+            dispatch(setStartPos(null));
+            dispatch(setEndPos(null));
+            setIsOnRent(false);
+          } else {
+            const lendplace = checkRentJsonData.result[0];
+            console.log(lendplace);
+            setStartPos(lendplace);
+            _setStartPos(lendplace);
+            dispatch(setStartPos(lendplace));
             setIsOnRent(true);
           }
         } else {
