@@ -1,8 +1,11 @@
 import { Box, Button, Container, CssBaseline, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ConfirmationNumber, Redeem } from "@mui/icons-material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import { setUser } from "../store/userSlice";
+import { useCookies } from "react-cookie";
+
 const mock = [
   {
     id: 1,
@@ -17,7 +20,10 @@ const mock = [
 const BuyTicket = () => {
   const [ticketList, setTicketList] = useState(mock);
   const user = useSelector((state) => state.user);
+  const [cookies, setCookie, removeCookie] = useCookies(["id"]);
   const [money, setMoney] = useState(0);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -53,12 +59,21 @@ const BuyTicket = () => {
         }
         const jsonData = await response.json();
         alert("티켓 구매에 성공했습니다.");
-        for (let i = 0; i < ticketList.length; i++) {
-          if (ticketList[i].id === id) {
-            setMoney(money - ticketList[i].ticket_price);
-            break;
-          }
+        // for (let i = 0; i < ticketList.length; i++) {
+        //   if (ticketList[i].id === id) {
+        //     setMoney(money - ticketList[i].ticket_price);
+        //     break;
+        //   }
+        // }
+        const response2 = await fetch(process.env.REACT_APP_API_URL + `/users/get-userinfo?user_id=${cookies.id}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response2.status !== 200) {
+          throw new Error("데이터를 가져오는데 실패하였습니다.");
         }
+        const jsonData2 = await response2.json();
+        dispatch(setUser(jsonData2.result));
       } catch (e) {
         alert("티켓 구매에 실패했습니다.");
       }
