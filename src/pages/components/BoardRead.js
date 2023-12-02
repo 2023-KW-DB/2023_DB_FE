@@ -416,7 +416,7 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
                 }}
               >
                 <Typography>{comment.content}</Typography>
-                <Box>
+                <Box sx={{ py: 1.5 }}>
                   {comment.userLiked ? (
                     <FavoriteIcon
                       className={useAnimate && "heart-animate"}
