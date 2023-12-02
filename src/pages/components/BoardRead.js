@@ -5,6 +5,8 @@ import { Link as RouterLink } from "react-router-dom";
 import moment from "moment";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import DownloadIcon from "@mui/icons-material/Download";
 import "./read.css";
 import { useSelector } from "react-redux";
 const mock = {
@@ -43,6 +45,8 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
   const [comments, setComments] = useState([]);
   const [useAnimate, setUseAnimate] = useState(true);
   const [myComment, setMyComment] = useState("");
+  const [fileName, setFileName] = useState("");
+  const [fileUrl, setFileUrl] = useState("");
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -64,6 +68,8 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
       setLike(jsonData.result.userLiked);
       setLikeCount(jsonData.result.likeCount);
       setComments(jsonData.result.commentDtoList);
+      setFileName(jsonData.result.file_name);
+      setFileUrl(jsonData.result.url);
     } catch (e) {
       alert("데이터를 가져오는데 실패하였습니다.");
     }
@@ -71,8 +77,8 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
 
   const handleEdit = () => {
     const newTitle = prompt("수정할 제목을 입력하세요", boardData.title);
-    const newContent = prompt("수정할 내용을 입력하세요",boardData.content);
-    
+    const newContent = prompt("수정할 내용을 입력하세요", boardData.content);
+
     if (newTitle && newContent) {
       (async () => {
         try {
@@ -90,11 +96,11 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
               url: "",
             }),
           });
-  
+
           if (response.status !== 200) {
             throw new Error("게시글 수정에 실패했습니다.");
           }
-  
+
           const jsonData = await response.json();
           alert("게시글이 수정에 성공했습니다.");
           fetchData();
@@ -309,6 +315,25 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
           <div dangerouslySetInnerHTML={{ __html: boardData.content }} />
         </Typography>
       </Box>
+      {/* 첨부파일 */}
+      {boardData.file_name && boardData.url && (
+        <>
+          <Box
+            sx={{ mt: 3, display: "flex", flexDirection: "row", gap: 1, justifyContent: "space-between", boxShadow: 1, p: 1, cursor: "pointer" }}
+            onClick={() => {
+              const url = process.env.REACT_APP_API_URL + "/board/" + boardData.url;
+              window.open(url);
+            }}
+            target="_blank"
+          >
+            <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 1 }}>
+              <AttachFileIcon />
+              <Typography component="span">{boardData.file_name}</Typography>
+            </Box>
+            <DownloadIcon />
+          </Box>
+        </>
+      )}
       {/* 버튼 목록 */}
       <Box
         sx={{

@@ -3,17 +3,20 @@ import { useEffect, useState } from "react";
 import { ConfirmationNumber, Redeem } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import moment from "moment";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "./ckboard.css";
 import { useSelector } from "react-redux";
 import BoardEditor from "./BoardEditor";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 const BoardWrite = ({ category_id = 1, beforeLink }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [setNotice, setSetNotice] = useState(false);
+  const [fileName, setFileName] = useState("");
+  const [fileUrl, setFileUrl] = useState("");
+  const [file, setFile] = useState(null);
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
 
@@ -34,8 +37,8 @@ const BoardWrite = ({ category_id = 1, beforeLink }) => {
             title: title,
             content: content,
             notice: setNotice,
-            file_name: "",
-            url: "",
+            file_name: fileName,
+            url: fileUrl,
           }),
         });
         if (response.status !== 200) {
@@ -50,6 +53,27 @@ const BoardWrite = ({ category_id = 1, beforeLink }) => {
       }
     })();
   };
+
+  const handleFileUpload = (e) => {
+    if (!e.target.files) {
+      return;
+    }
+    const file = e.target.files[0];
+    const { name } = file;
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("type", "octet-stream");
+    fetch(process.env.REACT_APP_API_URL + "/board/file-upload", {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setFileName(res.result.file_name);
+        setFileUrl(res.result.url);
+      });
+  };
+
   return (
     <Container>
       <Divider sx={{ my: 1 }} />
@@ -71,25 +95,13 @@ const BoardWrite = ({ category_id = 1, beforeLink }) => {
 
       <BoardEditor setParentContent={setContent} />
 
-      {/* <CKEditor
-        editor={ ClassicEditor }
-        data={content}
-        onReady={ editor => {
-            // You can store the "editor" and use when it is needed.
-            console.log( 'Editor is ready to use!', editor );
-        } }
-        onChange={ ( event, editor ) => {
-            const data = editor.getData();
-            console.log( { event, editor, data } );
-            setContent(data)
-        } }
-        onBlur={ ( event, editor ) => {
-            console.log( 'Blur.', editor );
-        } }
-        onFocus={ ( event, editor ) => {
-            console.log( 'Focus.', editor );
-        } }
-      /> */}
+      <Box sx={{ my: 1 }}>
+        <Button component="label" variant="contained" startIcon={<UploadFileIcon />} sx={{ marginRight: "1rem" }}>
+          파일 첨부
+          <input type="file" hidden onChange={handleFileUpload} />
+        </Button>
+        <Typography variant="span">{fileName}</Typography>
+      </Box>
       <Box
         sx={{
           my: 2,
