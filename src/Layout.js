@@ -47,6 +47,11 @@ const navItems = [
     need_login: false,
   },
   {
+    name: "쿠폰",
+    path: "/coupon",
+    need_login: true,
+  },
+  {
     name: "즐겨찾기",
     path: "/favorite",
     need_login: true,
