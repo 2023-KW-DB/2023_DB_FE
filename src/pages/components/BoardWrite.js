@@ -1,11 +1,4 @@
-import {
-  Box,
-  Container,
-  TextField,
-  Typography,
-  Divider,
-  Button,
-} from "@mui/material";
+import { Box, Container, TextField, Typography, Divider, Button, Checkbox, FormGroup, FormControlLabel } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ConfirmationNumber, Redeem } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
@@ -20,6 +13,7 @@ import BoardEditor from "./BoardEditor";
 const BoardWrite = ({ category_id = 1, beforeLink }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [setNotice, setSetNotice] = useState(false);
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
 
@@ -31,22 +25,19 @@ const BoardWrite = ({ category_id = 1, beforeLink }) => {
 
     (async () => {
       try {
-        const response = await fetch(
-          process.env.REACT_APP_API_URL + `/board/create-post`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              category_id: category_id,
-              user_id: user.id,
-              title: title,
-              content: content,
-              notice: false,
-              file_name: "",
-              url: "",
-            }),
-          },
-        );
+        const response = await fetch(process.env.REACT_APP_API_URL + `/board/create-post`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            category_id: category_id,
+            user_id: user.id,
+            title: title,
+            content: content,
+            notice: setNotice,
+            file_name: "",
+            url: "",
+          }),
+        });
         if (response.status !== 200) {
           throw new Error("글 작성에 실패했습니다.");
         }
@@ -71,8 +62,15 @@ const BoardWrite = ({ category_id = 1, beforeLink }) => {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
+      {user.user_type === 0 && (
+        <FormGroup>
+          <FormControlLabel control={<Checkbox checked={setNotice} onChange={(e) => setSetNotice(e.target.checked)} />} label="공지사항으로 지정" />
+        </FormGroup>
+      )}
       <Divider sx={{ my: 1 }} />
+
       <BoardEditor setParentContent={setContent} />
+
       {/* <CKEditor
         editor={ ClassicEditor }
         data={content}
@@ -102,21 +100,10 @@ const BoardWrite = ({ category_id = 1, beforeLink }) => {
           justifyContent: "space-between",
         }}
       >
-        <Button
-          variant="contained"
-          color="warning"
-          sx={{ width: "250px" }}
-          component={RouterLink}
-          to={beforeLink}
-        >
+        <Button variant="contained" color="warning" sx={{ width: "250px" }} component={RouterLink} to={beforeLink}>
           뒤로가기
         </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ width: "250px" }}
-          onClick={onSubmit}
-        >
+        <Button variant="contained" color="primary" sx={{ width: "250px" }} onClick={onSubmit}>
           등록
         </Button>
       </Box>

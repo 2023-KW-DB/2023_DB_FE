@@ -170,7 +170,7 @@ const BoardList = ({ category_id, datas = [] }) => {
                       <TableCell align="center">[공지]</TableCell>
                       <TableCell align="center">
                         <Link component={RouterLink} to={readPage + "?id=" + data.id} sx={{ width: "100%" }}>
-                          {data.title} &nbsp; {data.commentCount > 0 && <span>[{data.commentCount}]</span>}
+                          {data.title} {data.commentCount > 0 && <span>&nbsp; [{data.commentCount}]</span>}
                         </Link>
                       </TableCell>
                       <TableCell align="center">{data.user_name}</TableCell>
@@ -182,14 +182,15 @@ const BoardList = ({ category_id, datas = [] }) => {
             {showData &&
               showData.length > 0 &&
               showData.map((data, idx) => {
+                console.log(user.user_type, data.category_id, user.username, data.user_name);
                 if (data.category_id !== category_id) return;
-                if (user.user_type !== 1 && data.category_id === 3 && user.id !== data.user_id) return;
+                if (user.user_type === 1 && data.category_id === 3 && user.username !== data.user_name) return;
                 return (
                   <TableRow key={data.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                     <TableCell align="center">{data.showIndex}</TableCell>
                     <TableCell align="center">
                       <Link component={RouterLink} to={readPage + "?id=" + data.id} sx={{ width: "100%" }}>
-                        {data.title} &nbsp; {data.commentCount > 0 && <span>[{data.commentCount}]</span>}
+                        {data.title} {data.commentCount > 0 && <span>&nbsp; [{data.commentCount}]</span>}
                       </Link>
                     </TableCell>
                     <TableCell align="center">{data.user_name}</TableCell>
