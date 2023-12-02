@@ -86,13 +86,13 @@ const AdminCouponEdit = () => {
     (async () => {
       try {
         console.log(ticketId, ticketPrice, isUsed, couponValue);
-        const response = await fetch(process.env.REACT_APP_API_URL + "/admin/modify-ticket", {
+        const response = await fetch(process.env.REACT_APP_API_URL + "/modify-coupon", {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            id: ticketId,
-            ticket_price: ticketPrice,
-            is_used: isUsed,
+            ticket_id: ticketId,
+            // ticket_price: ticketPrice,
+            // is_used: isUsed,
             value: couponValue,
           }),
         });
@@ -140,11 +140,11 @@ const AdminCouponEdit = () => {
           <Grid item xs={12}>
             <TextField fullWidth variant="outlined" label="티켓 가격" value={ticketPrice} InputProps={{ readOnly: true }} disabled />
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <FormGroup>
               <FormControlLabel control={<Checkbox checked={isUsed} onChange={(e) => setIsUsed(e.target.checked)} />} label="사용 여부" />
             </FormGroup>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center", width: "100%", py: 3 }}>
