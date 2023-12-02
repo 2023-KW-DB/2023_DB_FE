@@ -12,6 +12,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  CircularProgress,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useSearchParams } from "react-router-dom";
@@ -62,6 +63,7 @@ const AdminRentHistory = () => {
   const [showData, setShowData] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const [isLoad, setIsLoad] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -80,6 +82,7 @@ const AdminRentHistory = () => {
         setHistoryData(reversedData);
         setTotalPage(Math.ceil(reversedData.length / 10));
         setShowData(reversedData.slice(0, 10));
+        setIsLoad(true);
       } catch (error) {
         alert("데이터를 가져오는데 실패하였습니다.");
       }
@@ -167,7 +170,14 @@ const AdminRentHistory = () => {
             ) : (
               <TableRow>
                 <TableCell align="center" colSpan={10} className="tablecell">
-                  <Typography variant="span">데이터가 없습니다.</Typography>
+                  {!isLoad ? (
+                    <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "100%", py: 3 }}>
+                      <Typography variant="span">데이터를 불러오는 중입니다.</Typography>
+                      <CircularProgress />
+                    </Box>
+                  ) : (
+                    <Typography variant="span">데이터가 없습니다.</Typography>
+                  )}
                 </TableCell>
               </TableRow>
             )}
