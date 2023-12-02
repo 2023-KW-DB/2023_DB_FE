@@ -25,11 +25,17 @@ const TravelHistory = () => {
         }
 
         const jsonData = await response.json();
-        setTravelHistory(jsonData.result);
-        setTotalPage(Math.ceil(jsonData.result.length / 10));
-        setShowData(jsonData.result.slice(0, 10));
+        if (jsonData.status == 2029) {
+          setShowData([]);
+          setTotalPage(1);
+          setTravelHistory([]);
+        } else {
+          setTravelHistory(jsonData.result);
+          setTotalPage(Math.ceil(jsonData.result.length / 10));
+          setShowData(jsonData.result.slice(0, 10));
+        }
       } catch (e) {
-        console.error("데이터를 가져오는데 실패하였습니다.", e);
+        // console.error("데이터를 가져오는데 실패하였습니다.", e);
         setError("데이터를 가져오는데 실패하였습니다.");
       }
     };
@@ -54,22 +60,29 @@ const TravelHistory = () => {
                 <TableCell align="center">출발시간</TableCell>
                 <TableCell align="center">도착지</TableCell>
                 <TableCell align="center">도착시간</TableCell>
-                <TableCell sx={{ minWidth: 100 }} align="center">이동 거리</TableCell>
+                <TableCell sx={{ minWidth: 100 }} align="center">
+                  이동 거리
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {showData.map((row) => (
-                <TableRow
-                  key={row.id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell align="center">{row.departure_station}</TableCell>
-                  <TableCell align="center">{moment(row.departure_time).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
-                  <TableCell align="center">{row.arrival_station}</TableCell>
-                  <TableCell align="center">{moment(row.arrival_time).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
-                  <TableCell align="center">{row.use_distance}m</TableCell>
+              {showData && showData.length > 0 ? (
+                showData.map((row) => (
+                  <TableRow key={row.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                    <TableCell align="center">{row.departure_station}</TableCell>
+                    <TableCell align="center">{moment(row.departure_time).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
+                    <TableCell align="center">{row.arrival_station}</TableCell>
+                    <TableCell align="center">{moment(row.arrival_time).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
+                    <TableCell align="center">{row.use_distance}m</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell align="center" colSpan={5}>
+                    데이터가 존재하지 않습니다.
+                  </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </TableContainer>

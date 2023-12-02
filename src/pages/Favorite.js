@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Container,
-  Typography,
-  Card,
-  CardContent,
-  Box,
-  Button,
-  Rating,
-  CssBaseline,
-} from "@mui/material";
+import { Container, Typography, Card, CardContent, Box, Button, Rating, CssBaseline } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import { useSelector } from "react-redux";
@@ -30,19 +21,16 @@ const Favorite = () => {
     (async () => {
       try {
         const isFavorite = updatedStations[index].isFavorite;
-        const response = await fetch(
-          process.env.REACT_APP_API_URL + "/favorite/favorite-lendplace",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              user_id: user.id,
-              lendplace_id: updatedStations[index].lendplace_id,
-              is_favorite: !isFavorite,
-            }),
-            credentials: "include",
-          },
-        );
+        const response = await fetch(process.env.REACT_APP_API_URL + "/favorite/favorite-lendplace", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: user.id,
+            lendplace_id: updatedStations[index].lendplace_id,
+            is_favorite: !isFavorite,
+          }),
+          credentials: "include",
+        });
         if (response.status !== 200) {
           throw new Error("즐겨찾기 추가에 실패하였습니다.");
         }
@@ -57,7 +45,6 @@ const Favorite = () => {
   };
 
   useEffect(() => {
-    console.log(user);
     (async () => {
       fetchData();
     })();
@@ -65,15 +52,11 @@ const Favorite = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        process.env.REACT_APP_API_URL +
-          `/favorite/get-lendplace?user_id=${user.id}`,
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-        },
-      );
+      const response = await fetch(process.env.REACT_APP_API_URL + `/favorite/get-lendplace?user_id=${user.id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
       if (response.status !== 200) {
         throw new Error("자전거 대여소 정보를 가져오는데 실패하였습니다.");
       }
@@ -92,54 +75,42 @@ const Favorite = () => {
       <Typography component="h1" variant="h5" sx={{ py: 3 }}>
         대여소 즐겨찾기
       </Typography>
-      {favoriteStations.map((station, index) => (
-        <Card key={index} style={{ width: "100%", marginBottom: "16px" }}>
-          <CardContent>
-            <Box display="flex" alignItems="center">
-              <div
-                onClick={() => toggleFavorite(index)}
-                style={{ cursor: "pointer", marginRight: "8px" }}
-              >
-                {station.isFavorite ? (
-                  <StarIcon color="warning" />
-                ) : (
-                  <StarOutlineIcon color="warning" />
-                )}
-              </div>
-              <Box>
-                <Typography variant="h6">
-                  {station.statn_addr2
-                    ? station.statn_addr2
-                    : station.statn_addr1}
-                </Typography>
-                <Typography variant="body1">
-                  대여가능 자전거: {station.total_bikes}
-                </Typography>
+      {favoriteStations &&
+        favoriteStations.length > 0 &&
+        favoriteStations.map((station, index) => (
+          <Card key={index} style={{ width: "100%", marginBottom: "16px" }}>
+            <CardContent>
+              <Box display="flex" alignItems="center">
+                <div onClick={() => toggleFavorite(index)} style={{ cursor: "pointer", marginRight: "8px" }}>
+                  {station.isFavorite ? <StarIcon color="warning" /> : <StarOutlineIcon color="warning" />}
+                </div>
+                <Box>
+                  <Typography variant="h6">{station.statn_addr2 ? station.statn_addr2 : station.statn_addr1}</Typography>
+                  <Typography variant="body1">대여가능 자전거: {station.total_bikes}</Typography>
+                </Box>
+                <Box marginLeft="auto" display="flex" alignItems="center">
+                  <Rating
+                    key={index}
+                    // name={`rating-${index}`}
+                    value={parseInt(station.average_rating)}
+                    count={5}
+                    readOnly
+                    color="gray"
+                    activeColor="#faaf00"
+                    size="16px"
+                  />
+                  <Typography variant="body1" sx={{ marginLeft: 1 }}>
+                    {station.average_rating}점
+                  </Typography>
+                  <Box marginLeft={3}></Box>
+                  <Button variant="contained" color="primary" component={RouterLink} to={`/ratingreview?id=${station.lendplace_id}`}>
+                    후기 보기
+                  </Button>
+                </Box>
               </Box>
-              <Box marginLeft="auto" display="flex" alignItems="center">
-                <Rating
-                  name={`rating-${index}`}
-                  defaultValue={station.average_rating}
-                  readOnly
-                  precision={0.1}
-                />
-                <Typography variant="body1" sx={{ marginLeft: 1 }}>
-                  {station.average_rating}점
-                </Typography>
-                <Box marginLeft={3}></Box>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  component={RouterLink}
-                  to={`/ratingreview?id=${station.lendplace_id}`}
-                >
-                  후기 보기
-                </Button>
-              </Box>
-            </Box>
-          </CardContent>
-        </Card>
-      ))}
+            </CardContent>
+          </Card>
+        ))}
     </Container>
   );
 };

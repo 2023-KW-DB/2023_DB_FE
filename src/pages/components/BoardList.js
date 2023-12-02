@@ -76,14 +76,10 @@ const BoardList = ({ category_id, datas = [] }) => {
     (async () => {
       // TODO: get data from server
       try {
-        const response = await fetch(
-          process.env.REACT_APP_API_URL +
-            `/board/get-category-titles?category_id=${category_id}`,
-          {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          },
-        );
+        const response = await fetch(process.env.REACT_APP_API_URL + `/board/get-category-titles?category_id=${category_id}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
         if (response.status !== 200) {
           throw new Error("데이터를 가져오는데 실패하였습니다.");
         }
@@ -169,25 +165,16 @@ const BoardList = ({ category_id, datas = [] }) => {
               noticeData.map(
                 (data) =>
                   data.category_id === category_id && (
-                    <TableRow
-                      key={data.id}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
+                    <TableRow key={data.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                       <TableCell align="center">[공지]</TableCell>
                       <TableCell align="center">
-                        <Link
-                          component={RouterLink}
-                          to={readPage + "?id=" + data.id}
-                          sx={{ width: "100%" }}
-                        >
-                          {data.title}
+                        <Link component={RouterLink} to={readPage + "?id=" + data.id} sx={{ width: "100%" }}>
+                          {data.title} &nbsp; {data.commentCount > 0 && <span>[{data.commentCount}]</span>}
                         </Link>
                       </TableCell>
                       <TableCell align="center">{data.user_name}</TableCell>
                       <TableCell align="center">{data.views}</TableCell>
-                      <TableCell align="center">
-                        {moment(data.created_at).format("YYYY-MM-DD HH:mm")}
-                      </TableCell>
+                      <TableCell align="center">{moment(data.created_at).format("YYYY-MM-DD HH:mm")}</TableCell>
                     </TableRow>
                   ),
               )}
@@ -196,25 +183,16 @@ const BoardList = ({ category_id, datas = [] }) => {
               showData.map(
                 (data, idx) =>
                   data.category_id === category_id && (
-                    <TableRow
-                      key={data.id}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
+                    <TableRow key={data.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                       <TableCell align="center">{data.showIndex}</TableCell>
                       <TableCell align="center">
-                        <Link
-                          component={RouterLink}
-                          to={readPage + "?id=" + data.id}
-                          sx={{ width: "100%" }}
-                        >
-                          {data.title}
+                        <Link component={RouterLink} to={readPage + "?id=" + data.id} sx={{ width: "100%" }}>
+                          {data.title} &nbsp; {data.commentCount > 0 && <span>[{data.commentCount}]</span>}
                         </Link>
                       </TableCell>
                       <TableCell align="center">{data.user_name}</TableCell>
                       <TableCell align="center">{data.views}</TableCell>
-                      <TableCell align="center">
-                        {moment(data.created_at).format("YYYY-MM-DD HH:mm")}
-                      </TableCell>
+                      <TableCell align="center">{moment(data.created_at).format("YYYY-MM-DD HH:mm")}</TableCell>
                     </TableRow>
                   ),
               )}
@@ -256,17 +234,9 @@ const BoardList = ({ category_id, datas = [] }) => {
         }}
       >
         <ButtonGroup>
-          <Button onClick={() => setPages(page - 1 > 0 ? page - 1 : 1)}>
-            이전
-          </Button>
+          <Button onClick={() => setPages(page - 1 > 0 ? page - 1 : 1)}>이전</Button>
           <Button>{page}</Button>
-          <Button
-            onClick={() =>
-              setPages(page + 1 < totalPage ? page + 1 : totalPage)
-            }
-          >
-            다음
-          </Button>
+          <Button onClick={() => setPages(page + 1 < totalPage ? page + 1 : totalPage)}>다음</Button>
         </ButtonGroup>
       </Box>
     </>

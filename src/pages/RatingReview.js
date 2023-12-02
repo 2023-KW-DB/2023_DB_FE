@@ -24,6 +24,7 @@ const RatingReview = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!query || !user.id) return;
     (async () => {
       try {
         const response = await fetch(process.env.REACT_APP_API_URL + `/station/get-lendplace-status?lendplace_id=${query}&user_id=${user.id ? user.id : 1}`, {
@@ -56,7 +57,7 @@ const RatingReview = () => {
 
       setLendplaceData(newData);
     })();
-  }, [query]);
+  }, [query, user]);
 
   return (
     <Container component="main" maxWidth="md">

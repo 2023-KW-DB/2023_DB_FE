@@ -1,17 +1,4 @@
-import {
-  Box,
-  Container,
-  Typography,
-  Button,
-  Link,
-  Autocomplete,
-  TextField,
-  Divider,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-} from "@mui/material";
+import { Box, Container, Typography, Button, Link, Autocomplete, TextField, Divider, List, ListItem, ListItemButton, ListItemText, Card } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import KakaoMap from "./components/KakaoMap";
 import { useSelector, useDispatch } from "react-redux";
@@ -77,44 +64,33 @@ const Main = () => {
   useEffect(() => {
     (async () => {
       try {
-        const popularResponse = await fetch(
-          process.env.REACT_APP_API_URL + "/station/get-popular-lendplace",
-          {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-          },
-        );
+        const popularResponse = await fetch(process.env.REACT_APP_API_URL + "/station/get-popular-lendplace", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        });
         if (popularResponse.status !== 200) {
           throw new Error("인기 대여소 정보를 가져오는데 실패하였습니다.");
         }
         const popularJsonData = await popularResponse.json();
         _setPopular(popularJsonData.result);
         if (user && user.id) {
-          const recentResponse = await fetch(
-            process.env.REACT_APP_API_URL +
-              `/station/get-recent-lendplace?user_id=${user.id}`,
-            {
-              method: "GET",
-              headers: { "Content-Type": "application/json" },
-              credentials: "include",
-            },
-          );
+          const recentResponse = await fetch(process.env.REACT_APP_API_URL + `/station/get-recent-lendplace?user_id=${user.id}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+          });
           if (recentResponse.status !== 200) {
             throw new Error("최근 대여소 정보를 가져오는데 실패하였습니다.");
           }
           const recentJsonData = await recentResponse.json();
           _setRecent(recentJsonData.result);
 
-          const favoriteResponse = await fetch(
-            process.env.REACT_APP_API_URL +
-              `/favorite/get-lendplace?user_id=${user.id}`,
-            {
-              method: "GET",
-              headers: { "Content-Type": "application/json" },
-              credentials: "include",
-            },
-          );
+          const favoriteResponse = await fetch(process.env.REACT_APP_API_URL + `/favorite/get-lendplace?user_id=${user.id}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+          });
           if (favoriteResponse.status !== 200) {
             throw new Error("즐겨찾기 정보를 가져오는데 실패하였습니다.");
           }
@@ -183,20 +159,15 @@ const Main = () => {
   const onClickFavorite = () => {
     (async () => {
       try {
-        const response = await fetch(
-          process.env.REACT_APP_API_URL + "/favorite/favorite-lendplace",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              lendplace_id: isOnRent
-                ? endPos.lendplace_id
-                : startPos.lendplace_id,
-              user_id: user.id,
-            }),
-            credentials: "include",
-          },
-        );
+        const response = await fetch(process.env.REACT_APP_API_URL + "/favorite/favorite-lendplace", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            lendplace_id: isOnRent ? endPos.lendplace_id : startPos.lendplace_id,
+            user_id: user.id,
+          }),
+          credentials: "include",
+        });
         if (response.status !== 200) {
           throw new Error("즐겨찾기 설정에 실패하였습니다.");
         }
@@ -218,18 +189,15 @@ const Main = () => {
   const onRentBike = (lendplace) => {
     (async () => {
       try {
-        const response = await fetch(
-          process.env.REACT_APP_API_URL + "/users/bike-rental",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              departure_station: lendplace.lendplace_id,
-              user_id: user.id,
-            }),
-            credentials: "include",
-          },
-        );
+        const response = await fetch(process.env.REACT_APP_API_URL + "/users/bike-rental", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            departure_station: lendplace.lendplace_id,
+            user_id: user.id,
+          }),
+          credentials: "include",
+        });
         if (response.status !== 200) {
           throw new Error("자전거 대여에 실패하였습니다.");
         }
@@ -262,25 +230,19 @@ const Main = () => {
         const end_lnt = endPos.startn_lnt;
 
         // Calculate distance in meter
-        const distance =
-          Math.sqrt(
-            Math.pow(start_lat - end_lat, 2) + Math.pow(statr_lnt - end_lnt, 2),
-          ) * 100000;
+        const distance = Math.sqrt(Math.pow(start_lat - end_lat, 2) + Math.pow(statr_lnt - end_lnt, 2)) * 100000;
         console.log(distance);
 
-        const response = await fetch(
-          process.env.REACT_APP_API_URL + "/users/bike-return",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              arrival_station: endPos.lendplace_id,
-              user_id: user.id,
-              use_distance: distance ? parseInt(distance) : 0,
-            }),
-            credentials: "include",
-          },
-        );
+        const response = await fetch(process.env.REACT_APP_API_URL + "/users/bike-return", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            arrival_station: endPos.lendplace_id,
+            user_id: user.id,
+            use_distance: distance ? parseInt(distance) : 0,
+          }),
+          credentials: "include",
+        });
         if (response.status !== 200) {
           throw new Error("자전거 반납에 실패하였습니다.");
         }
@@ -330,8 +292,8 @@ const Main = () => {
             width: "300px",
             borderRight: "1px solid black",
             height: "100%",
-            py: 3,
-            px: 2,
+            // py: 3,
+            // px: 2,
             overflowY: "scroll",
           }}
         >
@@ -343,214 +305,171 @@ const Main = () => {
             </>
           ) : (
             <>
-              {!isOnRent ? (
-                <>
-                  <Typography variant="h5" sx={{ fontWeight: "bold", my: 1 }}>
-                    시작 대여소
-                  </Typography>
-                  <TextField
-                    variant="standard"
-                    sx={{ py: 1 }}
-                    value={
-                      startPos
-                        ? startPos.statn_addr2
-                          ? startPos.statn_addr2
-                          : startPos.statn_addr1
-                        : ""
-                    }
-                    placeholder={
-                      startPos
-                        ? startPos.statn_addr2
-                          ? startPos.statn_addr2
-                          : startPos.statn_addr1
-                        : "지도에서 도착지점을 선택해주세요"
-                    }
-                    InputProps={{ readOnly: true }}
-                  />
-                </>
-              ) : (
-                <>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: "100%",
-                    }}
-                  >
-                    <DirectionsBikeIcon
-                      sx={{ fontSize: "3.5rem", width: "100px" }}
-                    />
-                    <Typography
-                      variant="span"
-                      sx={{ fontWeight: "bold", my: 2 }}
-                    >
-                      자전거를 대여중입니다.
+              <Card sx={{ py: 2, px: 1, m: 1 }}>
+                {!isOnRent ? (
+                  <>
+                    <Typography variant="h5" sx={{ fontWeight: "bold", my: 1, pl: 1 }}>
+                      시작 대여소
                     </Typography>
-                  </Box>
-
-                  <Typography variant="h5" sx={{ fontWeight: "bold", my: 1 }}>
-                    도착 대여소
-                  </Typography>
-                  <TextField
-                    variant="standard"
-                    sx={{ py: 1 }}
-                    value={
-                      endPos
-                        ? endPos.statn_addr2
-                          ? endPos.statn_addr2
-                          : endPos.statn_addr1
-                        : ""
-                    }
-                    placeholder={
-                      endPos
-                        ? endPos.statn_addr2
-                          ? endPos.statn_addr2
-                          : endPos.statn_addr1
-                        : "지도에서 도착지점을 선택해주세요"
-                    }
-                    InputProps={{ readOnly: true }}
-                  />
-                </>
-              )}
-
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  width: "100%",
-                  mt: 2,
-                }}
-              >
-                {isFavorite ? (
-                  <Button
-                    type="button"
-                    variant="contained"
-                    color="warning"
-                    onClick={() => {
-                      onClickFavorite();
-                    }}
-                  >
-                    <StarIcon />
-                  </Button>
+                    <TextField
+                      variant="standard"
+                      sx={{ py: 1 }}
+                      value={startPos ? (startPos.statn_addr2 ? startPos.statn_addr2 : startPos.statn_addr1) : ""}
+                      placeholder={startPos ? (startPos.statn_addr2 ? startPos.statn_addr2 : startPos.statn_addr1) : "지도에서 도착지점을 선택해주세요"}
+                      InputProps={{ readOnly: true }}
+                    />
+                  </>
                 ) : (
-                  <Button
-                    type="button"
-                    variant="contained"
-                    color="warning"
-                    onClick={() => {
-                      onClickFavorite();
-                    }}
-                  >
-                    <StarOutlineIcon />
-                  </Button>
+                  <>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "100%",
+                      }}
+                    >
+                      <DirectionsBikeIcon sx={{ fontSize: "3.5rem", width: "100px" }} />
+                      <Typography variant="span" sx={{ fontWeight: "bold", my: 2 }}>
+                        자전거를 대여중입니다.
+                      </Typography>
+                    </Box>
+
+                    <Typography variant="h5" sx={{ fontWeight: "bold", my: 1, pl: 1 }}>
+                      도착 대여소
+                    </Typography>
+                    <TextField
+                      variant="standard"
+                      sx={{ py: 1 }}
+                      value={endPos ? (endPos.statn_addr2 ? endPos.statn_addr2 : endPos.statn_addr1) : ""}
+                      placeholder={endPos ? (endPos.statn_addr2 ? endPos.statn_addr2 : endPos.statn_addr1) : "지도에서 도착지점을 선택해주세요"}
+                      InputProps={{ readOnly: true }}
+                    />
+                  </>
                 )}
-                <Button
-                  type="button"
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {
-                    if (!isOnRent) {
-                      if (startPos) {
-                        onRentBike(startPos);
-                      } else {
-                        alert("대여할 지점을 선택해주세요.");
-                      }
-                    } else {
-                      if (endPos) {
-                        onReturnBike(endPos);
-                      } else {
-                        alert("반납할 지점을 선택해주세요.");
-                      }
-                    }
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    width: "100%",
+                    mt: 2,
                   }}
                 >
-                  {!isOnRent ? "자전거 대여" : "자전거 반납"}
-                </Button>
-              </Box>
-              <Divider sx={{ my: 4 }} />
-              <Weather data={weatherInfo} />
-
-              {_recent ? (
-                <>
-                  <Typography variant="h5" sx={{ fontWeight: "bold", my: 1 }}>
-                    최근 사용 대여소
-                  </Typography>
-                  {_recent.map((lendplace, index) => (
-                    <ul
-                      key={index}
-                      style={{ paddingLeft: 20, cursor: "pointer" }}
+                  {isFavorite ? (
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="warning"
+                      onClick={() => {
+                        onClickFavorite();
+                      }}
                     >
-                      <li
-                        onClick={() =>
-                          onClickMarker(index, lendplace, isOnRent)
-                        }
-                      >
-                        {lendplace.statn_addr1} {lendplace.statn_addr2}
-                      </li>
-                    </ul>
-                  ))}
-                </>
-              ) : (
-                <Typography variant="span" sx={{ fontSize: "15px" }}>
-                  최근 사용 대여소가 없습니다.
-                </Typography>
-              )}
-
-              {_popular ? (
-                <>
-                  <Typography variant="h5" sx={{ fontWeight: "bold", my: 1 }}>
-                    인기 대여소
-                  </Typography>
-                  {_popular.map((lendplace, index) => (
-                    <ul
-                      key={index}
-                      style={{ paddingLeft: 20, cursor: "pointer" }}
+                      <StarIcon />
+                    </Button>
+                  ) : (
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="warning"
+                      onClick={() => {
+                        onClickFavorite();
+                      }}
                     >
-                      <li
-                        onClick={() =>
-                          onClickMarker(index, lendplace, isOnRent)
+                      <StarOutlineIcon />
+                    </Button>
+                  )}
+                  <Button
+                    type="button"
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      if (!isOnRent) {
+                        if (startPos) {
+                          onRentBike(startPos);
+                        } else {
+                          alert("대여할 지점을 선택해주세요.");
                         }
-                      >
-                        {lendplace.statn_addr1} {lendplace.statn_addr2}
-                      </li>
-                    </ul>
-                  ))}
-                </>
-              ) : (
-                <Typography variant="span" sx={{ fontSize: "15px" }}>
-                  인기 대여소가 없습니다.
+                      } else {
+                        if (endPos) {
+                          onReturnBike(endPos);
+                        } else {
+                          alert("반납할 지점을 선택해주세요.");
+                        }
+                      }
+                    }}
+                  >
+                    {!isOnRent ? "자전거 대여" : "자전거 반납"}
+                  </Button>
+                </Box>
+              </Card>
+              <Card sx={{ py: 2, px: 1, m: 1 }}>
+                <Weather data={weatherInfo} />
+              </Card>
+              <Card sx={{ py: 2, px: 1, m: 1 }}>
+                <Typography variant="h5" sx={{ fontWeight: "bold", my: 1, pl: 1 }}>
+                  최근 사용 대여소
                 </Typography>
-              )}
-
-              {favorite ? (
-                <>
-                  <Typography variant="h5" sx={{ fontWeight: "bold", my: 1 }}>
-                    대여소 즐겨찾기
+                {_recent && _recent.length > 0 ? (
+                  <>
+                    {_recent.map((lendplace, index) => (
+                      <ul key={index} style={{ paddingLeft: 20, cursor: "pointer" }}>
+                        <li onClick={() => onClickMarker(index, lendplace, isOnRent)}>
+                          {lendplace.statn_addr1} {lendplace.statn_addr2}
+                        </li>
+                      </ul>
+                    ))}
+                  </>
+                ) : (
+                  <Typography variant="span" sx={{ fontSize: "15px" }}>
+                    최근 사용 대여소가 없습니다.
                   </Typography>
-                  {favorite.map((lendplace, index) => (
-                    <ul
-                      key={index}
-                      style={{ paddingLeft: 20, cursor: "pointer" }}
-                    >
-                      <li
-                        onClick={() =>
-                          onClickMarker(index, lendplace, isOnRent)
-                        }
-                      >
-                        {lendplace.statn_addr1} {lendplace.statn_addr2}
-                      </li>
-                    </ul>
-                  ))}
-                </>
-              ) : (
-                <Typography variant="span" sx={{ fontSize: "15px" }}>
-                  즐겨찾기 대여소가 없습니다.
+                )}
+              </Card>
+              <Card sx={{ py: 2, px: 1, m: 1 }}>
+                <Typography variant="h5" sx={{ fontWeight: "bold", my: 1, pl: 1 }}>
+                  인기 대여소
                 </Typography>
-              )}
+                {_popular && _popular.length > 0 ? (
+                  <>
+                    {_popular.map((lendplace, index) => (
+                      <ul key={index} style={{ paddingLeft: 20, cursor: "pointer" }}>
+                        <li onClick={() => onClickMarker(index, lendplace, isOnRent)}>
+                          {lendplace.statn_addr1} {lendplace.statn_addr2}
+                        </li>
+                      </ul>
+                    ))}
+                  </>
+                ) : (
+                  <Typography variant="span" sx={{ fontSize: "15px" }}>
+                    인기 대여소가 없습니다.
+                  </Typography>
+                )}
+              </Card>
+
+              <Card sx={{ py: 2, px: 1, m: 1 }}>
+                <Typography variant="h5" sx={{ fontWeight: "bold", my: 1, pl: 1 }}>
+                  대여소 즐겨찾기
+                </Typography>
+                {favorite && favorite.length > 0 ? (
+                  <>
+                    {favorite.map((lendplace, index) => (
+                      <ul key={index} style={{ paddingLeft: 20, cursor: "pointer" }}>
+                        <li onClick={() => onClickMarker(index, lendplace, isOnRent)}>
+                          {lendplace.statn_addr1} {lendplace.statn_addr2}
+                        </li>
+                      </ul>
+                    ))}
+                  </>
+                ) : (
+                  <Typography variant="span" sx={{ fontSize: "15px" }}>
+                    즐겨찾기한 대여소가 없습니다.
+                  </Typography>
+                )}
+              </Card>
             </>
           )}
         </Box>

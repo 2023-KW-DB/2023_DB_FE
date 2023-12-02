@@ -1,11 +1,4 @@
-import {
-  Box,
-  Container,
-  TextField,
-  Typography,
-  Divider,
-  Button,
-} from "@mui/material";
+import { Box, Container, TextField, Typography, Divider, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ConfirmationNumber, Redeem } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
@@ -58,14 +51,10 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        process.env.REACT_APP_API_URL +
-          `/board/get-board?id=${board_id}&user_id=1`,
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        },
-      );
+      const response = await fetch(process.env.REACT_APP_API_URL + `/board/get-board?id=${board_id}&user_id=1`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
       if (response.status !== 200) {
         throw new Error("데이터를 가져오는데 실패하였습니다.");
       }
@@ -92,33 +81,27 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
     (async () => {
       try {
         if (!like) {
-          const response = await fetch(
-            process.env.REACT_APP_API_URL + `/board/like`,
-            {
-              method: "POST",
-              body: JSON.stringify({
-                user_id: user.id,
-                liked_id: boardData.id,
-                category_id: boardData.category_id,
-              }),
-              headers: { "Content-Type": "application/json" },
-            },
-          );
+          const response = await fetch(process.env.REACT_APP_API_URL + `/board/like`, {
+            method: "POST",
+            body: JSON.stringify({
+              user_id: user.id,
+              liked_id: boardData.id,
+              category_id: boardData.category_id,
+            }),
+            headers: { "Content-Type": "application/json" },
+          });
           setLikeCount(like ? likeCount - 1 : likeCount + 1);
           setLike(!like);
         } else {
-          const response = await fetch(
-            process.env.REACT_APP_API_URL + `/board/like-cancel`,
-            {
-              method: "DELETE",
-              body: JSON.stringify({
-                user_id: user.id,
-                liked_id: boardData.id,
-                category_id: boardData.category_id,
-              }),
-              headers: { "Content-Type": "application/json" },
-            },
-          );
+          const response = await fetch(process.env.REACT_APP_API_URL + `/board/like-cancel`, {
+            method: "DELETE",
+            body: JSON.stringify({
+              user_id: user.id,
+              liked_id: boardData.id,
+              category_id: boardData.category_id,
+            }),
+            headers: { "Content-Type": "application/json" },
+          });
           setLikeCount(like ? likeCount - 1 : likeCount + 1);
           setLike(!like);
         }
@@ -134,31 +117,25 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
         (async () => {
           try {
             if (!comment.userLiked) {
-              const response = await fetch(
-                process.env.REACT_APP_API_URL + `/board/comment/like`,
-                {
-                  method: "POST",
-                  body: JSON.stringify({
-                    user_id: user.id,
-                    liked_id: comment.id,
-                    category_id: boardData.category_id,
-                  }),
-                  headers: { "Content-Type": "application/json" },
-                },
-              );
+              const response = await fetch(process.env.REACT_APP_API_URL + `/board/comment/like`, {
+                method: "POST",
+                body: JSON.stringify({
+                  user_id: user.id,
+                  liked_id: comment.id,
+                  category_id: boardData.category_id,
+                }),
+                headers: { "Content-Type": "application/json" },
+              });
             } else {
-              const response = await fetch(
-                process.env.REACT_APP_API_URL + `/board/comment/like-cancel`,
-                {
-                  method: "DELETE",
-                  body: JSON.stringify({
-                    user_id: user.id,
-                    liked_id: comment.id,
-                    category_id: boardData.category_id,
-                  }),
-                  headers: { "Content-Type": "application/json" },
-                },
-              );
+              const response = await fetch(process.env.REACT_APP_API_URL + `/board/comment/like-cancel`, {
+                method: "DELETE",
+                body: JSON.stringify({
+                  user_id: user.id,
+                  liked_id: comment.id,
+                  category_id: boardData.category_id,
+                }),
+                headers: { "Content-Type": "application/json" },
+              });
             }
           } catch (e) {
             alert("데이터를 처리하는데 실패하였습니다.");
@@ -179,19 +156,16 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
   const submitCommentHandler = () => {
     (async () => {
       try {
-        const response = await fetch(
-          process.env.REACT_APP_API_URL + `/board/comment-write`,
-          {
-            method: "POST",
-            body: JSON.stringify({
-              user_id: user.id,
-              write_id: boardData.id,
-              category_id: boardData.category_id,
-              content: myComment,
-            }),
-            headers: { "Content-Type": "application/json" },
-          },
-        );
+        const response = await fetch(process.env.REACT_APP_API_URL + `/board/comment-write`, {
+          method: "POST",
+          body: JSON.stringify({
+            user_id: user.id,
+            write_id: boardData.id,
+            category_id: boardData.category_id,
+            content: myComment,
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
         if (response.status !== 200) {
           throw new Error("데이터를 가져오는데 실패하였습니다.");
         }
@@ -226,9 +200,7 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
       >
         <Typography sx={{ pr: 2 }}>작성자: {boardData.user_name}</Typography>
         <Typography sx={{ px: 2 }}>조회수: {boardData.views}</Typography>
-        <Typography sx={{ px: 2 }}>
-          작성일: {moment(boardData.created_at).format("YYYY-MM-DD")}
-        </Typography>
+        <Typography sx={{ px: 2 }}>작성일: {moment(boardData.created_at).format("YYYY-MM-DD")}</Typography>
       </Box>
       <Divider sx={{ my: 3 }} />
       <Box sx={{ minHeight: "300px", boxShadow: 1, p: 3 }}>
@@ -246,26 +218,25 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
           alignItems: "center",
           width: "100%",
           justifyContent: "space-between",
-          gap : 1,
+          gap: 1,
         }}
       >
-        <Button
-          variant="contained"
-          sx={{ mt: 3, mr: 0.17 }}
-          component={RouterLink}
-          to={beforeLink}
-        >
-          목록으로 이동
-        </Button>
-        
-        <Button variant="contained" sx={{ mt: 3, mr: 0.17 }} onClick={handleEdit}>
-            수정
-        </Button>
+        <Box>
+          <Button variant="contained" sx={{ mt: 3, mr: 1 }} component={RouterLink} to={beforeLink}>
+            목록으로 이동
+          </Button>
+          {boardData.user_id === user.id && (
+            <>
+              <Button variant="contained" sx={{ mt: 3, mr: 1 }} onClick={handleEdit} color="warning">
+                수정
+              </Button>
+              <Button variant="contained" sx={{ mt: 3 }} onClick={handleDelete} color="error">
+                삭제
+              </Button>
+            </>
+          )}
+        </Box>
 
-        <Button variant="contained" sx={{ mt: 3}} onClick={handleDelete}>
-            삭제
-        </Button>
-        
         <Box>
           {like ? (
             <FavoriteIcon
@@ -290,9 +261,7 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
               onClick={postLikeHandler}
             />
           )}
-          <Typography sx={{ width: "100%", textAlign: "center" }}>
-            {likeCount}
-          </Typography>
+          <Typography sx={{ width: "100%", textAlign: "center" }}>{likeCount}</Typography>
         </Box>
       </Box>
       <Box>
@@ -309,9 +278,7 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
                 }}
               >
                 <Typography>{comment.username}</Typography>
-                <Typography>
-                  {moment(comment.created_at).format("YYYY-MM-DD HH:mm")}
-                </Typography>
+                <Typography>{moment(comment.created_at).format("YYYY-MM-DD HH:mm")}</Typography>
               </Box>
               <Divider sx={{ width: "300px" }} />
               <Box
@@ -348,9 +315,7 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
                       onClick={() => postCommentLikeHandler(comment.id)}
                     />
                   )}
-                  <Typography sx={{ width: "100%", textAlign: "center" }}>
-                    {comment.likeCount}
-                  </Typography>
+                  <Typography sx={{ width: "100%", textAlign: "center" }}>{comment.likeCount}</Typography>
                 </Box>
               </Box>
             </Box>
@@ -374,11 +339,7 @@ const BoardRead = ({ board_id, data = mock, beforeLink }) => {
             value={myComment}
             onChange={(e) => setMyComment(e.target.value)}
           />
-          <Button
-            variant="contained"
-            sx={{ mt: 3 }}
-            onClick={submitCommentHandler}
-          >
+          <Button variant="contained" sx={{ mt: 3 }} onClick={submitCommentHandler}>
             등록
           </Button>
         </Box>
