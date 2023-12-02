@@ -151,18 +151,42 @@ const UserPage = () => {
             <Grid item xs={12}>
               <TextField fullWidth variant="outlined" label="나이" value={userData.age} InputProps={{ readOnly: true }} />
             </Grid>
+            
+            
             <Grid item xs={12}>
               <TextField
                 fullWidth
                 variant="outlined"
-                label="비밀번호"
-                value={editMode ? password : getMaskedPassword(userData.password)}
-                onChange={(e) => setPassword(e.target.value)}
+                label="전화번호"
+                value={editMode ? newPhone || userData.phone_number : userData.phone_number}
+                onChange={(e) => setNewPhone(e.target.value)}
                 disabled={!editMode}
               />
             </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                variant="outlined"
+                label="몸무게"
+                value={editMode ? newWeight || userData.weight : userData.weight}
+                onChange={(e) => setNewWeight(e.target.value)}
+                disabled={!editMode}
+              />
+            </Grid>
+
             {editMode && (
               <>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label="현재 비밀번호"
+                  value={editMode ? password : getMaskedPassword(userData.password)}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={!editMode}
+                />
+              </Grid>
+            
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
@@ -188,26 +212,8 @@ const UserPage = () => {
                 </Grid>
               </>
             )}
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                variant="outlined"
-                label="전화번호"
-                value={editMode ? newPhone || userData.phone_number : userData.phone_number}
-                onChange={(e) => setNewPhone(e.target.value)}
-                disabled={!editMode}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                variant="outlined"
-                label="몸무게"
-                value={editMode ? newWeight || userData.weight : userData.weight}
-                onChange={(e) => setNewWeight(e.target.value)}
-                disabled={!editMode}
-              />
-            </Grid>
+
+            
           </Grid>
           {editMode ? (
             <>
