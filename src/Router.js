@@ -25,6 +25,8 @@ import AdminBikeAdd from "./pages/admin/AdminBikeAdd";
 import AdminTicketAdd from "./pages/admin/AdminTicketAdd";
 import AdminBikeStationEdit from "./pages/admin/AdminBikeStationEdit";
 import AdminBikeStationAdd from "./pages/admin/AdminBikeStationAdd";
+import AdminCouponEdit from "./pages/admin/AdminCouponEdit";
+import AdminCouponAdd from "./pages/admin/AdminCouponAdd";
 import Board from "./pages/Board";
 import QnaBoardRead from "./pages/board/QnaBoardRead";
 import QnaBoardWrite from "./pages/board/QnaBoardWrite";
@@ -68,6 +70,8 @@ const router = () => {
       <Route path="/admin/bikestation/edit" element={<AdminBikeStationEdit />} />
       <Route path="/admin/bikestation/add" element={<AdminBikeStationAdd />} />
 
+      <Route path="/admin/coupon/edit" element={<AdminCouponEdit />} />
+      <Route path="/admin/coupon/add" element={<AdminCouponAdd />} />
       <Route path="/travelrating" element={<TravelRating />} />
       <Route path="/ratingreview" element={<RatingReview />} />
       <Route path="/userpage" element={<UserPage />} />
@@ -76,7 +80,7 @@ const router = () => {
       <Route path="/ranking" element={<Ranking />} />
       <Route path="/find-password" element={<PasswordFind />} />
       <Route path="/oauth/kakao" element={<KakaoLoginOAuth />} />
-      <Route path="/coupon" element={<Coupon />}/>
+      <Route path="/coupon" element={<Coupon />} />
     </Routes>
   );
 };

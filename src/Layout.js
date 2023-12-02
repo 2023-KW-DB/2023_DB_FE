@@ -84,6 +84,8 @@ function DrawerAppBar(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(cookies);
+    console.log(cookies.id);
     if (cookies && cookies.id) {
       (async () => {
         try {
@@ -114,6 +116,15 @@ function DrawerAppBar(props) {
     (async () => {
       try {
         const response = await fetch(process.env.REACT_APP_API_URL + "/users/signout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        const response2 = await fetch(process.env.REACT_APP_API_URL + "/users/kakao-signout", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
