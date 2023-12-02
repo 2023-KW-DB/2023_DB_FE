@@ -52,8 +52,8 @@ const TicketHistory = () => {
           </TableHead>
 
           <TableBody>
-            {ticketHistory && ticketHistory.length > 0 ? (
-              ticketHistory.map((row) => (
+            {showData && showData.length > 0 ? (
+              showData.map((row) => (
                 <TableRow key={row.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                   <TableCell align="center">{row.ticket_id}</TableCell>
                   <TableCell align="center">{moment(row.registration_at).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
