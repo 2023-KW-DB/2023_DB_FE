@@ -18,11 +18,14 @@ const UserPage = () => {
   const [userData, setUserData] = useState(mock);
   const [editMode, setEditMode] = useState(false);
   const [password, setPassword] = useState("");
+  const [newUserName, setNewUserName] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [checkNewPassword, setCheckNewPassword] = useState("");
   const [isPasswordSame, setIsPasswordSame] = useState(true);
+  const [isCurrentPasswordCorrect, setIsCurrentPasswordCorrect] = useState(true);
   const [newPhone, setNewPhone] = useState("");
   const [newWeight, setNewWeight] = useState("");
+  const [newAge, setNewAge] = useState(0);
 
   const user = useSelector((state) => state.user);
   const [searchParam] = useSearchParams();
@@ -30,6 +33,10 @@ const UserPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    fetchData();
+  }, [user]);
+
+  const fetchData = () => {
     (async () => {
       try {
         if (user && user.id) {
@@ -51,7 +58,7 @@ const UserPage = () => {
         console.log(error);
       }
     })();
-  }, [user]);
+  };
 
   const handleEditClick = () => {
     setEditMode(true);
@@ -60,34 +67,69 @@ const UserPage = () => {
   const handleCancelEdit = () => {
     setEditMode(false);
     setPassword("");
+    setNewUserName("");
     setNewPassword("");
     setCheckNewPassword("");
     setIsPasswordSame(true);
+    setIsCurrentPasswordCorrect(true);
+    setNewAge(0);
     setNewPhone("");
     setNewWeight("");
   };
 
   const handleSaveChanges = () => {
-    if (password === userData.password) {
-      if (newPassword === checkNewPassword) {
-        setUserData((prevUserData) => ({
-          ...prevUserData,
-          password: newPassword || prevUserData.password,
-          phone: newPhone || prevUserData.phone_number,
-          weight: newWeight || prevUserData.weight,
-        }));
-
-        setEditMode(false);
-        setPassword("");
-        setNewPassword("");
-        setCheckNewPassword("");
-        setIsPasswordSame(true);
-      } else {
+    // 새 비밀번호 있는경우
+    if (newPassword) {
+      if (newPassword !== checkNewPassword) {
         setIsPasswordSame(false);
+        return;
       }
-    } else {
-      setIsPasswordSame(false);
+      if (password !== userData.password) {
+        setIsCurrentPasswordCorrect(false);
+        return;
+      }
     }
+    (async () => {
+      try {
+        const response = await fetch(process.env.REACT_APP_API_URL + "/admin/modify-user", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: user.id,
+            email: userData.email,
+            username: newUserName || userData.username,
+            password: newPassword || userData.password,
+            phone_number: newPhone || userData.phone_number,
+            weight: newWeight || userData.weight,
+            age: newAge || userData.age,
+            total_money: userData.total_money,
+          }),
+          credentials: "include",
+        });
+        if (response.status !== 200) {
+          throw new Error("회원정보 수정에 실패하였습니다.");
+        }
+        const jsonData = await response.json();
+        if (jsonData.status === 2011) {
+          alert("회원정보 수정에 성공하였습니다.");
+          setEditMode(false);
+          setPassword("");
+          setNewPassword("");
+          setCheckNewPassword("");
+          setIsPasswordSame(true);
+          setIsCurrentPasswordCorrect(true);
+          setNewAge(0);
+          setNewPhone("");
+          setNewWeight("");
+          fetchData();
+          return;
+        } else {
+          throw new Error("회원정보 수정에 실패하였습니다.");
+        }
+      } catch (error) {
+        alert("회원정보 수정에 실패하였습니다.");
+      }
+    })();
   };
 
   const handleUserDelete = () => {
@@ -143,16 +185,29 @@ const UserPage = () => {
         <form>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField fullWidth variant="outlined" label="이메일" value={userData.email} InputProps={{ readOnly: true }} />
+              <TextField fullWidth variant="outlined" label="이메일" value={userData.email} InputProps={{ readOnly: true }} disabled={true} />
             </Grid>
             <Grid item xs={12}>
-              <TextField fullWidth variant="outlined" label="이름" value={userData.username} InputProps={{ readOnly: true }} />
+              <TextField
+                fullWidth
+                variant="outlined"
+                label="이름"
+                value={editMode ? newUserName || userData.username : userData.username}
+                onChange={(e) => setNewUserName(e.target.value)}
+                disabled={!editMode}
+              />
             </Grid>
             <Grid item xs={12}>
-              <TextField fullWidth variant="outlined" label="나이" value={userData.age} InputProps={{ readOnly: true }} />
+              <TextField
+                fullWidth
+                variant="outlined"
+                label="나이"
+                value={editMode ? newAge || userData.age : userData.age}
+                onChange={(e) => setNewAge(e.target.value)}
+                disabled={!editMode}
+              />
             </Grid>
-            
-            
+
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -176,17 +231,20 @@ const UserPage = () => {
 
             {editMode && (
               <>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  variant="outlined"
-                  label="현재 비밀번호"
-                  value={editMode ? password : getMaskedPassword(userData.password)}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={!editMode}
-                />
-              </Grid>
-            
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    label="현재 비밀번호"
+                    value={editMode ? password : getMaskedPassword(userData.password)}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={!editMode}
+                    error={!isCurrentPasswordCorrect}
+                    type="password"
+                    helperText={!isCurrentPasswordCorrect && "비밀번호가 일치하지 않습니다"}
+                  />
+                </Grid>
+
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
@@ -212,8 +270,6 @@ const UserPage = () => {
                 </Grid>
               </>
             )}
-
-            
           </Grid>
           {editMode ? (
             <>
