@@ -149,7 +149,7 @@ const AdminBikeStationEdit = () => {
             <FormGroup>
               <FormControlLabel
                 control={<Checkbox checked={station_status} onChange={(e) => setStationStatus(e.target.checked)} />}
-                label="대여소 사용 여부"
+                label="대여소 활성화 여부"
               />
             </FormGroup>
           </Grid>
