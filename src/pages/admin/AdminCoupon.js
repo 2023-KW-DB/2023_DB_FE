@@ -121,7 +121,7 @@ const AdminCoupon = () => {
                       <Typography variant="span">{row.is_used ? "사용됨" : "사용안됨"}</Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Button variant="contained" component={RouterLink} to={`/admin/coupon/edit?id=${row.id}`}>
+                      <Button variant="contained" component={RouterLink} to={`/admin/coupon/edit?value=${row.value}`}>
                         수정
                       </Button>
                     </TableCell>

@@ -37,7 +37,7 @@ const AdminCouponEdit = () => {
 
   const [ticketData, setTicketData] = useState([]);
   const [searchParams] = useSearchParams();
-  const query = searchParams.get("id");
+  const query = searchParams.get("value");
 
   useEffect(() => {
     // TODO: Fetch data
@@ -52,7 +52,7 @@ const AdminCouponEdit = () => {
         }
         const jsonData = await response.json();
         for (let i = 0; i < jsonData.result.length; i++) {
-          if (jsonData.result[i].id == query) {
+          if (jsonData.result[i].value == query) {
             setCouponValue(jsonData.result[i].value);
             setIsUsed(jsonData.result[i].is_used);
             setTicketId(jsonData.result[i].ticket_id);
