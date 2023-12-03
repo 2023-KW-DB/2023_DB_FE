@@ -83,9 +83,9 @@ const AdminCoupon = () => {
         <Table>
           <TableHead sx={{ width: "100%" }}>
             <TableRow>
-              <TableCell align="center">
+              {/* <TableCell align="center">
                 <Typography variant="span">번호</Typography>
-              </TableCell>
+              </TableCell> */}
               <TableCell align="center">
                 <Typography variant="span">이름</Typography>
               </TableCell>
@@ -99,7 +99,7 @@ const AdminCoupon = () => {
                 <Typography variant="span">수정</Typography>
               </TableCell>
               <TableCell align="center">
-                <Typography variant="span">취소</Typography>
+                <Typography variant="span">삭제</Typography>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -108,9 +108,9 @@ const AdminCoupon = () => {
               <>
                 {showData.map((row, index) => (
                   <TableRow key={index}>
-                    <TableCell align="center">
+                    {/* <TableCell align="center">
                       <Typography variant="span">{row.id}</Typography>
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell align="center">
                       <Typography variant="span">{row.value}</Typography>
                     </TableCell>
