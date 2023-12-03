@@ -137,7 +137,7 @@ const AdminBikeStationEdit = () => {
             <TextField fullWidth variant="outlined" label="경도" value={startn_lnt} onChange={(e) => setStartnLnt(e.target.value)} />
           </Grid>
           <Grid item xs={12}>
-            <TextField fullWidth variant="outlined" label="최대 거치대 수" value={max_stands} InputProps={{ readOnly: true }} disabled />
+            <TextField fullWidth variant="outlined" label="최대 거치대 수" value={max_stands} onChange={(e) => setMaxStands(e.target.value)} />
           </Grid>
           <Grid item xs={12}>
             <TextField fullWidth variant="outlined" label="현재 자전거 수" value={total_bikes} InputProps={{ readOnly: true }} disabled />
@@ -148,7 +148,7 @@ const AdminBikeStationEdit = () => {
           <Grid item xs={12}>
             <FormGroup>
               <FormControlLabel
-                control={<Checkbox checked={station_status} disabled onChange={(e) => setStationStatus(e.target.checked)} />}
+                control={<Checkbox checked={station_status} onChange={(e) => setStationStatus(e.target.checked)} />}
                 label="대여소 사용 여부"
               />
             </FormGroup>
