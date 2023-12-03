@@ -121,7 +121,7 @@ const AdminCouponEdit = () => {
       <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", py: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <TextField fullWidth variant="outlined" label="쿠폰 번호" value={ticketId} InputProps={{ readOnly: true }} disabled />
+            <TextField fullWidth variant="outlined" label="쿠폰 Value" value={couponValue} disabled />
           </Grid>
           <Grid item xs={12}>
             <Autocomplete
