@@ -109,7 +109,7 @@ const AdminBikeStation = () => {
               <Typography variant="span">현재 자전거 개수</Typography>
             </TableCell>
             <TableCell align="center" className="user-bike-station-cell">
-              <Typography variant="span">사용 여부</Typography>
+              <Typography variant="span">활성화 여부</Typography>
             </TableCell>
             <TableCell align="center" className="user-bike-station-cell">
               <Typography variant="span">수정</Typography>
