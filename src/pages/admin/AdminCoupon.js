@@ -99,7 +99,7 @@ const AdminCoupon = () => {
                 <Typography variant="span">수정</Typography>
               </TableCell>
               <TableCell align="center">
-                <Typography variant="span">취소</Typography>
+                <Typography variant="span">삭제</Typography>
               </TableCell>
             </TableRow>
           </TableHead>
