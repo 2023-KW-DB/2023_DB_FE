@@ -100,13 +100,13 @@ const AdminRentHistory = () => {
           <TableHead>
             <TableRow>
               <TableCell align="center" className="tablecell">
-                <Typography variant="span">번호</Typography>
+                <Typography variant="span">이용권ID</Typography>
               </TableCell>
               <TableCell align="center" className="tablecell">
-                <Typography variant="span">유저명</Typography>
+                <Typography variant="span">유저ID</Typography>
               </TableCell>
               <TableCell align="center" className="tablecell">
-                <Typography variant="span">자전거명</Typography>
+                <Typography variant="span">자전거ID</Typography>
               </TableCell>
               <TableCell align="center" className="tablecell">
                 <Typography variant="span">출발지</Typography>

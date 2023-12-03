@@ -37,7 +37,9 @@ const BoardEdit = ({ category_id = 1, beforeLink }) => {
         if (response.status !== 200) {
           throw new Error("글을 가져오지 못했습니다.");
         }
+        console.log("====fetch data");
         const jsonData = await response.json();
+        console.log(jsonData);
         setTitle(jsonData.result.title);
         setContent(jsonData.result.content);
         setSetNotice(jsonData.result.is_notice);
@@ -55,8 +57,10 @@ const BoardEdit = ({ category_id = 1, beforeLink }) => {
   const onSubmit = () => {
     // TODO: Fetch data into submit
     // TODO: Update image upload
-
+    
     (async () => {
+
+      console.log(boardUserId);
       try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/board/modify-board`, {
           method: "PATCH",
